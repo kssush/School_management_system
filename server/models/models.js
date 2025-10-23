@@ -10,8 +10,8 @@ const User = sequelize.define('user', {
     telephone: {type: DataTypes.STRING, allowNull: true},
     address: {type: DataTypes.STRING, allowNull: true},
     role: {type: DataTypes.STRING, allowNull: true},
-    bithday: {type: DataTypes.DATEONLY, allowNull: true},
-    image: {type: DataTypes.STRING}
+    birthday: {type: DataTypes.DATEONLY, allowNull: true},
+    image: {type: DataTypes.STRING, allowNull: false}
 },{
     timestamps: false
 })
