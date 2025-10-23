@@ -3,113 +3,115 @@ const {DataTypes} = require('sequelize');
 
 
 const User = sequelize.define('user', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: true},
-    surname: {type: DataTypes.STRING, allowNull: true},
-    patronymic: {type: DataTypes.STRING, allowNull: false},
-    telephone: {type: DataTypes.STRING, allowNull: true},
-    address: {type: DataTypes.STRING, allowNull: true},
-    role: {type: DataTypes.STRING, allowNull: true},
-    birthday: {type: DataTypes.DATEONLY, allowNull: true},
-    image: {type: DataTypes.STRING, allowNull: false}
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false},
+    surname: {type: DataTypes.STRING, allowNull: false},
+    patronymic: {type: DataTypes.STRING, allowNull: true},
+    telephone: {type: DataTypes.STRING, allowNull: false},
+    address: {type: DataTypes.STRING, allowNull: false},
+    role: {type: DataTypes.STRING, allowNull: false},
+    birthday: {type: DataTypes.DATEONLY, allowNull: false},
+    image: {type: DataTypes.STRING, allowNull: true},
+    login: {type: DataTypes.STRING, allowNull: false},
+    password: {type: DataTypes.STRING, allowNull: false},
 },{
     timestamps: false
 })
 
 const Parent = sequelize.define('parent', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
     id_user: {type: DataTypes.INTEGER, references: { model: User, key: 'id'}},
-    work: {type: DataTypes.STRING, allowNull: true},
-    post: {type: DataTypes.STRING, allowNull: true},
-    role: {type: DataTypes.STRING, allowNull: true},
+    work: {type: DataTypes.STRING, allowNull: false},
+    post: {type: DataTypes.STRING, allowNull: false},
+    role: {type: DataTypes.STRING, allowNull: false},
 },{
     timestamps: false
 })
 
 const Student = sequelize.define('student', {
     id: {type: DataTypes.INTEGER, primaryKey: true,  references: { model: User, key: 'id'}},
-    id_family: {type: DataTypes.INTEGER, allowNull: false},
+    id_family: {type: DataTypes.INTEGER, allowNull: true},
 },{
     timestamps: false
 })
 
 const Combination = sequelize.define('combination', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    letter: {type: DataTypes.STRING, allowNull: true},
-    number: {type: DataTypes.STRING, allowNull: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    letter: {type: DataTypes.STRING, allowNull: false},
+    number: {type: DataTypes.STRING, allowNull: false},
 },{
     timestamps: false
 })
 
 const Class = sequelize.define('class', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    id_combination: {type: DataTypes.INTEGER, references: { model: Combination, key: 'id'}},
-    year: {type: DataTypes.INTEGER, allowNull: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    id_combination: {type: DataTypes.INTEGER, allowNull: false, references: { model: Combination, key: 'id'}},
+    year: {type: DataTypes.INTEGER, allowNull: false},
 },{
     timestamps: false
 })
 
 const Composition = sequelize.define('composition', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    id_class: {type: DataTypes.INTEGER, references: { model: Class, key: 'id'}},
-    id_student: {type: DataTypes.INTEGER, references: { model: Student, key: 'id'}},
-    reviewed: {type: DataTypes.BOOLEAN, allowNull: true, defaultValue: false},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    id_class: {type: DataTypes.INTEGER, allowNull: false, references: { model: Class, key: 'id'}},
+    id_student: {type: DataTypes.INTEGER, allowNull: true, references: { model: Student, key: 'id'}},
+    reviewed: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
 },{
     timestamps: false
 })
 
 const Project = sequelize.define('project', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, allowNull: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    name: {type: DataTypes.STRING, allowNull: false},
 },{
     timestamps: false
 })
 
 const Time = sequelize.define('time', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    time_start: {type: DataTypes.TIME, allowNull: true},
-    time_end: {type: DataTypes.TIME, allowNull: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    time_start: {type: DataTypes.TIME, allowNull: false},
+    time_end: {type: DataTypes.TIME, allowNull: false},
 },{
     timestamps: false
 })
 
 const ScheduleData = sequelize.define('schedule_data', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    id_time: {type: DataTypes.INTEGER, references: { model: Time, key: 'id'}},
-    weekday: {type: DataTypes.STRING, allowNull: true},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    id_time: {type: DataTypes.INTEGER, allowNull: false, references: { model: Time, key: 'id'}},
+    weekday: {type: DataTypes.STRING, allowNull: false},
 },{
     timestamps: false
 })
 
 const Schedule = sequelize.define('schedule', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    id_sd: {type: DataTypes.INTEGER, references: { model: ScheduleData, key: 'id'}},
-    id_combination: {type: DataTypes.INTEGER, references: { model: Combination, key: 'id'}},
-    id_project: {type: DataTypes.INTEGER, references: { model: Project, key: 'id'}},
-    id_teacher: {type: DataTypes.INTEGER, allowNull: false, references: { model: User, key: 'id'}},
-    classroom: {type: DataTypes.STRING, allowNull: false},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    id_sd: {type: DataTypes.INTEGER, allowNull: false, references: { model: ScheduleData, key: 'id'}},
+    id_combination: {type: DataTypes.INTEGER, allowNull: false, references: { model: Combination, key: 'id'}},
+    id_project: {type: DataTypes.INTEGER, allowNull: false, references: { model: Project, key: 'id'}},
+    id_teacher: {type: DataTypes.INTEGER, allowNull: true, references: { model: User, key: 'id'}},
+    classroom: {type: DataTypes.STRING, allowNull: true},
 },{
     timestamps: false
 })
 
 const Magazine = sequelize.define('magazine', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    id_class: {type: DataTypes.INTEGER, references: { model: Class, key: 'id'}},
-    id_project: {type: DataTypes.INTEGER, references: { model: Project, key: 'id'}},
-    date: {type: DataTypes.DATEONLY, allowNull: true},
-    lesson: {type: DataTypes.STRING, allowNull: false},
-    homework: {type: DataTypes.STRING, allowNull: false},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    id_class: {type: DataTypes.INTEGER, allowNull: false, references: { model: Class, key: 'id'}},
+    id_project: {type: DataTypes.INTEGER, allowNull: false, references: { model: Project, key: 'id'}},
+    date: {type: DataTypes.DATEONLY, allowNull: false},
+    lesson: {type: DataTypes.STRING, allowNull: true},
+    homework: {type: DataTypes.STRING, allowNull: true},
 },{
     timestamps: false
 })
 
 const Grade = sequelize.define('grade', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: true, autoIncrement: true},
-    id_magazine: {type: DataTypes.INTEGER, references: { model: Magazine, key: 'id'}},
-    id_student: {type: DataTypes.INTEGER, references: { model: Student, key: 'id'}},
-    pass: {type: DataTypes.BOOLEAN, allowNull: false},
-    mark: {type: DataTypes.INTEGER, allowNull: false},
-    remark: {type: DataTypes.STRING, allowNull: false},
+    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
+    id_magazine: {type: DataTypes.INTEGER, allowNull: false, references: { model: Magazine, key: 'id'}},
+    id_student: {type: DataTypes.INTEGER, allowNull: false, references: { model: Student, key: 'id'}},
+    pass: {type: DataTypes.BOOLEAN, allowNull: true},
+    mark: {type: DataTypes.INTEGER, allowNull: true},
+    remark: {type: DataTypes.STRING, allowNull: true},
 },{
     timestamps: false
 })
