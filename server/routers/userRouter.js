@@ -3,6 +3,6 @@ const router = new Router()
 
 const userController = require('../controllers/userController')
 
-// router.post('/registration', userController.registration)
+router.post('/', userController.registration)
 
 module.exports = router 

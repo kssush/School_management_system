@@ -14,23 +14,23 @@ const User = sequelize.define('user', {
     image: {type: DataTypes.STRING, allowNull: true},
     login: {type: DataTypes.STRING, allowNull: false},
     password: {type: DataTypes.STRING, allowNull: false},
+    email: {type: DataTypes.STRING, allowNull: false},
 },{
     timestamps: false
 })
 
 const Parent = sequelize.define('parent', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
-    id_user: {type: DataTypes.INTEGER, references: { model: User, key: 'id'}},
+    id: {type: DataTypes.INTEGER, primaryKey: true, references: { model: User, key: 'id'}},
     work: {type: DataTypes.STRING, allowNull: false},
     post: {type: DataTypes.STRING, allowNull: false},
     role: {type: DataTypes.STRING, allowNull: false},
 },{
-    timestamps: false
+    timestamps: false 
 })
 
 const Student = sequelize.define('student', {
     id: {type: DataTypes.INTEGER, primaryKey: true,  references: { model: User, key: 'id'}},
-    id_family: {type: DataTypes.INTEGER, allowNull: true},
+    id_family: {type: DataTypes.STRING, allowNull: true},
 },{
     timestamps: false
 })
@@ -131,8 +131,8 @@ module.exports = {
     Grade
 }
 
-User.hasMany(Parent, { foreignKey: 'id_user', sourceKey: 'id', as: 'parent' });
-Parent.belongsTo(User, { foreignKey: 'id_user', targetKey: 'id', as: 'user' });
+User.hasMany(Parent, { foreignKey: 'id', sourceKey: 'id', as: 'parent' });
+Parent.belongsTo(User, { foreignKey: 'id', targetKey: 'id', as: 'user' });
 
 User.hasOne(Student, { foreignKey: 'id', sourceKey: 'id', as: 'student' });
 Student.belongsTo(User, { foreignKey: 'id', targetKey: 'id', as: 'user' });

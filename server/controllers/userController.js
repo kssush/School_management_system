@@ -1,12 +1,19 @@
 // const ApiError = require("../error/ApiError");
 const Controller = require("./controller");
-const userService = require("../services/userService");
+const service = require("../services/userService");
 
 
 class UserController extends Controller {
 
     async registration(req, res, next){
-
+        const {role} = req.body;
+    
+        const userData = await service.registration(req.body);
+        const parentData = (role == 'dad' || role == 'mam' ?
+            await service.registrationParent(userData.id, req.body) : {}
+        )
+        
+        return res.json();
     }
 
     async login(req, res, next){
