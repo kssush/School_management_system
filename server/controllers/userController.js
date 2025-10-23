@@ -33,14 +33,18 @@ class UserController extends Controller {
 
     async update(req, res, next){
         const { id } = req.params;   
-
+        
         const updatedData = await service.update(id, req.body);
 
         return res.json(updatedData);
     }
 
     async updateParent(req, res, next){
-        // общая информация у родителей
+        const { id } = req.params;   
+
+        const updatedData = await service.updateParent(id, req.body);
+
+        return res.json(updatedData);
     }
 
     async delete(req, res, next){ 

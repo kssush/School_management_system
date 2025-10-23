@@ -59,6 +59,17 @@ class UserService{
 
         return updatedData;
     }
+
+    async updateParent(id, data){
+        const { id: _, ...safeData } = data;
+        
+        const [affectedCount] = await Parent.update(safeData, {where: {id}});
+        if(affectedCount == 0) throw ApiError.notFound('No user with this ID was found!');
+
+        const updatedData = await Parent.findByPk(id);
+
+        return updatedData;
+    }
 }
 
 module.exports = new UserService();
