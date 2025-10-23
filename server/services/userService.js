@@ -1,8 +1,7 @@
 const { User, Parent } = require("../models/models");
-const tokenService = require("./tokenService");
 const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
-const Service = require("./service");
+const token = require("./tokenService");
 
 class UserService{ 
     async registration(data){
@@ -29,6 +28,36 @@ class UserService{
         if(!parent) throw ApiError.badRequest('adasdasdasd')
 
         return parent;
+    }
+
+    async login(data){
+        const {login, password} = data;
+
+        const candidate = await User.findOne({where: {login}});
+        if(!candidate) throw ApiError.unauthorized('Invalid LOGIN or PASSWORD!');
+
+        const isCorrectPassword = await bcrypt.compare(password, candidate.password);
+        if(!isCorrectPassword) throw ApiError.unauthorized('Invalid LOGIN or PASSWORD!')
+
+        const tokens = token.generateTokens({id: candidate.id, login, role: candidate.role});
+
+        return {tokens, user: {
+            id: candidate.id,
+            role: candidate.role,
+            name: candidate.name,
+            surname: candidate.surname
+        }};
+    }
+
+    async update(id, data){
+        const { id: _, ...safeData } = data;
+
+        const [affectedCount] = await User.update(safeData, {where: {id}});
+        if(affectedCount == 0) throw ApiError.notFound('No user with this ID was found!');
+
+        const updatedData = await User.findByPk(id);
+
+        return updatedData;
     }
 }
 

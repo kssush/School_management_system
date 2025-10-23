@@ -1,10 +1,11 @@
 // const ApiError = require("../error/ApiError");
 const Controller = require("./controller");
 const service = require("../services/userService");
+const token = require("../services/tokenService");
+const ApiError = require("../error/ApiError");
 
 
 class UserController extends Controller {
-
     async registration(req, res, next){
         const {role} = req.body;
     
@@ -17,11 +18,25 @@ class UserController extends Controller {
     }
 
     async login(req, res, next){
+        const {login, password} = req.body;
 
+        if(!login || !password) return next(ApiError.badRequest(
+            `Uncorrected data! The LOGIN or PASSWORD must not be empty`
+        ))
+
+        const data = await service.login(req.body);
+
+        token.saveToken(tokens.refreshToken);
+
+        return res.json(data);
     }
 
     async update(req, res, next){
-        // общая информация в таблице User
+        const { id } = req.params;   
+
+        const updatedData = await service.update(id, req.body);
+
+        return res.json(updatedData);
     }
 
     async updateParent(req, res, next){
@@ -37,7 +52,9 @@ class UserController extends Controller {
     }
 
     async logout(req, res, next){ 
-        //выход из аккаунта
+        token.removeToken(res);
+
+        return res.json();
     }
 
     async refresh(req, res, next){ 
