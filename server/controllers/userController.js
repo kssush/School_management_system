@@ -10,8 +10,10 @@ class UserController extends Controller {
         const {role} = req.body;
     
         const userData = await service.registration(req.body);
-        const parentData = (role == 'dad' || role == 'mam' ?
-            await service.registrationParent(userData.id, req.body) : {}
+        const familyData = (role == 'dad' || role == 'mam' ?
+            await service.registrationParent(userData.id, req.body) : role == 'student' ?
+            await service.registrationStudent(userData.id) : 
+            {}
         )
         
         return res.json();

@@ -1,4 +1,4 @@
-const { User, Parent } = require("../models/models");
+const { User, Parent, Student } = require("../models/models");
 const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const token = require("./tokenService");
@@ -28,6 +28,14 @@ class UserService{
         if(!parent) throw ApiError.badRequest('adasdasdasd')
 
         return parent;
+    }
+
+    async registrationStudent(id){
+        const student = await Student.create({id});
+        
+        if(!student) throw ApiError.badRequest('adasdasdasd')
+
+        return student;
     }
 
     async login(data){

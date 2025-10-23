@@ -38,7 +38,7 @@ const Student = sequelize.define('student', {
 const Combination = sequelize.define('combination', {
     id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
     letter: {type: DataTypes.STRING, allowNull: false},
-    number: {type: DataTypes.STRING, allowNull: false},
+    number: {type: DataTypes.INTEGER, allowNull: false},
 },{
     timestamps: false
 })
