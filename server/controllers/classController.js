@@ -19,6 +19,20 @@ class ClassController extends Controller{
 
         return res.json();
     }
+
+    async getCombination(req, res, next){
+        const activeClassName = await classes.getCombination();
+
+        return res.json(activeClassName);
+    }
+
+    async getClass(req, res, next){
+        const { id } = req.params;
+
+        const students = await classes.getClass(id);
+
+        return res.json(students);
+    }   
 }
 
 module.exports = new ClassController();

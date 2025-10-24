@@ -70,6 +70,16 @@ module.exports = {
             {
                 letter: 'B',
                 number: 5
+            },
+            {
+                id: 101,
+                letter: 'A',
+                number: 101
+            },
+            {
+                id: 102,
+                letter: 'B',
+                number: 102
             }
         ])
 
