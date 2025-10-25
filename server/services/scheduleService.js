@@ -80,6 +80,19 @@ class ScheduleService {
         return lessons;
     }
 
+    async getLessonTeacher(id_teacher){
+        const lessons = await sequelize.query(
+            queries.schedule.getLessonTeacher,
+            {
+                bind: [id_teacher],
+                type: sequelize.QueryTypes.SELECT,
+                nest: true
+            }
+        )
+
+        return lessons;
+    }
+
     async getSchedule(){
         const schedule = await sequelize.query(
             queries.schedule.getSchedule,

@@ -12,6 +12,18 @@ module.exports = {
         WHERE s.id_combination = $1
     `,
 
+    getLessonTeacher: `
+        SELECT
+            s.*,
+            c.number,
+            c.letter,
+            p.name as project
+        FROM schedules s
+        INNER JOIN combinations c ON s.id_combination = c.id
+        INNER JOIN projects p ON p.id = s.id_project
+        WHERE s.id_teacher = $1
+    `,
+
     getSchedule: `
         SELECT 
             sd.*,

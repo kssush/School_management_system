@@ -120,6 +120,28 @@ class ClassService {
 
         return classes;
     }
+
+    async getAllStudent(isClass){
+        if (isClass) {
+            return await User.findAll({
+                where: { role: 'student' },
+                include: [{ 
+                    model: Student, 
+                    as: 'student' 
+                }]
+            });
+        } else {
+            const students = await sequelize.query(
+                queries.class.getAllStudent,
+                {
+                    type: Sequelize.QueryTypes.SELECT,
+                    nest: true 
+                }
+            );
+ 
+            return students;
+        }
+    }
 }
 
 module.exports = new ClassService();

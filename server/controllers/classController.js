@@ -33,6 +33,15 @@ class ClassController extends Controller{
 
         return res.json(students);
     }   
+
+    async getAllStudent(req, res, next){
+        const {isClass} = req.params;
+        const isClassBool = isClass == 'true';
+
+        const students = await classes.getAllStudent(isClassBool);
+
+        return res.json(students);
+    }
 }
 
 module.exports = new ClassController();

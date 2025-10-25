@@ -78,6 +78,12 @@ class UserService{
 
         return updatedData;
     }
+
+    async getAllTeacher(){
+        const teachers = await User.findAll({where: {role: 'teacher'}})
+
+        return teachers;
+    }
 }
 
 module.exports = new UserService();

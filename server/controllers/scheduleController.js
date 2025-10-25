@@ -40,6 +40,14 @@ class ScheduleController extends Controller{
         return res.json(lessons);
     }
 
+    async getLessonTeacher(req, res, next){
+        const {id} = req.params; // id_teacher
+
+        const lessons = await schedule.getLessonTeacher(id);
+
+        return res.json(lessons);
+    }
+
     async getSchedule(req, res, next){
         const scheduleData = await schedule.getSchedule();
 

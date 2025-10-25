@@ -52,10 +52,6 @@ class UserController extends Controller {
     async delete(req, res, next){ 
         //удалить ребенка
     }
-    
-    async getOne(req, res, next){ 
-        //получтиь личную инфрмацию для профиля - учитывать учитель родитель ребенок
-    }
 
     async logout(req, res, next){ 
         token.removeToken(res);
@@ -65,6 +61,12 @@ class UserController extends Controller {
 
     async refresh(req, res, next){ 
         // обновить токены
+    }
+
+    async getAllTeacher(req, res, next){
+        const teachers = await service.getAllTeacher();
+
+        return teachers;
     }
 }
 
