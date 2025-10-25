@@ -5,7 +5,8 @@ const cors = require('cors')
 const models = require('./models/models')
 const router = require('./routers/index')
 const sequelize = require("./db");
-const path = require('path')
+const path = require('path');
+const errorMiddleware = require("./middleware/ErrorHandlingMiddleware");
 
 const PORT = process.env.PORT || 5000;
 
@@ -21,7 +22,7 @@ app.use(express.json());
 app.use('/static', express.static(path.resolve(__dirname, 'static'))) 
 app.use(cookieParser())
 app.use('/api', router)
-
+app.use(errorMiddleware)
 
 const start = async () => {
     try {
