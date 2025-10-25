@@ -35,7 +35,7 @@ class ScheduleService {
             if(isOccupy){
                 throw ApiError.conflict('Classroom is already occupied!');
             }
-            
+
             tempData.classroom = classroom;
         }
 
@@ -59,8 +59,23 @@ class ScheduleService {
         return updatedLesson;
     }
 
+    async updateTime(id, data){
+        await Time.update(data, {where: {id}})
+
+        const time = await Time.findOne({where: {id}})
+
+        return time;
+    }
+
     async getLesson(id_combination){
-        const lessons = await Schedule.findAll({where: {id_combination}});
+        const lessons = await sequelize.query(
+            queries.schedule.getLesson,
+            {
+                bind: [id_combination],
+                type: sequelize.QueryTypes.SELECT,
+                nest: true
+            }
+        )
 
         return lessons;
     }

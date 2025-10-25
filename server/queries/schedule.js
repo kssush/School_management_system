@@ -1,4 +1,17 @@
 module.exports = {
+    getLesson: `    
+        SELECT
+            s.*,
+            u.name,
+            u.surname,
+            u.patronymic,
+            p.name as project
+        FROM schedules s
+        LEFT JOIN users u ON u.id = s.id_teacher
+        INNER JOIN projects p ON p.id = s.id_project
+        WHERE s.id_combination = $1
+    `,
+
     getSchedule: `
         SELECT 
             sd.*,

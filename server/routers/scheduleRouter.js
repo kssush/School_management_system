@@ -6,6 +6,7 @@ const scheduleController = require('../controllers/scheduleController')
 router.post('/addLesson', scheduleController.addLesson)
 router.delete('/deleteLesson/:id', scheduleController.deleteLesson)
 router.patch('/updateLesson/:id', scheduleController.updateLesson)
+router.patch('/updateTime/:id', scheduleController.updateTime)
 router.get('/getLesson/:id', scheduleController.getLesson)
 router.get('/getSchedule', scheduleController.getSchedule)
 

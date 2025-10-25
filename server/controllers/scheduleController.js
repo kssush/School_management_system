@@ -6,8 +6,6 @@ class ScheduleController extends Controller{
         const lesson = await schedule.addLesson(req.body);
 
         return res.json(lesson);
-
-        // проверить или не занят кабинет
     }
     
     async deleteLesson(req, res, next){
@@ -23,10 +21,14 @@ class ScheduleController extends Controller{
 
         const updateData = await schedule.updateLesson(id, req.body);
         
-        // если меняется предмет убирается учитель
-        // можно сменить учителя
-        // класс рум убирается спокойно
-        //
+        return res.json();
+    }
+
+    async updateTime(req, res, next){
+        const {id} = req.params;
+
+        const updateTime = await schedule.updateLesson(id, req.body);
+        
         return res.json();
     }
 
