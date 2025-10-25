@@ -7,6 +7,8 @@ const ApiError = require("../error/ApiError");
 
 class UserController extends Controller {
     async registration(req, res, next){
+        Controller.validateRequired(req.body, ['email', 'password', 'login']);
+
         const {role} = req.body;
     
         const userData = await service.registration(req.body);
@@ -20,11 +22,7 @@ class UserController extends Controller {
     }
 
     async login(req, res, next){
-        const {login, password} = req.body;
-
-        if(!login || !password) return next(ApiError.badRequest(
-            `Uncorrected data! The LOGIN or PASSWORD must not be empty`
-        ))
+        Controller.validateRequired(req.body, ['login', 'password']);
 
         const data = await service.login(req.body);
 
@@ -70,8 +68,9 @@ class UserController extends Controller {
     }
 
     async getFamily(req, res, next){
-        const {id, role} = req.params;
-        
+        const { id } = req.params;
+        const { role } = req.query;
+
         const family = await service.getFamily(id, role);
 
         return res.json(family);

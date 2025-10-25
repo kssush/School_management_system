@@ -9,6 +9,6 @@ router.post('/logout', userController.logout)
 router.patch('/:id', userController.update)
 router.patch('/parent/:id', userController.updateParent)
 router.get('/teacher', userController.getAllTeacher)
-router.get('/family/:id/:role', userController.getFamily)
+router.get('/family/:id', userController.getFamily)
 
 module.exports = router 

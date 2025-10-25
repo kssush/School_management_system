@@ -3,6 +3,8 @@ const magazine = require("../services/magazineService");
 
 class MagazineController extends Controller{
     async addDay(req, res, next){
+        Controller.validateRequired(req.body, ['id_class', 'id_project', 'lesson', 'homework']);
+
         const day = await magazine.addDay(req.body);
 
         return res.json(day);
@@ -17,6 +19,8 @@ class MagazineController extends Controller{
     }
 
     async addPerformance(req, res, next){
+        Controller.validateRequired(req.body, ['id_magazine', 'id_student']);
+
         const performance = await magazine.addPerformance(req.body);
 
         return res.json(performance);
@@ -31,13 +35,17 @@ class MagazineController extends Controller{
     }
 
     async getMagazine(req, res, next){ 
-        const magazines = await magazine.getMagazine(req.body);
+        Controller.validateRequired(req.query, ['id_class', 'id_project', 'date']);
+
+        const magazines = await magazine.getMagazine(req.query);
 
         return res.json(magazines);
     }
 
     async getPerformance(req, res, next){
-        const performance = await magazine.getPerformance(req.body);
+        Controller.validateRequired(req.query, ['id_class', 'id_project', 'date', 'id_student']);
+        
+        const performance = await magazine.getPerformance(req.query);
 
         return res.json(performance);
     }

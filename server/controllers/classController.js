@@ -35,7 +35,7 @@ class ClassController extends Controller{
     }   
 
     async getAllStudent(req, res, next){
-        const {isClass} = req.params;
+        const {isClass} = req.query;
         const isClassBool = isClass == 'true';
 
         const students = await classes.getAllStudent(isClassBool);

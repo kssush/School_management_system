@@ -1,3 +1,5 @@
+const ApiError = require("../error/ApiError");
+
 class Controller {
     constructor() {
         this.initializeAsyncMethods();
@@ -16,6 +18,14 @@ class Controller {
             if (typeof this[method] === 'function' && method !== 'constructor') {
                 this[method] = Controller.AsyncCatch(this[method]);
             }
+        }
+    }
+
+    static validateRequired(data, requiredFields) {
+        const missing = requiredFields.filter(field => !data[field]);
+        console.log('sdfsdf')
+        if (missing.length > 0) {
+            throw ApiError.badRequest(`Missing required fields: ${missing.join(', ')}`);
         }
     }
 }

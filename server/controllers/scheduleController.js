@@ -3,6 +3,8 @@ const schedule = require("../services/scheduleService");
 
 class ScheduleController extends Controller{
     async addLesson(req, res, next){
+        Controller.validateRequired(req.body, ['id_sd', 'id_combination', 'id_project']);
+
         const lesson = await schedule.addLesson(req.body);
 
         return res.json(lesson);
