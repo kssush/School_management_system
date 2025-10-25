@@ -8,5 +8,6 @@ router.post('/login', userController.login)
 router.post('/logout', userController.logout)
 router.patch('/:id', userController.update)
 router.patch('/parent/:id', userController.updateParent)
+router.get('/teacher', userController.getAllTeacher)
 
 module.exports = router 
