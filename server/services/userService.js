@@ -2,6 +2,7 @@ const { User, Parent, Student } = require("../models/models");
 const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const token = require("./tokenService");
+const { Sequelize } = require("../db");
 
 class UserService{ 
     async registration(data){
@@ -83,6 +84,127 @@ class UserService{
         const teachers = await User.findAll({where: {role: 'teacher'}})
 
         return teachers;
+    }
+
+    async getFamily(id, role) {
+        if (role === 'student') {
+            const student = await Student.findByPk(id, {
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: { exclude: ['password'] } 
+                }],
+                raw: true, 
+                nest: true 
+            });
+
+            if (!student) return {};
+
+            const { motherId, fatherId } = this.parseParentIds(student.id_family);
+
+            const [mam, dad] = await Promise.all([
+                motherId ? Parent.findByPk(motherId, { 
+                    include: [{
+                        model: User, 
+                        as: 'user',
+                        attributes: { exclude: ['password'] }
+                    }],
+                    raw: true,
+                    nest: true
+                }) : null,
+                fatherId ? Parent.findByPk(fatherId, { 
+                    include: [{
+                        model: User, 
+                        as: 'user',
+                        attributes: { exclude: ['password'] }
+                    }],
+                    raw: true,
+                    nest: true
+                }) : null
+            ]);
+
+            return {
+                student: {id_family: student.id_family, ...student.user},
+                mam: mam ? { ...mam, ...mam.user, user: undefined } : null,
+                dad: dad ? { ...dad, ...dad.user, user: undefined } : null
+            };
+
+        } else {
+            const parent = await Parent.findByPk(id, {
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: { exclude: ['password'] }
+                }],
+                raw: true,
+                nest: true
+            });
+
+            const parentType = parent.role === 'mam' ? 'm' : 'd';
+            const parentMask = `${parentType}${id}`;
+
+            const student = await Student.findOne({
+                where: {
+                    id_family: {
+                        [Sequelize.Op.like]: `%${parentMask}%`
+                    }
+                },
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: { exclude: ['password'] }
+                }],
+                raw: true,
+                nest: true
+            });
+
+            if (!student) {
+                return { ...parent, ...parent.user };
+            }
+
+            const { motherId, fatherId } = this.parseParentIds(student.id_family);
+
+            const secondParentId = parent.role === 'mam' ? fatherId : motherId;
+            const secondParent = secondParentId ? await Parent.findByPk(secondParentId, {
+                include: [{
+                    model: User,
+                    as: 'user',
+                    attributes: { exclude: ['password'] }
+                }],
+                raw: true,
+                nest: true
+            }) : null;
+
+            return {
+                student: {id_family: student.id_family, ...student.user},
+                mam: parent.role === 'mam' ? { ...parent, ...parent.user, user: undefined } : secondParent ? { ...secondParent, ...secondParent.user, user: undefined  } : null,
+                dad: parent.role === 'dad' ? { ...parent, ...parent.user, user: undefined  } : secondParent ? { ...secondParent, ...secondParent.user, user: undefined } : null
+            };
+        }
+    }
+
+
+    //help
+    parseParentIds(parentString) {
+        if (!parentString || parentString === 'null') {
+            return {};
+        }
+
+        let motherId = null;
+        let fatherId = null;
+
+        // Ищем m11 d12 форматы
+        const motherMatch = parentString.match(/m(\d+)/);
+        const fatherMatch = parentString.match(/d(\d+)/);
+
+        if (motherMatch) {
+            motherId = parseInt(motherMatch[1]);
+        }
+        if (fatherMatch) {
+            fatherId = parseInt(fatherMatch[1]);
+        }
+
+        return { motherId, fatherId };
     }
 }
 

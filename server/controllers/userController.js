@@ -66,7 +66,15 @@ class UserController extends Controller {
     async getAllTeacher(req, res, next){
         const teachers = await service.getAllTeacher();
 
-        return teachers;
+        return res.json(teachers);
+    }
+
+    async getFamily(req, res, next){
+        const {id, role} = req.params;
+        
+        const family = await service.getFamily(id, role);
+
+        return res.json(family);
     }
 }
 
