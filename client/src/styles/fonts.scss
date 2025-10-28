@@ -1,0 +1,171 @@
+@import url('./variables.scss');
+
+// ======       FONT-FACE      ======
+
+// thin
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-Thin.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-Thin.woff') format('woff'),
+       url('../assets/fonts/Gantari-Thin.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+// extra light
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-ExtraLight.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-ExtraLight.woff') format('woff'),
+       url('../assets/fonts/Gantari-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+// light
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-Light.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-Light.woff') format('woff'),
+       url('../assets/fonts/Gantari-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+// regular
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-Regular.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-Regular.woff') format('woff'),
+       url('../assets/fonts/Gantari-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+//medium
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-Medium.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-Medium.woff') format('woff'),
+       url('../assets/fonts/Gantari-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+// semi bold
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-SemiBold.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-SemiBold.woff') format('woff'),
+       url('../assets/fonts/Gantari-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+// bold
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-Bold.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-Bold.woff') format('woff'),
+       url('../assets/fonts/Gantari-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+// extra bold
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-ExtraBold.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-ExtraBold.woff') format('woff'),
+       url('../assets/fonts/Gantari-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+// black
+@font-face {
+  font-family: 'Gantari';
+  src: url('../assets/fonts/Gantari-Black.woff2') format('woff2'),
+       url('../assets/fonts/Gantari-Black.woff') format('woff'),
+       url('../assets/fonts/Gantari-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+// ======       CLASSES      ======
+
+@mixin text($size, $weight){
+    font-family: 'Gantari', sans-serif;
+    font-size: calc(#{$size} / var(--font-size, 16) * 1em);
+    font-weight: $weight;   
+    line-height: 1;
+    color: var(--text, #000000);
+}
+
+
+.text30-bold{
+    @include text(30, 700);    
+}
+
+
+.text24-medium{
+    @include text(24, 500);    
+}
+
+
+.text20-medium{
+    @include text(20, 500);    
+}
+
+.text20-regular{
+    @include text(20, 400);    
+}
+
+
+.text18-medium{
+    @include text(18, 500);    
+}
+
+.text18-regular{
+    @include text(18, 400);    
+}
+
+.text18-24-regular{
+    @include text(18, 400);  
+    line-height: calc(24 / var(--font-size-wh));  
+}
+
+
+.text16-medium{
+    @include text(16, 500);    
+}
+
+.text16-regular{
+    @include text(16, 400);    
+}
+
+
+.text14-medium{
+    @include text(14, 500);    
+}
+
+.text14-regular{
+    @include text(14, 400);    
+}
+
+
+.text12-regular{
+    @include text(12, 400);    
+}
+
