@@ -1,0 +1,43 @@
+@import '../../../styles/mixins.scss';
+
+.search{
+    @include center;
+    margin-left: 45px;
+    padding: 0.625rem 10px;
+    width: fit-content;
+    opacity: 0.6;
+    transition: opacity 0.5s;
+    cursor: pointer;
+
+    &:focus-within{
+        opacity: 1;
+
+        .iconClose{
+            opacity: 1;
+        }   
+    }
+
+    .iconSearch{
+        height: 1rem;
+        width: 1rem;
+    }
+
+    .iconClose{
+        height: 0.625rem;
+        width: 0.625rem;
+        opacity: 0;
+        transition: opacity 0.5s;
+        margin: 0 10px;
+    }
+
+    input{
+        @include text16-regular;
+        color: var(--text80);
+        width: 7.75rem;
+        margin-left: 10px;
+
+        &::placeholder{
+            color: var(--text80);
+        }
+    }
+}

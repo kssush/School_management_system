@@ -1,0 +1,48 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    font-size: var((--font-size), 16px);
+}
+
+body {
+    font-family: "Gantari", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1440px;
+}
+
+#root{
+    width: 100%;
+    height: fit-content;
+}
+
+.body{
+    display: flex;
+    gap: 0;
+}
+
+
+
+button,
+input {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    outline: none;
+    height: fit-content;
+}
+
+input{
+    &:focus{
+        cursor: text;
+    }
+}

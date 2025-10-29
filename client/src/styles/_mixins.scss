@@ -1,0 +1,78 @@
+// ===== TEXT ===== //
+
+@mixin text($size, $weight){
+    font-family: 'Gantari', sans-serif;
+    font-size: #{$size / 16}em;
+    font-weight: $weight;   
+    line-height: 1;
+    color: var(--text, #000000);
+}
+
+@mixin text30-bold{
+    @include text(30, 700);    
+}
+
+@mixin text24-medium{
+    @include text(24, 500);    
+}
+
+ 
+@mixin text20-medium{
+    @include text(20, 500);    
+}
+
+@mixin text20-regular{
+    @include text(20, 400);    
+}
+
+
+@mixin text18-medium{
+    @include text(18, 500);    
+}
+
+@mixin text18-regular{
+    @include text(18, 400);    
+}
+
+@mixin text18-24-regular{
+    @include text(18, 400);  
+    line-height: calc(24 / var(--font-size));  
+}
+
+
+@mixin text16-medium{
+    @include text(16, 500);    
+}
+
+@mixin text16-regular{
+    @include text(16, 400);    
+}
+
+
+@mixin text14-medium{
+    @include text(14, 500);    
+}
+
+@mixin text14-regular{
+    @include text(14, 400);    
+}
+
+
+@mixin text12-regular{
+    @include text(12, 400);    
+}
+
+
+
+// ===== styles =====
+
+@mixin center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin left{
+    display: flex;
+    align-items: center;
+}
