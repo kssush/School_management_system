@@ -1,7 +1,7 @@
 // ===== TEXT ===== //
 
 @mixin text($size, $weight){
-    font-family: 'Gantari', sans-serif;
+    font-family: 'Gantari';
     font-size: #{$size / 16}em;
     font-weight: $weight;   
     line-height: 1;
@@ -75,4 +75,9 @@
 @mixin left{
     display: flex;
     align-items: center;
+}
+
+
+@mixin shadow{
+    box-shadow: 0 0 20px -5px var(--black20, #00000045);
 }

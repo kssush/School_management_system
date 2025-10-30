@@ -2,5 +2,30 @@
 
 main{
     width: 100%;
-    background-color: blue;
+    height: 100vh;
+    border-radius: 3.125rem 0 0 0;
+    padding: 2.8125rem 4.0625rem 2.8125rem 3.4375rem; 
+    background-color: var(--second);
+
+    .mainText{
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        >p:nth-child(1){
+            @include text24-medium;
+        }
+
+        >p:nth-child(2){
+            @include text14-regular;
+            color: var(--text60);
+        }
+    }
+
+    .line{
+        margin-top: 2.1875rem;
+        background-color: var(--black20);
+        height: 1px;
+        width: 100%;
+    }
 }

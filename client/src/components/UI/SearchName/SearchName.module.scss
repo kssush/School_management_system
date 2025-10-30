@@ -1,0 +1,93 @@
+@import '../../../styles/mixins.scss';
+
+.select{
+    @include center;
+    width: fit-content;
+    gap: 0.625rem;
+    position: relative;
+    margin-top: 1.5625rem;
+    cursor: pointer;
+
+    &.active{
+        .selectItems{
+            visibility: visible;
+            opacity: 1;
+        }
+
+        >img{
+            transform: rotate(0deg);
+        }
+    }
+
+    >p{
+        @include text18-regular;
+    }
+
+    .value{
+        @include center;
+        @include text16-regular;
+        @include shadow;
+        width: fit-content;
+        min-width: 5.625rem;
+        min-height: 2.1875rem;
+        padding: 0.625rem 1.5625rem;
+        border-radius: 0.625rem;
+        background-color: var(--first);
+    }
+
+    >img{
+        transition: all 0.5s;
+        transform: rotate(180deg);
+        height: 1rem;
+        width: 1rem;
+    }
+
+    .selectItems{
+        @include shadow;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        flex-direction: column;
+        position: absolute;
+        top: 2.8125rem;
+        width: 100%;
+        background-color: var(--first);
+        height: fit-content;
+        max-height: 8.75rem;
+        border-top: 0.9375rem solid var(--first);
+        border-right: 0.625rem solid var(--first);
+        border-bottom: 0.9375rem solid var(--first);
+        border-left: 0.625rem solid var(--first);
+        visibility: hidden;
+        opacity: 0;
+        transition: all 1s;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        border-radius: 1.25rem;
+
+        &::-webkit-scrollbar{
+            width: 3px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--black20);
+            border-radius: 1rem;
+        }
+
+        >p{
+            @include text16-regular;
+            color: var(--text80);
+            width: 100%;
+            text-align: center;
+            padding: 0.575rem 0;
+
+            &:first-child{
+                padding-top: 0;
+            }
+
+            &:last-child{
+                padding-bottom: 0;
+            }
+        }
+    }
+}

@@ -16,7 +16,7 @@ const Search = ({ value, onChange }) => {
     
     return (
         <div className={`${st.search}`} onClick={(e) => handleFocus(e.target)}>
-            <img className={st.iconSearch} src={SearchIcon} alt="sr" />
+            <img className={st.iconSearch} src={SearchIcon} alt="🔍" />
             <input
                 id="search"
                 ref={inputRef}
