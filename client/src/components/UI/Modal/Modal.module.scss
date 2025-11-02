@@ -1,0 +1,61 @@
+@import '../../../styles/mixins.scss';
+
+.overlay{
+    @include center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s ease;
+
+    .modal{
+        display: flex;
+        flex-direction: column;
+        width: 18.75rem;
+        background-color: #fff;
+        animation: slideIn 0.3s ease;
+        padding: 2.1875rem 1.875rem;
+        border-radius: 1.25rem;
+        position: relative;
+        gap: 1.5625rem;
+
+        .close{
+            position: absolute;
+            padding: 0.5rem;
+            top: 0.75rem;
+            right: 0.75rem;
+            height: 1.5rem;
+            width: 1.5rem;
+            cursor: pointer;
+        }
+
+        .header{
+            @include text20-medium;
+        }
+
+        .buttons{
+            display: flex;
+            margin-top: 1.25rem;
+            gap: 1.25rem;
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

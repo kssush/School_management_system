@@ -1,0 +1,9 @@
+@import '../../../styles/mixins.scss';
+
+.button{
+    @include center;
+    @include text14-regular;
+    height: 2.1875rem;
+    width: 6.875rem;
+    border-radius: 0.625rem;
+}

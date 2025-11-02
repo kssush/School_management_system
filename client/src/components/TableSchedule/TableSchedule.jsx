@@ -1,8 +1,12 @@
-import React, { memo, useEffect, useMemo } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import st from "./TableSchedule.module.scss";
 import { useGetScheduleQuery } from "../../store/api/scheduleApi";
 import AddIcon from '../../assets/icons/add.svg';
 import {week, colorLesson, iconLesson} from './constants.js'
+import Modal from "../UI/Modal/Modal.jsx";
+import { useSchedule } from "../../context/scheduleContext.js";
+import Input from "../UI/Input/Input.jsx";
+import Select from "../UI/Select/Select.jsx";
 
 const TableSchedule = memo(({shift, lessonData}) => {
     useEffect(() => {
@@ -91,14 +95,37 @@ const TableItem = ({day, times, lessons}) => {
     )
 }
 
+
+//memo?
 const LessonItem = ({time, lesson, index}) => {
-    const handleAddLesson = (day) => {
-        console.log(day)
+    const {addFunc, deleteFunc, isCombination} = useSchedule();
+
+    const [isOpenAdd, setIsOpenAdd] = useState(false);
+    const [isOpenDelete, setIsOpenDelete] = useState(false);
+
+    const handleAddLesson = () => {
+        setIsOpenAdd(true);
+        setIsOpenDelete(false);
     }
 
-    const handleUpdateLesson = (day) => {
-        console.log(day)
+    const handleUpdateLesson = () => {
+        setIsOpenAdd(false);
+        setIsOpenDelete(true);
     }
+
+    const deleteLesson = () => {
+        console.log('delete')
+    }
+
+    const addLesson = () => {
+        console.log('add')
+    }
+
+    const updateLesson = () => {
+        console.log('update');
+    }
+
+    const defaultClose = () => setIsOpenAdd(false);
 
     return (
         <div className={st.lesson}>
@@ -116,13 +143,32 @@ const LessonItem = ({time, lesson, index}) => {
                     </div>
                 </div>
             ) : (
-                <div className={st.noLesson} onClick={() => handleAddLesson(time)}>
+                <div className={st.noLesson} onClick={() => isCombination ?  handleAddLesson(time) : undefined}>
                     <div className={st.textLesson}>
                         <p>Add a lesson</p>
                         <p>at this time</p>
                     </div>
                     <img src={AddIcon} alt="+" />
                 </div>
+            )}
+            {(isOpenAdd || isOpenDelete) && (
+                <Modal 
+                    toggle={isOpenAdd ? setIsOpenAdd : setIsOpenDelete}
+                    textHeader = {isOpenAdd ? 'Add a day to schedule' : 'Change a day to schedule'}
+                    onClose = {isOpenAdd ? defaultClose :  deleteLesson}
+                    textClose = {isOpenAdd ? 'Close' : 'Delete'}
+                    onConfirm = {isOpenAdd ?  addLesson : updateLesson}
+                    textConfirm = {isOpenAdd ? 'Add' : 'Update'}
+                >
+                    {isOpenAdd ? (
+                        <>
+                            <Select placeholder={'Subject'}/>
+                            <Input placeholder={'Classroom'}/> 
+                        </>
+                    ) : (
+                        <></>
+                    )}
+                </Modal>
             )}
         </div> 
     )

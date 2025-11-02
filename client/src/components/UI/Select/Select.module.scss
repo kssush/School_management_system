@@ -1,0 +1,83 @@
+@import '../../../styles/mixins.scss';
+
+.select{
+    @include between;
+    width: 100%;
+    height: 2.875rem;
+    position: relative;
+    border-bottom: 0.0625rem solid var(--black40);
+    padding: 0 1.25rem;
+    gap: 0.625rem;
+    cursor: pointer;
+
+    >p{
+        @include text16-regular;
+        color: var(--text80);
+    }
+
+    &.active{
+        >img{
+            transform: rotate(0deg);
+        }
+
+        .selectItems{
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    >img{
+        transition: all 0.5s;
+        transform: rotate(180deg);
+        height: 1rem;
+        width: 1rem;
+    }
+
+    .selectItems{
+        @include shadow;
+        @include left;
+        flex-direction: column;
+        position: absolute;
+        top: 3.5rem;
+        left: 0;
+        width: 100%;
+        background-color: var(--first);
+        max-height: 8.75rem;
+        border-top: 0.9375rem solid var(--first);
+        border-right: 0.625rem solid var(--first);
+        border-bottom: 0.9375rem solid var(--first);
+        border-left: 0.625rem solid var(--first);
+        visibility: hidden;
+        opacity: 0;
+        transition: all 1s;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-radius: 1.25rem;
+        z-index: 100;
+
+        &::-webkit-scrollbar{
+            width: 3px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--black20);
+            border-radius: 1rem;
+        }
+
+        >p{
+            @include text16-regular;
+            color: var(--text80);
+            width: 100%;
+            text-align: center;
+            padding: 0.575rem 0;
+
+            &:first-child{
+                padding-top: 0;
+            }
+
+            &:last-child{
+                padding-bottom: 0;
+            }
+        }
+    }
+}

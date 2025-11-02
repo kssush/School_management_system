@@ -37,7 +37,7 @@ const SelectName = ({ name, data, callback }) => {
                         {data ? (
                             data.map((el, index) => <p key={index} onClick={() => handleClick(el)}>{el.name}</p>)
                         ) : (
-                            <>Нету элементов</>
+                            <p>There are no elements</p>
                         )}
                     </motion.div>
                 )}
