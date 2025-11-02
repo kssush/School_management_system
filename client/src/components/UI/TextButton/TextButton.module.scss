@@ -1,0 +1,10 @@
+@import '../../../styles/mixins.scss';
+
+.container{
+    @include left;
+    gap: 0.9375rem;
+
+    >p{
+        @include text18-regular;
+    }
+}

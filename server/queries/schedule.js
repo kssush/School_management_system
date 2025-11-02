@@ -31,5 +31,11 @@ module.exports = {
             TO_CHAR(t.time_end, 'HH24:MI') as time_end
         FROM schedule_data sd
         INNER JOIN times t ON sd.id_time = t.id
+        WHERE 
+            ($1 = 1 AND sd.id_time BETWEEN 1 AND 6)
+            OR ($1 = 2 AND sd.id_time BETWEEN 7 AND 12)
+        ORDER BY 
+            sd.weekday, 
+            sd.id_time
     `
 }

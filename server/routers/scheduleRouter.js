@@ -10,5 +10,6 @@ router.patch('/updateTime/:id', scheduleController.updateTime)
 router.get('/getLesson/:id', scheduleController.getLesson)
 router.get('/getLessonTeacher/:id', scheduleController.getLessonTeacher)
 router.get('/getSchedule', scheduleController.getSchedule)
+router.get('/getShift/:id', scheduleController.getShift)
 
-module.exports = router 
+module.exports = router;

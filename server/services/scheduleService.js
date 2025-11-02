@@ -93,10 +93,11 @@ class ScheduleService {
         return lessons;
     }
 
-    async getSchedule(){
+    async getSchedule(shift){
         const schedule = await sequelize.query(
             queries.schedule.getSchedule,
             {
+                bind: [shift],
                 type: sequelize.QueryTypes.SELECT,
                 nest: true
             }
@@ -105,6 +106,15 @@ class ScheduleService {
         return schedule
     }
 
+    async getShift(id_combination){
+        const schedule = await Schedule.findOne({where: {id_combination}});
+
+        if(!schedule) return 0;
+
+        const time = await ScheduleData.findOne({where: {id: schedule.id_sd}})
+
+        return time.id_time < 7 ? 1 : 2
+    }
 
     // help
     async checkLesson(id){

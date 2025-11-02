@@ -72,6 +72,12 @@
     justify-content: center;
 }
 
+@mixin between{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 @mixin left{
     display: flex;
     align-items: center;
@@ -80,4 +86,12 @@
 
 @mixin shadow{
     box-shadow: 0 0 20px -5px var(--black20, #00000045);
+}
+
+@mixin shadow0{
+    box-shadow: 0 0 20px 0 var(--black20, #00000045);
+}
+
+@mixin shadow4{
+    box-shadow: 0 0 4px 0 var(--black20, #00000045);
 }

@@ -7,16 +7,19 @@ import './styles/_global.scss'
 import { HeaderProvider } from "./context/headerContext";
 import { BrowserRouter } from "react-router-dom";
 import { MainProvider } from "./context/mainContext";
+import store from "./store";
+import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
+
         <BrowserRouter>
             <HeaderProvider>
                 <MainProvider>
-                    <App />
+                    <Provider store={store}>
+                        <App />
+                    </Provider>
                 </MainProvider>
             </HeaderProvider>
         </BrowserRouter>
-    </React.StrictMode>
 );

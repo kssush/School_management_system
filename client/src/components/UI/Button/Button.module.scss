@@ -1,0 +1,30 @@
+@import '../../../styles/mixins.scss';
+
+.button{
+    @include center;
+    @include shadow;
+    @include text16-regular;
+    max-height: 2.1875rem;
+    max-width: 2.1875rem;
+    min-height: 2.1875rem;
+    min-width: 2.1875rem;
+    border-radius: 0.625rem;
+    background-color: var(--first);
+    border: 0.0625rem solid var(--first);
+    transition: all 0.5s;
+
+    &:hover{
+        background-color: var(--purple40);
+        border: 0.0625rem solid var(--purple40);
+    }
+
+    &.active{
+        border: 0.0625rem solid var(--purple);
+        background-color: var(--purple40);
+    }
+
+    >img{
+        height: 1.0625rem;
+        width: 1.0625rem;
+    }
+}

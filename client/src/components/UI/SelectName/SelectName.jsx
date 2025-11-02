@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import st from "./SearchName.module.scss";
+import st from "./SelectName.module.scss";
 import SelectIcon from "../../../assets/icons/select.svg";
 import { useClickOutside } from "../../../hooks/useClcikOutside";
 
@@ -9,21 +9,15 @@ const animation = {
     end: { opacity: 1 },
 };
 
-const data = [1,2,3,4,5,6,7,8]
-
-const SearchName = ({ name, callback }) => {
+const SelectName = ({ name, data, callback }) => {
     const [value, setValue] = useState("...");
     const [isOpen, setIsOpen] = useState(false);
 
     const selectRef = useClickOutside(() => setIsOpen(false));
 
-    const handle = (event) => {
-        if (event.target.tagName == "P") {
-            const targetValue = event.target.textContent;
-
-            setValue(targetValue);
-            callback(targetValue);
-        }
+    const handleClick = (element) => {
+        setValue(element.name);
+        callback(element);
     };
 
     return (
@@ -39,10 +33,9 @@ const SearchName = ({ name, callback }) => {
                         exit={animation.start}
                         transition={{ duration: 0.5 }}
                         className={st.selectItems}
-                        onClick={handle}
                     >
                         {data ? (
-                            data.map((el, index) => <p key={index}>{el}</p>)
+                            data.map((el, index) => <p key={index} onClick={() => handleClick(el)}>{el.name}</p>)
                         ) : (
                             <>Нету элементов</>
                         )}
@@ -53,4 +46,4 @@ const SearchName = ({ name, callback }) => {
     );
 };
 
-export default SearchName;
+export default SelectName;

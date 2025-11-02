@@ -51,8 +51,18 @@ class ScheduleController extends Controller{
     }
 
     async getSchedule(req, res, next){
-        const scheduleData = await schedule.getSchedule();
+        const {shift} = req.query;
 
+        const scheduleData = await schedule.getSchedule(shift);
+
+        return res.json(scheduleData);
+    }
+
+    async getShift(req, res, next){
+        const {id} = req.params;
+
+        const scheduleData = await schedule.getShift(id);
+        
         return res.json(scheduleData);
     }
 }
