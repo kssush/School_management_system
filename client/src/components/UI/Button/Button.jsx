@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import st from "./Button.module.scss";
 
-const Button = ({data, active = false, callback}) => {
-    
+const Button = ({data, active = false, callback}) => {  
     const isImage = isImageData(data);
 
     return (
@@ -19,5 +18,5 @@ const Button = ({data, active = false, callback}) => {
 export default Button;
 
 const isImageData = (data) => {
-    return data.toString().includes('.svg' || '.png' || '.jpg');
+    return data?.toString().includes('.svg' || '.png' || '.jpg');
 }

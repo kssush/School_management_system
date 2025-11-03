@@ -1,12 +1,13 @@
 import React from "react";
 import {Routes, Route} from "react-router-dom"
 import Schedule from "../../pages/Schedule/Schedule";
+import TeacherSchedule from "../../pages/TeacherSchedule/TeacherSchedule";
 
 const AppRouter = () => {
     return(
         <Routes>
             <Route path="/" element={<Schedule />}></Route>
-            <Route path="/asd" element={<Schedule />}></Route>
+            <Route path="/teacherSchedule/:id_teacher" element={<TeacherSchedule />}></Route>
             <Route path="*" element={<Schedule />}></Route>
         </Routes>
     )

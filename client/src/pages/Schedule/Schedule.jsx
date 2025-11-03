@@ -6,61 +6,29 @@ import Button from "../../components/UI/Button/Button";
 import CloudIcon from '../../assets/icons/cloud.svg'
 import ClockIcon from '../../assets/icons/clock.svg'
 import TextButton from "../../components/UI/TextButton/TextButton";
-import TableSchedule from "../../components/TableSchedule/TableSchedule";
 import { useGetCombinationQuery } from "../../store/api/classApi";
-import { useAddLessonMutation, useDeleteLessonMutation, useGetLessonQuery, useGetShiftQuery } from "../../store/api/scheduleApi";
+import { useAddLessonMutation, useDeleteLessonMutation, useGetLessonQuery, useGetShiftQuery, useGetSubjectQuery } from "../../store/api/scheduleApi";
 import { useSchedule } from "../../context/scheduleContext";
+import TableSchedule from "../../components/TableSchedule/TableSchedule";
 
 const Schedule = () => {
-    const [classes, setCalsses] = useState(null);
-    const [shift, setShift] = useState({check: false, value: 1});
-    const [buttons, setButtons] = useState({});
+    const [shift, setShift] = useState(1);
+    const [time, setTime] = useState(false);
+
 
     const {setHeader, setDescription} = useMain();
-    const {setAddFunc, setDeleteFunc, setIsCombination} = useSchedule();
- 
-    const { data } = useGetCombinationQuery();
-    const { data: shiftData } = useGetShiftQuery(classes?.id, {
-        skip: !classes
+    const {isShift, setIsShift, combination, setCombination} = useSchedule();
+
+    const {data: combinations} = useGetCombinationQuery();
+    const { data: shiftData } = useGetShiftQuery(combination, {  
+        skip: !combination,
+        refetchOnMountOrArgChange: true
     });
-    const { data: lessonData, refetch: refetchLessons } = useGetLessonQuery(classes?.id, {
-        skip: !classes?.id
+    const { data: lessonData } = useGetLessonQuery(combination, {
+        skip: !combination,
+        refetchOnMountOrArgChange: true
     });
 
-    const [addLessonMutation] = useAddLessonMutation();
-    const [deleteLessonMutation] = useDeleteLessonMutation();
-
-    const scheduleActions = useMemo(() => ({
-        addLesson: async (lessonData) => {
-            try {
-                if (!lessonData || !lessonData.id_sd) {
-                    throw new Error('Invalid lesson data');
-                }
-                
-                const result = await addLessonMutation(lessonData).unwrap();
-                console.log('Lesson added successfully:', result);
-                return result;
-            } catch (error) {
-                console.error('Failed to add lesson:', error);
-                throw error;
-            }
-        },
-        
-        deleteLesson: async (lessonId) => {
-            try {
-                if (!lessonId || typeof lessonId !== 'number') {
-                    throw new Error('Invalid lesson ID');
-                }
-                
-                const result = await deleteLessonMutation(lessonId).unwrap();
-                console.log('Lesson deleted successfully:', result);
-                return result;
-            } catch (error) {
-                console.error('Failed to delete lesson:', error);
-                throw error;
-            }
-        }
-    }), [addLessonMutation, deleteLessonMutation]);
 
     useEffect(() =>{
         setHeader('Weekly schedule');
@@ -68,68 +36,36 @@ const Schedule = () => {
     }, [])
 
     useEffect(() => {
-        setAddFunc(() => scheduleActions.addLesson);
-        setDeleteFunc(() => scheduleActions.deleteLesson);
-    }, [scheduleActions, setAddFunc, setDeleteFunc]);
-
+        if(typeof shiftData != undefined) setIsShift(shiftData != 0 ? true : false);
+    }, [shiftData]) 
+ 
     useEffect(() => {
-        if(lessonData && lessonData.length > 0){
-            setShift(prev => ({
-                check: true,
-                value: prev.value
-            }))
-        }else{
-            setShift(prev => ({
-                check: false,
-                value: prev.value
-            }))
-        }
+        console.log(lessonData)
+        if(lessonData?.length > 0) setIsShift(true);
+        else setIsShift(false)
     }, [lessonData])
 
-    useEffect(() => {
-        if(classes) { /////////////////////////
-            setShift({check: false, value: 1});
-            setIsCombination(true);
-        }
-    }, [classes])
-
-    useEffect(() => {
-        if(shiftData && shiftData != 0){
-            setShift({
-                check: true,
-                value: shiftData
-            })
-        }
-        console.log(shiftData)
-    }, [shiftData])
-
-    const handleButtonClick = (type, isActive = false) => {
-        setButtons(prev => ({
-            ...prev,
-            [type]: !prev[type]
-        }));
+    const handleReport = () => {
+        console.log('report')
     }
 
-    const switchShift = () => {
-        setShift(prev => ({
-            check: prev.check,
-            value: prev.value == 1 ? 2 : 1
-        }))
-    }
+    const switchShift = () => setShift(prev => prev == 1 ? 2 : 1)
+
+    const setCombinationClass = (el) => setCombination(el.id)
 
     return(
         <>
             <div className={st.setting}>
-                <SelectName name={'Class'} data={data} callback={setCalsses} />
+                <SelectName name={'Class'} data={combinations} callback={setCombinationClass} />
                 <TextButton name={'Shift'}>
-                    <Button data={shift.value} callback={!shift.check ? switchShift : undefined} />
+                    <Button data={shift} callback={!isShift ? switchShift : undefined} />
                 </TextButton>
-                <Button data={ClockIcon} active={buttons.time} callback={()=> handleButtonClick('time')} />
-                <Button data={CloudIcon} onClick={()=> handleButtonClick('cloud')} />
+                <Button data={ClockIcon} active={time} callback={() => setTime(!time)} />
+                <Button data={CloudIcon} callback={handleReport} />
             </div>
-            <TableSchedule shift={shift.value} lessonData={lessonData}/>
+            <TableSchedule shift={shift} lessonData={lessonData}/>
         </>
-    )   
+    )  
 };
 
 export default Schedule;

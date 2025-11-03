@@ -1,0 +1,12 @@
+@import '../../styles/mixins.scss';
+
+.setting{
+    display: flex;
+    width: 100%;
+    margin-top: 1.5625rem;
+    margin-bottom: 3.75rem;
+
+    >:last-child{
+        margin-left: auto;
+    }
+}

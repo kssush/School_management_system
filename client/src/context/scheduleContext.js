@@ -3,19 +3,16 @@ import { createContext, useContext, useState } from "react";
 
 const ScheduleContext = createContext();
 
-export const ScheduleProvider = ({children}) => {
-    const [addFunc, setAddFunc] = useState(null);
-    const [deleteFunc, setDeleteFunc] = useState(null);
-    const [isCombination, setIsCombination] = useState(false);
-    
-    const value = {
-        addFunc,
-        deleteFunc,
-        isCombination,
+export const ScheduleProvider = ({children}) => {   
+    const [isShift, setIsShift] = useState(false);
+    const [combination, setCombination] = useState(null);
 
-        setAddFunc,
-        setDeleteFunc,
-        setIsCombination
+    const value = {
+        isShift,
+        combination,
+
+        setIsShift,
+        setCombination
     }
 
     return(
@@ -29,7 +26,7 @@ export const useSchedule = () => {
     const context = useContext(ScheduleContext);
 
     if(!context){
-        throw new Error('ошибка')
+        throw new Error('ошибка'); ///////////
     }
     return context;
 }

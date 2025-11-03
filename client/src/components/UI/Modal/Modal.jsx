@@ -11,21 +11,33 @@ const animation = {
     end: { opacity: 1 },
 };
 
-const Modal = ({children, toggle, onClose, onConfirm, textHeader, textClose, textConfirm}) => {
-    const [isOpen, setIsOpen] = useState(true);
-
-    const handleClose = () => {
-        toggle(false);
-        setIsOpen(false);
-    }
-
+const Modal = ({children, active, callback, onClose, onConfirm, textHeader, textClose, textConfirm}) => {
+    const [isOpen, setIsOpen] = useState(active);
     const modalRef = useClickOutside(() => handleClose())
+
     
     useEffect(() => {
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = isOpen ? 'hidden' : 'unset'
 
-        return() => document.body.style.overflow = 'unset';
-    }, [])
+        return () => document.body.style.overflow = 'unset';
+    }, [isOpen]);
+
+
+
+    const handleClose = () => {
+        setIsOpen(false);
+        callback(false);
+    }
+
+    const handleConfirm = () => {
+        onConfirm?.(); 
+        callback(false);
+    }
+
+    const handleDelete = () => {
+        onClose?.(); 
+        callback(false);
+    }
 
     if(!isOpen) return null;
 
@@ -45,12 +57,12 @@ const Modal = ({children, toggle, onClose, onConfirm, textHeader, textClose, tex
                 className={st.modal} 
                 ref={modalRef}
             >   
-                <img className={st.close} src={CloseIcon} alt="x" onClick={handleClose}/>
+                <img className={st.close} src={CloseIcon} alt="x" onClick={() => handleClose(false)}/>
                 <p className={st.header}>{textHeader}</p>
                 {children}
                 <div className={st.buttons}>
-                    <ButtonCustom text={textConfirm} click={onConfirm} status={'confirm'} />
-                    <ButtonCustom text={textClose} click={onClose} status={'close'} />
+                    <ButtonCustom text={textConfirm} click={handleConfirm} status={'confirm'} />
+                    <ButtonCustom text={textClose} click={handleDelete} status={'close'} />
                 </div>
             </div>
         </div>,

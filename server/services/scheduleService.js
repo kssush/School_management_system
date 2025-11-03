@@ -1,4 +1,4 @@
-const { Schedule, ScheduleData, Time } = require("../models/models");
+const { Schedule, ScheduleData, Time, Project } = require("../models/models");
 const ApiError = require("../error/ApiError");
 const queries = require("../queries");
 const sequelize = require("../db");
@@ -114,6 +114,12 @@ class ScheduleService {
         const time = await ScheduleData.findOne({where: {id: schedule.id_sd}})
 
         return time.id_time < 7 ? 1 : 2
+    }
+
+    async getSubject(){
+        const subjects = await Project.findAll();
+
+        return subjects;
     }
 
     // help

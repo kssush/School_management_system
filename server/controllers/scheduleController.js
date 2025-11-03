@@ -65,6 +65,12 @@ class ScheduleController extends Controller{
         
         return res.json(scheduleData);
     }
+
+    async getSubject(req, res, next){
+        const subjects = await schedule.getSubject();
+        
+        return res.json(subjects);
+    }
 }
 
 module.exports = new ScheduleController();
