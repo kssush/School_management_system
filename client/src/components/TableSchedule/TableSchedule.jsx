@@ -1,4 +1,4 @@
-    import React, { useMemo, useState } from "react";
+    import React, { useEffect, useMemo, useState } from "react";
 import st from "./TableSchedule.module.scss";
 import AddIcon from '../../assets/icons/add.svg';
 import {week, colorLesson, iconLesson} from './constants.js'
@@ -7,6 +7,7 @@ import Select from "../UI/Select/Select.jsx";
 import Input from "../UI/Input/Input.jsx";
 import { useSchedule } from "../../context/scheduleContext.js";
 import Modal from "../UI/Modal/Modal.jsx";
+import useErrorHandler from "../../hooks/useErrorHandler.js";
 
 const TableSchedule = ({shift, lessonData}) => {
     const { data: times } = useGetScheduleQuery(shift, {
@@ -125,7 +126,9 @@ const LessonItem = ({time, lesson, index}) => {
 
 const ModalSchedule = ({active, callback, time, id_lesson}) => {
     const [input, setInput] = useState({});
-    
+
+    const { errors, handlerError, clearError, clearAllErrors } = useErrorHandler();
+
     const {combination} = useSchedule();
 
     const {data: subjects} = useGetSubjectQuery();
@@ -133,11 +136,27 @@ const ModalSchedule = ({active, callback, time, id_lesson}) => {
     const [updateLesson] = useUpdateLessonMutation();
     const [deleteLesson] = useDeleteLessonMutation();
 
+    useEffect(() => {
+        if(active){
+            setInput({})
+            clearAllErrors();
+        }
+    }, [active])
+
     const handleInput = (name, value) => {
         setInput(prev => ({
             ...prev,
             [name]: value
         }))
+
+        clearError(name);
+
+        if(name == 'classroom' && value && !checkClassroom(value)){
+            handlerError(
+                new Error('The cabinet must contain a number and less than 6 characters!'), 
+                'classroom'
+            );
+        }
     }
 
     const handleConfirm = async () => {
@@ -154,36 +173,52 @@ const ModalSchedule = ({active, callback, time, id_lesson}) => {
                     throw new Error('The cabinet must contain a number and less than 6 characters!')
 
             await addLesson(lessonData).unwrap(); // .unwrap() позволяет обработать результат или ошибк
-        } catch (error) {
-            console.error('Failed to add lesson: ', error);
-            alert('To add a lesson to your schedule, you must specify a subject!')
+            callback(false);
+        } catch (error) { ////
+            if (error.status === 400) {
+                handlerError(new Error('Invalid data sent to server'));
+            } else if (error.status === 401) {
+                handlerError(new Error('Please login again'));
+            } else {
+                handlerError(error); 
+            }
         }
     }
 
     const handleUpdate = async () => {
         try{
+            if (!input.subject?.id && !input.classroom) {
+                handlerError(new Error('At least one field must be filled in to make the change!'));
+                return;
+            }
+
+            if (input.classroom && !checkClassroom(input.classroom)) {
+                handlerError(
+                    new Error('The cabinet must contain a number and less than 6 characters!'), 
+                    'classroom'
+                );
+                return;
+            }
+
             const lessonData = {
                 id: id_lesson,
                 id_project: input.subject?.id,
                 classroom: input.classroom
             }
 
-            if(lessonData.classroom)
-                if(!checkClassroom(lessonData.classroom))
-                    throw new Error('The cabinet must contain a number and less than 6 characters!')
-
             await updateLesson(lessonData).unwrap();
+            callback(false);
         }catch(error){
-            console.error('Failed to update lesson: ', error);
-            alert('At least one field must be filled in to make the change!')
+            handlerError(error);
         }
     }
 
     const handleDelete = async() => {
         try{
             await deleteLesson(id_lesson).unwrap();
+            callback(false);
         }catch(error){
-            console.error('Failed to delete lesson: ', error);
+            handlerError(error);
         }
     }
 
@@ -198,11 +233,10 @@ const ModalSchedule = ({active, callback, time, id_lesson}) => {
             textClose={!id_lesson ? 'Close' : 'Delete'}
         >
             <Select placeholder={'Subject'} data={subjects} callback={handleInput}/>
-            <Input placeholder={'Classroom'} callback={handleInput}/> 
+            <Input placeholder={'Classroom'} callback={handleInput} error={errors.classroom}/> 
         </Modal>
     )
 }
-
 
 const checkClassroom = (classroom) => {
     const classroomRegex = /^\d[\d\-А-Яа-яA-Za-z]{0,4}$/;
