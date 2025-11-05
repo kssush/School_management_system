@@ -31,7 +31,7 @@ class ScheduleService {
         const tempData = {};
         
         if(classroom){
-            const isOccupy = await this.checkClassroom(classroom);
+            const isOccupy = await this.checkClassroom(classroom, existingLesson.id_sd);
             if(isOccupy){
                 throw ApiError.conflict('Classroom is already occupied!');
             }
@@ -44,7 +44,7 @@ class ScheduleService {
             tempData.id_teacher = null; // смена предмета = необходим другой учитель
         }
         
-        if (typeof id_teacher != undefined) {
+        if (id_teacher !== undefined) {
             tempData.id_teacher = id_teacher;
         }
 
@@ -127,11 +127,11 @@ class ScheduleService {
     async checkLesson(id){
         const existing = await Schedule.findOne({where: {id}})
 
-        return existing ? true : false;
+        return existing;
     }
 
-    async checkClassroom(classroom){
-        const occupy = await Schedule.findOne({where: {classroom}})
+    async checkClassroom(classroom, id_sd){
+        const occupy = await Schedule.findOne({where: {classroom, id_sd}})
 
         return occupy ? true : false;
     }

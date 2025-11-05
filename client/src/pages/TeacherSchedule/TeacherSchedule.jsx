@@ -34,7 +34,7 @@ const TeacherSchedule = () => {
                 </TextButton>
                 <Button data={ClockIcon} active={time} callback={() => setTime(!time)} />
             </div>
-            <TableSchedule shift={shift} lessonData={lessonData}/>
+            <TableSchedule shift={shift} lessonData={lessonData} time={time}/>
         </>
     )
 };

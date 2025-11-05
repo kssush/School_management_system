@@ -66,6 +66,10 @@
     @include text(12, 400);    
 }
 
+@mixin text10-medium{
+    @include text(10, 500);    
+}
+
 
 
 // ===== styles =====

@@ -39,4 +39,29 @@
             border-right: 0;
         }
     }
+
+    .timeline{
+        @include left;
+        position: absolute;
+        top: 2.5rem;
+        width: 100%;
+        z-index: 1000;
+        transition: all 0.5s;
+
+        .box{
+            @include center;
+            @include text10-medium;
+            width: 3.125rem;
+            height: 1.25rem;
+            border-radius: 0.3125rem 0.625rem 0.625rem 0.3125rem;
+            background-color: var(--blue);
+            color: var(--text80);
+        }
+
+        .line{
+            width: 100%;
+            height: 0.0625rem;
+            background-color: var(--blue);
+        }
+    }
 }

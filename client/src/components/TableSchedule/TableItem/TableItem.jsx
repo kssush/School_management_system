@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import st from "./TableItem.module.scss";
 import LessonItem from "../LessonItem/LessonItem";
 
-const TableItem = ({day, times, lessons, isTeacherSchedule = false}) => {
+const TableItem = memo(({day, times, lessons, isTeacherSchedule = false}) => {
     const lessonsMap = useMemo(() => {
         const map = new Map();
 
@@ -20,6 +20,6 @@ const TableItem = ({day, times, lessons, isTeacherSchedule = false}) => {
             )}
         </div>
     )
-}
+})
 
 export default TableItem;

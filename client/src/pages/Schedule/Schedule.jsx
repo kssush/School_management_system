@@ -14,7 +14,7 @@ import TableSchedule from "../../components/TableSchedule/TableSchedule";
 const Schedule = () => {
     const [shift, setShift] = useState(1);
     const [time, setTime] = useState(false);
-
+    console.log(shift)
     const {setHeader, setDescription} = useMain();
     const {isShift, setIsShift, combination, setCombination} = useSchedule();
 
@@ -34,8 +34,9 @@ const Schedule = () => {
     }, [])
 
     useEffect(() => {
-        if(typeof shiftData != undefined) {
+        if(shiftData != undefined) {
             setIsShift(shiftData != 0 ? true : false)
+            console.log(shiftData)
             shiftData != 0 && setShift(shiftData)
         }
     }, [shiftData]) 
@@ -64,7 +65,7 @@ const Schedule = () => {
                 <Button data={ClockIcon} active={time} callback={() => setTime(!time)} />
                 <Button data={CloudIcon} callback={handleReport} />
             </div>
-            <TableSchedule shift={shift} lessonData={lessonData}/>
+            <TableSchedule shift={shift} lessonData={lessonData} time={time}/>
         </>
     )  
 };
