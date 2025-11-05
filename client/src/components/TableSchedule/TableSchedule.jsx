@@ -1,15 +1,12 @@
-    import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import st from "./TableSchedule.module.scss";
-import AddIcon from '../../assets/icons/add.svg';
-import {week, colorLesson, iconLesson} from './constants.js'
-import { useAddLessonMutation, useDeleteLessonMutation, useGetScheduleQuery, useGetSubjectQuery, useUpdateLessonMutation } from "../../store/api/scheduleApi";
-import Select from "../UI/Select/Select.jsx";
-import Input from "../UI/Input/Input.jsx";
-import { useSchedule } from "../../context/scheduleContext.js";
-import Modal from "../UI/Modal/Modal.jsx";
-import useErrorHandler from "../../hooks/useErrorHandler.js";
+import {week} from './constants.js'
+import { useGetScheduleQuery } from "../../store/api/scheduleApi";
+import TableItem from "./TableItem/TableItem.jsx";
 
 const TableSchedule = ({shift, lessonData}) => {
+    const isTeacherSchedule = window.location.href.includes('teacherSchedule'); 
+
     const { data: times } = useGetScheduleQuery(shift, {
         skip: !shift
     });
@@ -55,7 +52,7 @@ const TableSchedule = ({shift, lessonData}) => {
             </div>
             <div className={st.days}>
                 {week.map((weekday, index) => (                   
-                    <TableItem key={index} day={weekday} times={scheduleData[weekday]} lessons={lessons[weekday]}/>               
+                    <TableItem key={index} day={weekday} times={scheduleData[weekday]} lessons={lessons[weekday]} isTeacherSchedule={isTeacherSchedule}/>               
                 ))}
             </div>
         </div>
@@ -63,196 +60,3 @@ const TableSchedule = ({shift, lessonData}) => {
 };
 
 export default TableSchedule;
-
-
-const TableItem = ({day, times, lessons}) => {
-    const lessonsMap = useMemo(() => {
-        const map = new Map();
-
-        lessons?.forEach(lesson => map.set(lesson.id_sd, lesson));
-
-        return map;
-    }, [lessons]);
-
-    return (
-        <div className={st.day}>
-            <div className={st.header}>
-                {day}
-            </div>
-            {times?.map((time, index) => <LessonItem key={time.id} time={time} lesson={lessonsMap.get(time.id)} index={index}/> 
-            )}
-        </div>
-    )
-}
-
-
-const LessonItem = ({time, lesson, index}) => {
-    const [isOpenAdd, setIsOpenAdd] = useState(false);
-    const [isOpenUpdate, setIsOpenUpdate] = useState(false);
-
-    const {combination} = useSchedule()
-    
-    return (
-        <>
-            <div className={st.lesson} onClick={lesson ? () => setIsOpenUpdate(true) : (combination ? () => setIsOpenAdd(true) : undefined)}>
-                {lesson ? (
-                    <div className={st.leesonItem} style={{backgroundColor: colorLesson[index]}} >
-                        <div className={st.icon}>
-                            <img src={iconLesson[lesson.project]} alt="sub" />
-                        </div>
-                        <div className={st.text}>
-                            <p>{lesson.project}</p>
-                            <p>{time.time_start} - {time.time_end}</p>
-                        </div>
-                        <div className={st.classroom}>
-                            #{lesson?.classroom ? lesson.classroom : ' - '}
-                        </div>
-                    </div>
-                ) : (
-                    <div className={st.noLesson}>
-                        <div className={st.textLesson}>
-                            <p>Add a lesson</p>
-                            <p>at this time</p>
-                        </div>
-                        <img src={AddIcon} alt="+" />
-                    </div>
-                )}
-            </div>
-            {isOpenAdd && <ModalSchedule active={isOpenAdd} callback={setIsOpenAdd} time={time} />}
-            {isOpenUpdate && <ModalSchedule active={isOpenUpdate} callback={setIsOpenUpdate} time={time} id_lesson={lesson?.id}/>}
-        </>
-    )
-}
-
-const ModalSchedule = ({active, callback, time, id_lesson}) => {
-    const [input, setInput] = useState({});
-
-    const { errors, handlerError, clearError, clearAllErrors } = useErrorHandler();
-
-    const {combination} = useSchedule();
-
-    const {data: subjects} = useGetSubjectQuery();
-    const [addLesson] = useAddLessonMutation(); ////
-    const [updateLesson] = useUpdateLessonMutation();
-    const [deleteLesson] = useDeleteLessonMutation();
-
-    useEffect(() => {
-        if(active){
-            setInput({})
-            clearAllErrors();
-        }
-    }, [active])
-
-    const handleInput = (name, value) => {
-        setInput(prev => ({
-            ...prev,
-            [name]: value
-        }))
-
-        clearError(name);
-
-        if(name == 'classroom' && value && !checkClassroom(value)){
-            handlerError(
-                new Error('The cabinet must contain a number and less than 6 characters!'), 
-                'classroom'
-            );
-        }
-    }
-
-    const handleConfirm = async () => {
-        try {
-            const lessonData = {
-                classroom: input.classroom,
-                id_project: input.subject?.id,
-                id_combination: combination,
-                id_sd: time.id,
-            };
-
-            if(lessonData.classroom)
-                if(!checkClassroom(lessonData.classroom))
-                    throw new Error('The cabinet must contain a number and less than 6 characters!')
-
-            await addLesson(lessonData).unwrap(); // .unwrap() позволяет обработать результат или ошибк
-            callback(false);
-        } catch (error) { ////
-            if (error.status === 400) {
-                handlerError(new Error('Invalid data sent to server'));
-            } else if (error.status === 401) {
-                handlerError(new Error('Please login again'));
-            } else {
-                handlerError(error); 
-            }
-        }
-    }
-
-    const handleUpdate = async () => {
-        try{
-            if (!input.subject?.id && !input.classroom) {
-                handlerError(new Error('At least one field must be filled in to make the change!'));
-                return;
-            }
-
-            if (input.classroom && !checkClassroom(input.classroom)) {
-                handlerError(
-                    new Error('The cabinet must contain a number and less than 6 characters!'), 
-                    'classroom'
-                );
-                return;
-            }
-
-            const lessonData = {
-                id: id_lesson,
-                id_project: input.subject?.id,
-                classroom: input.classroom
-            }
-
-            await updateLesson(lessonData).unwrap();
-            callback(false);
-        }catch(error){
-            handlerError(error);
-        }
-    }
-
-    const handleDelete = async() => {
-        try{
-            await deleteLesson(id_lesson).unwrap();
-            callback(false);
-        }catch(error){
-            handlerError(error);
-        }
-    }
-
-    return(
-        <Modal
-            active={active}
-            callback={callback}
-            onClose={!id_lesson ? undefined : handleDelete}
-            onConfirm={!id_lesson ? handleConfirm : handleUpdate}
-            textHeader={!id_lesson ? 'Add a day to schedule' : 'Change a day to schedule'}
-            textConfirm={!id_lesson ? 'Add' : 'Update'}
-            textClose={!id_lesson ? 'Close' : 'Delete'}
-        >
-            <Select placeholder={'Subject'} data={subjects} callback={handleInput}/>
-            <Input placeholder={'Classroom'} callback={handleInput} error={errors.classroom}/> 
-        </Modal>
-    )
-}
-
-const checkClassroom = (classroom) => {
-    const classroomRegex = /^\d[\d\-А-Яа-яA-Za-z]{0,4}$/;
-    return classroomRegex.test(classroom) && classroom.length <= 5;
-}
-
-// для страницу учитель шедуле, а сверзу ля просто шедуле
-
-//id_lesson list of select modal
-//teacher = id query
-const addLessonScheduleTeacher = ({id_combination}) => { //но апдейт
-
-}
-
-
-//id_lesson query = lesson.id
-// id_teacher = null
-const deleteLessonScheduleTeacher = ({id }) => {
-}

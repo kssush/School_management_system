@@ -11,7 +11,7 @@ const animation = {
     end: { opacity: 1 },
 };
 
-const Modal = ({children, active, callback, onClose, onConfirm, textHeader, textClose, textConfirm}) => {
+const Modal = ({children, callback, active, onClose, onConfirm, textHeader, textClose, textConfirm}) => {
     const [isOpen, setIsOpen] = useState(active);
     const modalRef = useClickOutside(() => handleClose())
 
@@ -26,6 +26,7 @@ const Modal = ({children, active, callback, onClose, onConfirm, textHeader, text
 
     const handleClose = () => {
         setIsOpen(false);
+        callback(false);
     }
 
     const handleConfirm = () => {

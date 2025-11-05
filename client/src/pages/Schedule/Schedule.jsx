@@ -15,7 +15,6 @@ const Schedule = () => {
     const [shift, setShift] = useState(1);
     const [time, setTime] = useState(false);
 
-
     const {setHeader, setDescription} = useMain();
     const {isShift, setIsShift, combination, setCombination} = useSchedule();
 
@@ -29,14 +28,16 @@ const Schedule = () => {
         refetchOnMountOrArgChange: true
     });
 
-
     useEffect(() =>{
         setHeader('Weekly schedule');
         setDescription('All lessons in one place');
     }, [])
 
     useEffect(() => {
-        if(typeof shiftData != undefined) setIsShift(shiftData != 0 ? true : false);
+        if(typeof shiftData != undefined) {
+            setIsShift(shiftData != 0 ? true : false)
+            shiftData != 0 && setShift(shiftData)
+        }
     }, [shiftData]) 
  
     useEffect(() => {
@@ -56,7 +57,7 @@ const Schedule = () => {
     return(
         <>
             <div className={st.setting}>
-                <SelectName name={'Class'} data={combinations} callback={setCombinationClass} />
+                <SelectName name={'Class'} data={combinations} callback={setCombinationClass} defaultValue={combinations?.find(cb => cb.id == combination)?.name}/>
                 <TextButton name={'Shift'}>
                     <Button data={shift} callback={!isShift ? switchShift : undefined} />
                 </TextButton>

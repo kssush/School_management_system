@@ -25,8 +25,6 @@ const TeacherSchedule = () => {
         setDescription('All t.\'s schedule in one place');
     }, [])
 
-    console.log('id', id_teacher, 'dt', lessonData)
-
     return (
         <>
             <div className={st.setting}>

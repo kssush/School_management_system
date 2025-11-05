@@ -15,7 +15,7 @@ export const scheduleApi = baseApi.injectEndpoints({
                 url: `schedule/deleteLesson/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Lesson"] //invalidatesTags: (result, error, id) => [{ type: "Lesson", id }]
+            invalidatesTags: ["Lesson"] 
         }),
         updateLesson: builder.mutation({
             query: ({id, ...lessonData}) => ({
@@ -23,7 +23,7 @@ export const scheduleApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: lessonData,
             }),
-            invalidatesTags: ["Lesson"]
+            invalidatesTags: ["Lesson"] // тут если учитель меняется
         }),
         updateTime: builder.mutation({
             query: ({id, ...lessonData}) => ({
@@ -38,6 +38,15 @@ export const scheduleApi = baseApi.injectEndpoints({
             providesTags: (result, error, id) => [
                 { type: "Lesson", id } // ← тег с ID урока
             ],
+        }),
+        getLessonLazy: builder.query({
+            query: ({ id, weekday }) => {
+                const params = new URLSearchParams();
+                if (weekday) params.append('weekday', weekday);
+                
+                return `/schedule/getLesson/${id}?${params.toString()}`;
+            },
+            keepUnusedDataFor: 120
         }),
         getLessonTeacher: builder.query({
             query: (id) => `/schedule/getLessonTeacher/${id}`,
@@ -71,6 +80,7 @@ export const {
     useDeleteLessonMutation,
     useUpdateLessonMutation,
     useGetLessonQuery,
+    useLazyGetLessonLazyQuery,
     useGetLessonTeacherQuery,
     useGetScheduleQuery,
     useGetShiftQuery,

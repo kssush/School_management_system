@@ -1,0 +1,25 @@
+@import '../../../styles/mixins.scss';
+
+.day{
+    display: flex;
+    flex-direction: column;
+    width: 18.75rem;
+    margin-bottom: 1.1875rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-right: 1px solid var(--black10);
+    border-bottom: 1px solid var(--black10);
+
+    .header{
+        @include shadow;
+        @include center;    
+        @include text18-medium;
+        height: 3.125rem;
+        background-color: var(--second);
+    }
+
+    >:nth-child(2){
+        margin-top: 2.5rem;
+    }
+    
+}

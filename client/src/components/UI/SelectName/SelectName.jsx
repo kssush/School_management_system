@@ -9,8 +9,8 @@ const animation = {
     end: { opacity: 1 },
 };
 
-const SelectName = ({ name, data, callback }) => {
-    const [value, setValue] = useState("...");
+const SelectName = ({ name, data, callback, defaultValue = null}) => {
+    const [value, setValue] = useState(defaultValue || "...");
     const [isOpen, setIsOpen] = useState(false);
 
     const selectRef = useClickOutside(() => setIsOpen(false));

@@ -1,0 +1,12 @@
+@import '../../../styles/mixins.scss';
+
+.tcontainer{
+    @include scrollbar-vertical;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 14.375rem;
+    overflow-y: auto;
+    gap: 1.5625rem;
+    position: relative;
+}

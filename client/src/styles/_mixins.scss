@@ -58,6 +58,10 @@
 }
 
 
+@mixin text12-medium{
+    @include text(12, 500);    
+}
+
 @mixin text12-regular{
     @include text(12, 400);    
 }
@@ -94,4 +98,28 @@
 
 @mixin shadow4{
     box-shadow: 0 0 4px 0 var(--black20, #00000045);
+}
+
+
+@mixin scrollbar {
+    &::-webkit-scrollbar{
+        height: 0.125rem;
+        margin: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background-color: var(--black20);
+        border-radius: 0.625rem;
+    }
+}
+
+@mixin scrollbar-vertical {
+    &::-webkit-scrollbar{
+        width: 0.125rem;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background-color: var(--black20);
+        border-radius: 0.625rem;
+    }
 }

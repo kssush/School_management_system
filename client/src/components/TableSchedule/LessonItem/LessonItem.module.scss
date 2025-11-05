@@ -1,0 +1,38 @@
+@import '../../../styles/mixins.scss';
+
+.lesson{
+    @include center;  
+    height: 5rem;
+    border-top: 1px solid var(--black10);
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover{
+        background-color: var(--second);
+    
+        .noLesson{
+            opacity: 1;
+        }
+    }
+
+    .noLesson{
+        @include between;
+        width: 15.625rem;
+        opacity: 0;
+        transition: all 0.3s;
+
+        .textLesson{
+            display: flex;
+            flex-direction: column;
+            gap: 0.3125rem;
+
+            >p:nth-of-type(1){
+                @include text16-medium;
+            }
+
+            >p:nth-of-type(2){
+                @include text12-regular;
+            }
+        }
+    }
+}

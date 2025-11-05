@@ -36,8 +36,9 @@ class ScheduleController extends Controller{
 
     async getLesson(req, res, next){
         const {id} = req.params; // id_combination
+        const {weekday} = req.query;
 
-        const lessons = await schedule.getLesson(id);
+        const lessons = await schedule.getLesson(id, weekday);
 
         return res.json(lessons);
     }

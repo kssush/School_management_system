@@ -5,11 +5,16 @@ module.exports = {
             u.name,
             u.surname,
             u.patronymic,
-            p.name as project
+            p.name as project,
+            TO_CHAR(t.time_start, 'HH24:MI') as time_start,
+            TO_CHAR(t.time_end, 'HH24:MI') as time_end
         FROM schedules s
         LEFT JOIN users u ON u.id = s.id_teacher
         INNER JOIN projects p ON p.id = s.id_project
+        INNER JOIN schedule_data sd ON sd.id = s.id_sd
+        LEFT JOIN times t ON t.id = sd.id_time
         WHERE s.id_combination = $1
+        AND ($2::text IS NULL OR sd.weekday = $2)
     `,
 
     getLessonTeacher: `

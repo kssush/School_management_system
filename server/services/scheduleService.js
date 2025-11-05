@@ -44,7 +44,7 @@ class ScheduleService {
             tempData.id_teacher = null; // смена предмета = необходим другой учитель
         }
         
-        if (id_teacher) {
+        if (typeof id_teacher != undefined) {
             tempData.id_teacher = id_teacher;
         }
 
@@ -67,16 +67,17 @@ class ScheduleService {
         return time;
     }
 
-    async getLesson(id_combination){
+    async getLesson(id_combination, weekday){
+        console.log(weekday)
         const lessons = await sequelize.query(
             queries.schedule.getLesson,
             {
-                bind: [id_combination],
+                bind: [id_combination, weekday ?? null],
                 type: sequelize.QueryTypes.SELECT,
                 nest: true
             }
         )
-
+        console.log(lessons)
         return lessons;
     }
 
