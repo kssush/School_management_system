@@ -43,7 +43,7 @@ export const userApi = baseApi.injectEndpoints({
         }),
         getTeachers: builder.query({
             query: () => "/user/teacher",
-            providesTags: ["User"],
+            providesTags: ["Teacher"],
         }),
         getFamily: builder.query({
             query: (id) => `/user/family/${id}`,

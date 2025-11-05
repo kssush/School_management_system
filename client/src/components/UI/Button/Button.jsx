@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import st from "./Button.module.scss";
 
-const Button = ({data, active = false, callback}) => {  
+const Button = ({data, active = false, callback, rotate = false}) => {  
     const isImage = isImageData(data);
 
     return (
@@ -9,7 +9,7 @@ const Button = ({data, active = false, callback}) => {
             {!isImage ? (
                 data
             ) : (
-                <img src={data} alt="ic"/>
+                <img src={data} alt="ic" className={`${rotate && st.rotate}`}/>
             )}
         </button>
     );

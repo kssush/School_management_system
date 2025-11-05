@@ -47,6 +47,7 @@ const Class = sequelize.define('class', {
     id: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true},
     id_combination: {type: DataTypes.INTEGER, allowNull: false, references: { model: Combination, key: 'id'}},
     year: {type: DataTypes.INTEGER, allowNull: false},
+    id_teacher: {type: DataTypes.INTEGER, allowNull: true}
 },{
     timestamps: false
 })

@@ -26,5 +26,11 @@
     >img{
         height: 1.0625rem;
         width: 1.0625rem;
+        transition: all 0.5s;
+        transform: rotate(0deg);
+
+        &.rotate{
+            transform: rotate(-180deg);
+        }
     }
 }

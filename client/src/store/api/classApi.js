@@ -3,7 +3,6 @@ import { baseApi } from "./baseApi";
 
 export const classApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        // POST /class/addStudent
         addStudent: builder.mutation({
             query: (studentData) => ({
                 url: "/class/addStudent",
@@ -12,8 +11,6 @@ export const classApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Student"], // инвалидируем список студентов
         }),
-
-        // POST /class/addClass
         addClass: builder.mutation({
             query: (classData) => ({
                 url: "/class/addClass",
@@ -22,8 +19,6 @@ export const classApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Class"], // инвалидируем список классов
         }),
-
-        // POST /class/classUp
         classUp: builder.mutation({
             query: () => ({
                 url: "/class/classUp",
@@ -31,8 +26,6 @@ export const classApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Class", "Student"], // инвалидируем всё после повышения классов
         }),
-
-        // GET /class/getCombination
         getCombination: builder.query({
             query: () => "/class/getCombination",
             transformResponse: (response) => {
@@ -45,14 +38,10 @@ export const classApi = baseApi.injectEndpoints({
             },
             providesTags: ["Class"], // помечаем как данные классов
         }),
-
-        // GET /class/getClass/:id
         getClass: builder.query({
             query: (id) => `/class/getClass/${id}`,
-            providesTags: (result, error, id) => [{ type: "Class", id }], // тег с ID класса
+            providesTags: ['Class']
         }),
-
-        // GET /class/getAllStudent
         getAllStudent: builder.query({
             query: (isClass) => {
                 const params = {};

@@ -1,0 +1,43 @@
+@import '../../styles/mixins.scss';
+
+.createSection{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4.375rem;
+    margin-top: 3.125rem;
+
+    .otherContainer{
+        max-width: 15rem;
+        display: flex;
+        flex-direction: column;
+        gap: 3.125rem;
+    }
+}
+
+.buttons{
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 3.4375rem;
+}
+
+.sectionBox{
+    >p:nth-of-type(1){
+        @include text20-medium;
+        margin-bottom: 1.875rem;
+    }
+
+    .container{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem 3.125rem;
+
+        &:nth-of-type(1){
+            max-width: 33.125rem;
+            width: 100%;
+        }
+
+        >div{ //input
+            max-width: 15rem;
+        }
+    }
+}

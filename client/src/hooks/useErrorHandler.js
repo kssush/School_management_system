@@ -18,10 +18,10 @@ const useErrorHandler = () => {
     }
 
     const clearError = (field) => {
-        setErrors(prev => ({
-            ...prev,
-            [field]: null
-        }))
+        setErrors(prev => {
+            const { [field]: deleted, ...rest } = prev;
+            return rest;
+        })
     }
 
     const clearAllErrors = () => {
