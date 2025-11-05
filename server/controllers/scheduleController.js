@@ -29,9 +29,9 @@ class ScheduleController extends Controller{
     async updateTime(req, res, next){
         const {id} = req.params;
 
-        const updateTime = await schedule.updateLesson(id, req.body);
+        const updateTime = await schedule.updateTime(id, req.body);
         
-        return res.json();
+        return res.json(updateTime);
     }
 
     async getLesson(req, res, next){

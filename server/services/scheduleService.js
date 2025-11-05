@@ -60,6 +60,37 @@ class ScheduleService {
     }
 
     async updateTime(id, data){
+        const {time_start, time_end} = data;
+        console.log(time_start, time_end)
+        console.log('111')
+        if(!time_start || !time_end) throw ApiError.badRequest('All the time must be filled in!');
+
+        if(time_start > time_end) {
+            const temp = time_start;
+            time_start = time_end;
+            time_end = temp;
+        }
+        console.log(time_start, time_end)
+        console.log('1112222')
+        const allTime = await Time.findAll();
+
+        const currentItems = allTime.filter(el => el.id == Number(id) || el.id == Number(id) + 1 || el.id == Number(id) - 1).sort((a,b) => a.id - b.id)
+        console.log(currentItems)
+        console.log('11122223333333', currentItems[1].time_end, currentItems[1].time_end < time_end)
+
+        if(id == 1){
+            if(currentItems[1].time_start < time_end) 
+                throw ApiError.conflict('The time should be less then the next values!');
+        }else{
+            if(id == 12){
+                if(currentItems[11].time_end > time_start) 
+                    throw ApiError.conflict('The time should be greater then the previos values!');
+            }else{
+                if(currentItems[0].time_end > time_start || currentItems[2].time_start < time_end )
+                    throw ApiError.conflict('The time should be between the previous and next values!');
+            }
+        }
+
         await Time.update(data, {where: {id}})
 
         const time = await Time.findOne({where: {id}})

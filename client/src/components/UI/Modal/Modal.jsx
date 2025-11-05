@@ -15,14 +15,15 @@ const Modal = ({children, callback, active, onClose, onConfirm, textHeader, text
     const [isOpen, setIsOpen] = useState(active);
     const modalRef = useClickOutside(() => handleClose())
 
-
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'unset'
 
         return () => document.body.style.overflow = 'unset';
     }, [isOpen]);
 
-
+    useEffect(() => {
+        setIsOpen(active);
+    }, [active]);
 
     const handleClose = () => {
         setIsOpen(false);

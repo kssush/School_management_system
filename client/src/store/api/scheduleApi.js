@@ -31,7 +31,7 @@ export const scheduleApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: lessonData,
             }),
-            invalidatesTags: (result, error, id) => [{ type: "Time", id }]
+            invalidatesTags:["Time"]
         }),
         getLesson: builder.query({
             query: (id) => `/schedule/getLesson/${id}`,
@@ -63,7 +63,8 @@ export const scheduleApi = baseApi.injectEndpoints({
             ],
         }),
         getScheduleLazy: builder.query({
-            query: (shift) => `/schedule/getSchedule?shift=${shift}`
+            query: (shift) => `/schedule/getSchedule?shift=${shift}`,
+            providesTags: ['Time']
         }),
         getShift: builder.query({
             query: (id) => `/schedule/getShift/${id}`,
@@ -82,6 +83,7 @@ export const {
     useAddLessonMutation,
     useDeleteLessonMutation,
     useUpdateLessonMutation,
+    useUpdateTimeMutation,
     useGetLessonQuery,
     useLazyGetLessonLazyQuery,
     useGetLessonTeacherQuery,
