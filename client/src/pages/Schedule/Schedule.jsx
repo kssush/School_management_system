@@ -14,7 +14,7 @@ import TableSchedule from "../../components/TableSchedule/TableSchedule";
 const Schedule = () => {
     const [shift, setShift] = useState(1);
     const [time, setTime] = useState(false);
-    console.log(shift)
+
     const {setHeader, setDescription} = useMain();
     const {isShift, setIsShift, combination, setCombination} = useSchedule();
 

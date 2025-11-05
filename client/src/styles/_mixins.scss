@@ -70,6 +70,13 @@
     @include text(10, 500);    
 }
 
+@mixin settingOn{
+    display: flex;
+    width: 100%;
+    margin-top: 1.5625rem;
+    margin-bottom: 3.75rem;
+}
+
 
 
 // ===== styles =====

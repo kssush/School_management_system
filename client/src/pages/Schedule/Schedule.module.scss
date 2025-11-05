@@ -1,10 +1,7 @@
 @import '../../styles/mixins.scss';
 
 .setting{
-    display: flex;
-    width: 100%;
-    margin-top: 1.5625rem;
-    margin-bottom: 3.75rem;
+    @include settingOn;
 
     >:nth-child(2){
         margin-right: auto;

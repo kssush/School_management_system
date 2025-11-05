@@ -62,6 +62,9 @@ export const scheduleApi = baseApi.injectEndpoints({
                 "Lesson" // ← т.к. расписание содержит уроки
             ],
         }),
+        getScheduleLazy: builder.query({
+            query: (shift) => `/schedule/getSchedule?shift=${shift}`
+        }),
         getShift: builder.query({
             query: (id) => `/schedule/getShift/${id}`,
             providesTags: (result, error, id) => [
@@ -83,6 +86,7 @@ export const {
     useLazyGetLessonLazyQuery,
     useGetLessonTeacherQuery,
     useGetScheduleQuery,
+    useLazyGetScheduleLazyQuery,
     useGetShiftQuery,
     useGetSubjectQuery
 } = scheduleApi;
