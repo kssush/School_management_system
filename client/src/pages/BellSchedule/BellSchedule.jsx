@@ -6,7 +6,9 @@ import Button from "../../components/UI/Button/Button";
 import ClockIcon from '../../assets/icons/clock.svg'
 import BellLessons from "../../components/Bell/BellsLesson/BellLessons";
 import BellEvents from "../../components/Bell/BellEvent/BellEvents";
-import { events } from "./constants";
+import { events, holidays } from "./constants";
+import Holidays from "../../components/Bell/Holidays/Holidays";
+import MoreIcon from '../../assets/icons/more.svg'
 
 const BellSchedule = () => {
     const [shift, setShift] = useState(1);
@@ -18,7 +20,7 @@ const BellSchedule = () => {
         setHeader("Bell schedule");
         setDescription("All bells in one place");
     }, []);
-    console.log(events)
+    
     return (
         <>
             <div className={st.setting}>
@@ -37,8 +39,15 @@ const BellSchedule = () => {
                         <BellEvents key={index} {...events}/> 
                     ))} 
                 </div>
-                <div className="holidays">
-                    
+                <div className={st.holidays}>
+                    <img src={MoreIcon}  alt="..." />
+                    <p>Holidays</p>
+                    <p>Time to gain strength</p>
+                    <div className={st.holidaysBox}>
+                        {holidays.map((holiday, index) => (
+                            <Holidays key={index} {...holiday}/>
+                        ))}
+                    </div>
                 </div>
             </div>
         </>

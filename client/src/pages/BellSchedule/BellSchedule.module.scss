@@ -10,6 +10,8 @@
 
 .bellsContainer{
     display: flex;
+    flex-wrap: wrap;
+    gap: 1.875rem;
     
     .events{
         display: flex;
@@ -21,5 +23,44 @@
         max-width: 20rem;
         width: 100%;    
         max-height: 23.375rem;
+    }
+
+    .holidays{
+        @include shadow;
+        background-color: var(--first);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 1.25rem 0.625rem 1.875rem 0.625rem;
+        border-radius: 1.25rem;
+        width: 18.75rem;
+        
+
+        >img{
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            height: 1.25rem;
+            width: 1.25rem;
+        }
+
+        >p:nth-of-type(1){
+            @include text18-medium;
+            margin-left: 0.625rem;
+            margin-top: 0.3125rem;
+        }
+
+        >p:nth-of-type(2){
+            @include text14-regular;
+            color: var(--text60);
+            margin: 0.4375rem 0 1.3125rem 0.625rem;
+        }
+
+        .holidaysBox{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 0.9375rem;
+        }
     }
 }
