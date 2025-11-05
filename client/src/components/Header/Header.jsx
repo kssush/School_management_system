@@ -2,13 +2,14 @@ import React from "react";
 import st from "./Header.module.scss";
 import { useHeaderContext } from "../../context/headerContext";
 import Search from "../UI/Search/Search";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     const { isSearchVisible, searchValue, setSearchValue } = useHeaderContext();
 
     return (
         <header>
-            <div className={st.logo}>School Edu</div>
+            <Link to="/" className={st.logo}>School Edu</Link>
             <div className={st.container}>
                 {isSearchVisible && (
                     <Search value={searchValue} onChange={setSearchValue} />

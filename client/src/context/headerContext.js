@@ -4,7 +4,7 @@ import { useDebounce } from "../hooks/useDebounce";
 const HeaderContext = createContext();
 
 export const HeaderProvider = ({children}) => {
-    const [isSearchVisible , setSearchVisible] = useState(true);
+    const [isSearchVisible , setSearchVisible] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     
     const hideSearch = () => setSearchVisible(false);
