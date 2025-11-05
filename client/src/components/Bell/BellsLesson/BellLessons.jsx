@@ -27,7 +27,6 @@ const BellLessons = ({shift}) => {
 
     return (
         <div className={st.bellLesson}>
-            {console.log(bell)}
             {bell && bell.map((el, index) => (
                 <BellLessonItem key={index} id={el.id_time} start={el.time_start} end={el.time_end} index={index}/>
             ))}

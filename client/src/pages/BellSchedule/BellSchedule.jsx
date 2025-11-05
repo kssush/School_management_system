@@ -5,6 +5,8 @@ import TextButton from "../../components/UI/TextButton/TextButton";
 import Button from "../../components/UI/Button/Button";
 import ClockIcon from '../../assets/icons/clock.svg'
 import BellLessons from "../../components/Bell/BellsLesson/BellLessons";
+import BellEvents from "../../components/Bell/BellEvent/BellEvents";
+import { events } from "./constants";
 
 const BellSchedule = () => {
     const [shift, setShift] = useState(1);
@@ -16,7 +18,7 @@ const BellSchedule = () => {
         setHeader("Bell schedule");
         setDescription("All bells in one place");
     }, []);
-
+    console.log(events)
     return (
         <>
             <div className={st.setting}>
@@ -30,6 +32,14 @@ const BellSchedule = () => {
             </div>
             <div className={st.bellsContainer}>
                 <BellLessons shift={shift} />
+                <div className={st.events}>
+                    {events.map((events, index) => ( 
+                        <BellEvents key={index} {...events}/> 
+                    ))} 
+                </div>
+                <div className="holidays">
+                    
+                </div>
             </div>
         </>
     );

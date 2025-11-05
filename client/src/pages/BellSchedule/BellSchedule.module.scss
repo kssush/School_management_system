@@ -7,3 +7,19 @@
         margin-left: auto;
     }
 }
+
+.bellsContainer{
+    display: flex;
+    
+    .events{
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding-top: 1.875rem;
+        margin: 0 auto 0 3.125rem;
+        gap: 1.875rem 0.625rem;
+        max-width: 20rem;
+        width: 100%;    
+        max-height: 23.375rem;
+    }
+}

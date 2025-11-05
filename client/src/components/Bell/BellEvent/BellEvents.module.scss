@@ -1,1 +1,41 @@
 @import '../../../styles/mixins.scss';
+
+.bellEvents{
+    @include center;
+    flex-direction: column;
+    padding: 0.625rem;
+    padding-top: 0;
+
+    >p:nth-of-type(1){
+        @include text18-medium;
+    }
+
+    >p:nth-of-type(2){
+        @include text14-regular;
+        color: var(--text60);
+        margin-top: 0.4375rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .box{
+        @include center;
+        @include shadow;
+        flex-direction: column;
+        gap: 0.625rem;
+        width: 8.4375rem;
+        height: 5.5rem;
+        background-color: #F9EFE6;
+        border: 1px solid #FEE3C5;
+        border-radius: 1.25rem;
+
+        >p:nth-of-type(1){
+            @include text16-medium;
+            color: var(--text80);
+        }
+
+        >p:nth-of-type(2){
+            @include text12-regular;
+            color: var(--text60);
+        }
+    }
+}
