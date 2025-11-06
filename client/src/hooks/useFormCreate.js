@@ -23,7 +23,7 @@ const useFormCreate = () => {
 
     const clearInput = () => setInput({})
     
-    return { input, errors, handleInput, clearAllErrors, clearInput };
+    return { input, errors, handlerError, handleInput, clearAllErrors, clearInput };
 };
 
 export default useFormCreate;

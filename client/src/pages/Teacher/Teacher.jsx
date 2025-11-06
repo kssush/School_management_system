@@ -5,30 +5,42 @@ import TextButton from "../../components/UI/TextButton/TextButton";
 import Button from "../../components/UI/Button/Button";
 import ArrowIcon from '../../assets/icons/arrow.svg'
 import AddIcon from '../../assets/icons/add.svg'
-import MoreIcon from '../../assets/icons/more.svg'
 import AnimatedSwitch from "../../components/UI/AnimatedSwitch/AnimatedSwitch";
 import useFormCreate from "../../hooks/useFormCreate";
 import CreateSection from "../../components/CreateSection/CreateSection";
-import { info, personal, work } from "./constants";
+import { info, NEED_FIELD, personal, work } from "./constants";
 import { useGetCombinationQuery } from "../../store/api/classApi";
-import { useGetTeachersQuery } from "../../store/api/userApi";
+import { useGetTeachersQuery, useRegistrationMutation } from "../../store/api/userApi";
+import CardUser from "../../components/CardUser/CardUser";
+import { useHeader } from "../../context/headerContext";
+import useFormFilter from "../../hooks/useFormFilter";
+import usePaggination from "../../hooks/usePaggination";
 
-import ClassIcon from '../../assets/icons/class.svg'
-import TelephoneIcon from '../../assets/icons/telephone.svg'
+const a = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+
 
 const Teacher = () => {
     const [sort, setSort] = useState({class: null, name: null});
     const [addSection, setAddSection] = useState(false);
 
+    const {debouncedSearchQuery, showSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
-    const { input, errors, handleInput, clearAllErrors, clearInput } = useFormCreate();
 
     const {data: classes} = useGetCombinationQuery();
-    const {data: teachers} = useGetTeachersQuery();
+    const {data: teachers, refetch } = useGetTeachersQuery();
+    const {processedData: teacherData} = useFormFilter(teachers, debouncedSearchQuery, sort);
+    const [addTeacher] = useRegistrationMutation();
+
+    const {input, errors, handleInput, handlerError, clearAllErrors, clearInput } = useFormCreate();
+    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: teacherData, countOfPage: 1});
+
+    
+    console.log('c', currentItem)
 
     useEffect(() =>{
         setHeader('Teachers');
         setDescription('All teachers in one place');
+        showSearch();
     }, [])
 
     const callbackSort = (name, value) => {
@@ -38,12 +50,25 @@ const Teacher = () => {
         }))
     }
 
-    const handleAdd = () => {
-        if(Object.keys(errors).length == 0){
-            console.log('нет ошибок')
-        }else{
-            console.log('есть ошибок')
+    const handleAdd = async () => {
+        try{
+            if(Object.keys(errors).length == 0 && Object.keys(input).length >= NEED_FIELD){
+                const teacherData = {
+                    ...input,
+                    role: 'teacher'
+                }
+
+                await addTeacher(teacherData).unwrap();
+                await refetch();
+                handleClose();
+            }else{
+                handlerError(new Error('All fields must be filled in!'));
+                return;
+            }
+        }catch(error){
+            handlerError(error);
         }
+        
     }
 
     const handleClose = () => {
@@ -56,18 +81,18 @@ const Teacher = () => {
         <>
             <div className={st.setting}>
                 <TextButton name={'Sort class'}>
-                    <Button data={ArrowIcon} active={sort.class != null} callback={() => callbackSort('class', sort?.class)} rotate={sort?.class}/>
+                    <Button data={ArrowIcon} active={sort.class != null} callback={() => callbackSort('class', sort.class)} rotate={sort?.class}/>
                 </TextButton>
                 <TextButton name={'Sort name'}>
-                    <Button data={ArrowIcon} active={sort.name != null} callback={() => callbackSort('name', sort?.name)} rotate={sort?.name}/>
+                    <Button data={ArrowIcon} active={sort.name != null} callback={() => callbackSort('name', sort.name)} rotate={sort?.name}/>
                 </TextButton>
-                <Button data={AddIcon} callback={() => setAddSection(true)}/>
-                <Button data={ArrowIcon} callback={() => setAddSection(true)}/>
-                <Button data={ArrowIcon} callback={() => setAddSection(true)}/>
+                <Button data={AddIcon} callback={() => console.log('asd')}/>
+                <Button data={ArrowIcon} callback={hasPrevios ? previosPage : undefined}/>
+                <Button data={ArrowIcon} callback={hasNext ? nextPage : undefined}/>
             </div>
             <div>
-                {teachers?.map(tc => (
-                    <CardUser user={tc}/>
+               {currentItem?.map(teacher => (
+                    <CardUser key={teacher.id} user={teacher}/>
                 ))}
             </div>
         </>
@@ -87,39 +112,3 @@ const Teacher = () => {
 };
 
 export default Teacher;
-
-
-
-const CardUser = ({user}) => {
-    return(
-        <div className={st.cardUser}>
-            <div className={st.card}>
-                <img src={MoreIcon} alt="..." />
-                <div className={st.person}>
-                    <div className={st.icon}></div>
-                    <div className={st.text}>
-                        <p>{user.surname}</p>
-                        <p>{user.name} {user.patronymic ?? ''}</p>
-                    </div>
-                </div>
-                <div className={st.line}></div>
-                <div className={st.info}>
-                    <div>
-                        <img src={TelephoneIcon} alt="ic" />
-                        <div className={st.contact}>
-                            <p>{user.telephone}</p>
-                            <p>telephone</p>
-                        </div>
-                    </div>
-                    <div>
-                        <img src={ClassIcon} alt="ic" />
-                        <div className={st.contact}>
-                            <p>-</p>
-                            <p>class</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}

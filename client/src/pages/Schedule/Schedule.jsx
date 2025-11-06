@@ -10,11 +10,13 @@ import { useGetCombinationQuery } from "../../store/api/classApi";
 import { useAddLessonMutation, useDeleteLessonMutation, useGetLessonQuery, useGetShiftQuery, useGetSubjectQuery } from "../../store/api/scheduleApi";
 import { useSchedule } from "../../context/scheduleContext";
 import TableSchedule from "../../components/TableSchedule/TableSchedule";
+import { useHeader } from "../../context/headerContext";
 
 const Schedule = () => {
     const [shift, setShift] = useState(1);
     const [time, setTime] = useState(false);
 
+    const {hideSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
     const {isShift, setIsShift, combination, setCombination} = useSchedule();
 
@@ -29,6 +31,7 @@ const Schedule = () => {
     });
 
     useEffect(() =>{
+        hideSearch();
         setHeader('Weekly schedule');
         setDescription('All lessons in one place');
     }, [])

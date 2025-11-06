@@ -61,8 +61,7 @@ class ScheduleService {
 
     async updateTime(id, data){
         const {time_start, time_end} = data;
-        console.log(time_start, time_end)
-        console.log('111')
+
         if(!time_start || !time_end) throw ApiError.badRequest('All the time must be filled in!');
 
         if(time_start > time_end) {
@@ -70,13 +69,10 @@ class ScheduleService {
             time_start = time_end;
             time_end = temp;
         }
-        console.log(time_start, time_end)
-        console.log('1112222')
+
         const allTime = await Time.findAll();
 
         const currentItems = allTime.filter(el => el.id == Number(id) || el.id == Number(id) + 1 || el.id == Number(id) - 1).sort((a,b) => a.id - b.id)
-        console.log(currentItems)
-        console.log('11122223333333', currentItems[1].time_end, currentItems[1].time_end < time_end)
 
         if(id == 1){
             if(currentItems[1].time_start < time_end) 
@@ -99,7 +95,6 @@ class ScheduleService {
     }
 
     async getLesson(id_combination, weekday){
-        console.log(weekday)
         const lessons = await sequelize.query(
             queries.schedule.getLesson,
             {
@@ -108,7 +103,7 @@ class ScheduleService {
                 nest: true
             }
         )
-        console.log(lessons)
+
         return lessons;
     }
 

@@ -7,6 +7,7 @@ import ClockIcon from '../../assets/icons/clock.svg'
 import { useParams } from "react-router-dom";
 import { useGetLessonTeacherQuery } from "../../store/api/scheduleApi";
 import TableSchedule from "../../components/TableSchedule/TableSchedule";
+import { useHeader } from "../../context/headerContext";
 
 const TeacherSchedule = () => {
     const {id_teacher} = useParams();
@@ -14,6 +15,7 @@ const TeacherSchedule = () => {
     const [shift, setShift] = useState(1);
     const [time, setTime] = useState(false);
 
+    const {hideSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
 
     const {data: lessonData} = useGetLessonTeacherQuery(id_teacher, {
@@ -21,6 +23,7 @@ const TeacherSchedule = () => {
     })
 
     useEffect(() =>{
+        hideSearch();
         setHeader('Teacher\'s schedule');
         setDescription('All t.\'s schedule in one place');
     }, [])

@@ -1,0 +1,111 @@
+@import '../../styles/mixins.scss';
+
+.cardUser{
+    margin: 0.625rem;
+    @extend .cardShow;
+
+    .card{
+        @include shadow;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--first);
+        border-radius: 1.25rem;
+        position: relative;
+        padding: 1.25rem;
+        width: 14.6875rem;
+        height: fit-content;
+
+        >img{
+            position: absolute;
+            top: 0.625rem;
+            right: 0.9375rem;
+            height: 1.25rem;
+            width: 1.25rem;
+            cursor: pointer;
+        }
+
+        .person{
+            display: flex;
+            gap: 1.25rem;
+
+            .icon{
+                height: 3.125rem;
+                width: 3.125rem;
+                border-radius: 3.125rem;
+                background-color: var(--black60);
+            }
+
+            .text{
+                display: flex;
+                flex-direction: column;
+                gap: 0.3125rem;
+                margin-top: 0.5rem;
+
+                >p:nth-of-type(1){
+                    @include text16-medium;
+                    color: var(--text80);
+                }
+
+                >p:nth-of-type(2){
+                    @include text12-regular;
+                    color: var(--text60);
+                }
+            }
+        }
+
+        .line{
+            height: 0.0625rem;
+            width: 100%;
+            margin-top: 0.625rem;
+            margin-bottom: 1.25rem;
+            background-color: var(--black10);
+        }
+
+        .info{
+            display: flex;
+            flex-direction: column;
+            gap: 0.9375rem;
+
+            >div{
+                display: flex;
+                gap: 1.25rem;
+                
+                >img{
+                    height: 1rem;
+                    width: 1rem;
+                    margin-left: 1.0625rem;
+                }
+
+                .contact{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.3125rem;
+
+                    >p:nth-of-type(1){
+                        @include text14-regular;
+                        color: var(--text80);
+                    }
+
+                    >p:nth-of-type(2){
+                        @include text12-regular;
+                        color: var(--text60);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.cardShow {
+    animation: slideIn 0.5s ease-out;
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}

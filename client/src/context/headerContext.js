@@ -29,7 +29,7 @@ export const HeaderProvider = ({children}) => {
     )
 }
 
-export const useHeaderContext = () => {
+export const useHeader = () => {
     const context = useContext(HeaderContext);
 
     if(!context){

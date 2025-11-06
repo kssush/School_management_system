@@ -1,11 +1,11 @@
 import React from "react";
 import st from "./Header.module.scss";
-import { useHeaderContext } from "../../context/headerContext";
+import { useHeader } from "../../context/headerContext";
 import Search from "../UI/Search/Search";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-    const { isSearchVisible, searchValue, setSearchValue } = useHeaderContext();
+    const { isSearchVisible, searchValue, setSearchValue } = useHeader();
 
     return (
         <header>

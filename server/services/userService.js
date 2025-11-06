@@ -3,6 +3,8 @@ const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const token = require("./tokenService");
 const { Sequelize } = require("../db");
+const queries = require("../queries");
+const sequelize = require("../db");
 
 class UserService{ 
     async registration(data){
@@ -81,7 +83,13 @@ class UserService{
     }
 
     async getAllTeacher(){
-        const teachers = await User.findAll({where: {role: 'teacher'}})
+        const teachers = await sequelize.query(
+            queries.user.getAllTeacher,
+            {
+                type: sequelize.QueryTypes.SELECT,
+                nest: true
+            }
+        )
 
         return teachers;
     }

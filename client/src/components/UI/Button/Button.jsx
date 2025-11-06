@@ -5,7 +5,7 @@ const Button = ({data, active = false, callback, rotate = false}) => {
     const isImage = isImageData(data);
 
     return (
-        <button className={`${st.button} ${active && st.active}`} onClick={callback} disabled={!callback}>
+        <button className={`${st.button} ${active && st.active} ${!callback && st.disabled}`} onClick={callback} disabled={!callback}>
             {!isImage ? (
                 data
             ) : (

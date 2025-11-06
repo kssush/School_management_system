@@ -9,14 +9,17 @@ import BellEvents from "../../components/Bell/BellEvent/BellEvents";
 import { events, holidays } from "./constants";
 import Holidays from "../../components/Bell/Holidays/Holidays";
 import MoreIcon from '../../assets/icons/more.svg'
+import { useHeader } from "../../context/headerContext";
 
 const BellSchedule = () => {
     const [shift, setShift] = useState(1);
     const [time, setTime] = useState(false);
 
+    const {hideSearch} = useHeader();
     const { setHeader, setDescription } = useMain();
 
     useEffect(() => {
+        hideSearch();
         setHeader("Bell schedule");
         setDescription("All bells in one place");
     }, []);

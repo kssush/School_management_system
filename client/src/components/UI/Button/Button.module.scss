@@ -23,6 +23,16 @@
         background-color: var(--purple40);
     }
 
+    &.disabled{
+        opacity: 0.4;  
+        cursor: default;
+
+        &:hover{
+            background-color: var(--first);
+            border: 0.0625rem solid var(--first);
+        }
+    }
+
     >img{
         height: 1.0625rem;
         width: 1.0625rem;

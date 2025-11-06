@@ -8,7 +8,7 @@ export const userApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: userData,
             }),
-            invalidatesTags: ["User"],
+            invalidatesTags: ["User", "Teacher"],
         }),
         login: builder.mutation({
             query: (credentials) => ({
