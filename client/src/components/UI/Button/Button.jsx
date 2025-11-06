@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import st from "./Button.module.scss";
 
-const Button = ({data, active = false, callback, rotate = false}) => {  
+const Button = ({data, active = false, callback, rotate = false, disabledStyle = false}) => {  
     const isImage = isImageData(data);
 
     return (
-        <button className={`${st.button} ${active && st.active} ${!callback && st.disabled}`} onClick={callback} disabled={!callback}>
+        <button className={`${st.button} ${active && st.active} ${disabledStyle && st.disabled}`} onClick={callback} disabled={!callback}>
             {!isImage ? (
                 data
             ) : (

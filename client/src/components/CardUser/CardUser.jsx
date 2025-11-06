@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import st from './CardUser.module.scss';
 import MoreIcon from '../../assets/icons/more.svg'
 import ClassIcon from '../../assets/icons/class.svg'
 import TelephoneIcon from '../../assets/icons/telephone.svg'
 import PlaceIcon from '../../assets/icons/place.svg'
+import { Link } from 'react-router-dom';
 
 const CardUser = ({user}) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     return(
         <div className={st.cardUser}>
             <div className={st.card}>
-                <img src={MoreIcon} alt="..." />
+                <img src={MoreIcon} alt="..." onClick={() => setIsOpen(!isOpen)}/>
+                <div className={`${st.link} ${isOpen ? st.active : ''}`}>
+                    {user.role == 'teacher' && <Link to={`/profile/${user.id}`} className={st.linkItem}>profile</Link>}
+                    {user.role == 'teacher' && <Link to={`/teacherSchedule/${user.id}`} className={st.linkItem}>schedule</Link>}
+                    {user.role != 'teacher' && <Link to={`/family/${user.id}`} className={st.linkItem}>family</Link>}
+                </div>
                 <div className={st.person}>
                     <div className={st.icon}></div>
                     <div className={st.text}>

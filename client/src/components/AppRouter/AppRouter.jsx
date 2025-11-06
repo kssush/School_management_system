@@ -4,6 +4,8 @@ import Schedule from "../../pages/Schedule/Schedule";
 import TeacherSchedule from "../../pages/TeacherSchedule/TeacherSchedule";
 import BellSchedule from "../../pages/BellSchedule/BellSchedule";
 import Teacher from "../../pages/Teacher/Teacher";
+import Family from "../../pages/Family/Family";
+import Profile from "../../pages/Profile/Profile";
 
 const AppRouter = () => {
     return(
@@ -12,6 +14,8 @@ const AppRouter = () => {
             <Route path="/teacherSchedule/:id_teacher" element={<TeacherSchedule />}></Route>
             <Route path="/bell" element={<BellSchedule />}></Route>
             <Route path="/teacher" element={<Teacher />}></Route>
+            <Route path="/family/:id_student" element={<Family />}></Route>
+            <Route path="/profile/:id_teacher" element={<Profile />}></Route>
             <Route path="*" element={<Schedule />}></Route>
         </Routes>
     )

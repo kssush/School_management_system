@@ -15,6 +15,7 @@ import CardUser from "../../components/CardUser/CardUser";
 import { useHeader } from "../../context/headerContext";
 import useFormFilter from "../../hooks/useFormFilter";
 import usePaggination from "../../hooks/usePaggination";
+import CardAdd from "../../components/CardAdd/CardAdd";
 
 const a = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
 
@@ -32,7 +33,7 @@ const Teacher = () => {
     const [addTeacher] = useRegistrationMutation();
 
     const {input, errors, handleInput, handlerError, clearAllErrors, clearInput } = useFormCreate();
-    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: teacherData, countOfPage: 1});
+    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: teacherData, countOfPage:1});
 
     
     console.log('c', currentItem)
@@ -86,14 +87,15 @@ const Teacher = () => {
                 <TextButton name={'Sort name'}>
                     <Button data={ArrowIcon} active={sort.name != null} callback={() => callbackSort('name', sort.name)} rotate={sort?.name}/>
                 </TextButton>
-                <Button data={AddIcon} callback={() => console.log('asd')}/>
-                <Button data={ArrowIcon} callback={hasPrevios ? previosPage : undefined}/>
-                <Button data={ArrowIcon} callback={hasNext ? nextPage : undefined}/>
+                <Button data={AddIcon} callback={() => setAddSection(true)}/>
+                <Button data={ArrowIcon} callback={hasPrevios ? previosPage : undefined} disabledStyle={!hasPrevios}/>
+                <Button data={ArrowIcon} callback={hasNext ? nextPage : undefined} disabledStyle={!hasNext}/>
             </div>
-            <div>
-               {currentItem?.map(teacher => (
+            <div className={st.container}>
+                {currentItem?.map(teacher => (
                     <CardUser key={teacher.id} user={teacher}/>
                 ))}
+                <CardAdd click={() => setAddSection(true)}/>
             </div>
         </>
     );
