@@ -35,6 +35,8 @@ export default CreateSection;
 
 
 const InputBox = ({text, data, callback, errors}) => {
+    if(!data) return null;
+
     return(
         <div className={st.sectionBox}>
             <p>{text}</p>
@@ -53,7 +55,7 @@ const SelectBox = ({text, data, dataSelect, callback}) => {
             <p>{text}</p>
             <div className={st.container}>
                 {data?.map(el => (
-                    <Select placeholder={el} data={dataSelect} callback={callback}/>                
+                    <Select key={el} placeholder={el} data={dataSelect} callback={callback}/>                
                 ))}
             </div>
         </div>

@@ -47,6 +47,14 @@ class UserController extends Controller {
         return res.json(updatedData);
     }
 
+    async updateTeacher(req, res, next){
+        const { id } = req.params;   
+
+        const updatedData = await service.updateTeacher(id, req.body);
+
+        return res.json(updatedData);
+    }
+
     async delete(req, res, next){ 
         //удалить ребенка
     }
@@ -65,6 +73,14 @@ class UserController extends Controller {
         const teachers = await service.getAllTeacher();
 
         return res.json(teachers);
+    }
+
+    async getTeacher(req, res, next){
+        const {id} = req.params;
+
+        const teacher = await service.getTeacher(id);
+
+        return res.json(teacher);
     }
 
     async getFamily(req, res, next){

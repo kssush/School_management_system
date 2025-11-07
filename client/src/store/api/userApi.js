@@ -8,7 +8,7 @@ export const userApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: userData,
             }),
-            invalidatesTags: ["User", "Teacher"],
+            invalidatesTags: ["User", "Teachers"],
         }),
         login: builder.mutation({
             query: (credentials) => ({
@@ -41,8 +41,20 @@ export const userApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["User"],
         }),
+        updateTeacher: builder.mutation({
+            query: ({id, teacherData}) => ({
+                url: `/user/updateTeacher/${id}`,
+                method: "PATCH",
+                body: teacherData,
+            }),
+            invalidatesTags: ["Teacher"],
+        }),
         getTeachers: builder.query({
             query: () => "/user/teacher",
+            providesTags: ["Teachers"],
+        }),
+        getTeacher: builder.query({
+            query: (id_teacher) => `/user/teacher/${id_teacher}`,
             providesTags: ["Teacher"],
         }),
         getFamily: builder.query({
@@ -58,6 +70,8 @@ export const {
     useLogoutMutation,
     useUpdateUserMutation,
     useUpdateParentMutation,
+    useUpdateTeacherMutation,
     useGetTeachersQuery,
+    useGetTeacherQuery,
     useGetFamilyQuery,
 } = userApi;

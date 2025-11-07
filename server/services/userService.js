@@ -1,4 +1,4 @@
-const { User, Parent, Student } = require("../models/models");
+const { User, Parent, Student, Class, Combination } = require("../models/models");
 const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const token = require("./tokenService");
@@ -82,6 +82,26 @@ class UserService{
         return updatedData;
     }
 
+    async updateTeacher(id, data){
+        if(data) await User.update(data, {where: {id}}); 
+
+        if (data?.id_class) {
+            await Promise.all([
+                Class.update( { id_teacher: null }, { where: { id_teacher: id } }),
+                Class.update( { id_teacher: id },{ where: { id: data.id_class } })
+            ]);
+        }
+
+        const [user, classes] = await Promise.all([
+            User.findByPk(id),
+            Class.findByPk(data?.id_class)
+        ])
+
+        const updatedData = await Parent.findByPk(id);
+
+        return updatedData;
+    }
+
     async getAllTeacher(){
         const teachers = await sequelize.query(
             queries.user.getAllTeacher,
@@ -93,6 +113,23 @@ class UserService{
 
         return teachers;
     }
+
+    async getTeacher(id){
+        const teacher = await User.findByPk(id);
+        const classes = await Class.findOne({where: {id_teacher: id}});
+        
+        let combination = null;
+        if(classes){
+            combination = await Combination.findOne({where: {id: classes.id_combination}});
+            combination = combination.get({ plain: true });
+        }
+        
+        return {
+            ...teacher.get({ plain: true }), //  Sequelize instance в объект
+            class: combination ?  `${combination.number} "${combination.letter}"` : null
+        };
+    }
+
 
     async getFamily(id, role) {
         if (role === 'student') {

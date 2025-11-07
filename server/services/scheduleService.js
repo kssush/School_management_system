@@ -5,10 +5,16 @@ const sequelize = require("../db");
 
 class ScheduleService {
     async addLesson(data){
-        const {id_sd, id_combination} = data; 
+        const {id_sd, id_combination, classroom} = data; 
 
         const candidate = await Schedule.findOne({where: {id_sd, id_combination}})
         if(candidate) throw ApiError.conflict('The lesson has already been added at this time!')
+        
+        if(classroom){
+            const isOccupy = await this.checkClassroom(classroom, id_sd);
+
+            if(isOccupy) throw ApiError.conflict('Classroom is already occupied!');
+        }
 
         const lesson = await Schedule.create(data);
 

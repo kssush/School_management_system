@@ -33,7 +33,7 @@ const Teacher = () => {
     const [addTeacher] = useRegistrationMutation();
 
     const {input, errors, handleInput, handlerError, clearAllErrors, clearInput } = useFormCreate();
-    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: teacherData, countOfPage:1});
+    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: teacherData, countOfPage: 5});
 
     
     console.log('c', currentItem)

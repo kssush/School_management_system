@@ -6,7 +6,6 @@ const Aside = () => {
     return(
         <aside>
             <Link to="/">Schedule</Link>
-            <Link to="/teacherSchedule/1">teacher</Link> {/*id none*/}
             <Link to="/bell">Bell Schedule</Link>
             <Link to="/teacher">Teacher</Link>
         </aside>

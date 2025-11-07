@@ -1,1 +1,64 @@
 @import '../../styles/mixins.scss';
+
+.setting{
+    @include settingOn;
+    margin-bottom: 2.8125rem;
+
+    >:last-child{
+        margin-left: auto;
+    }
+}
+
+.profile{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3.125rem;
+
+    .icon{
+        @include shadow;
+        height: 8.125rem;
+        width: 8.125rem;
+        border-radius: 8.125rem;
+        background-color: var(--first);
+        margin-right: 1.25rem;
+
+        >img{
+            height: 3.125rem;
+            width: 3.125rem;
+        }
+    }
+}
+
+.box{
+    display: flex;
+    flex-direction: column;
+    gap: 1.875rem;
+    max-width: 14.375rem;
+    width: 100%;
+
+    >p:nth-of-type(1){
+        @include text20-medium;
+    }
+
+    .content{
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+
+        .contentItem{
+            display: flex;
+            flex-direction: column;
+            gap: 0.3125rem;
+
+            >p:nth-of-type(1){
+                @include text14-regular;
+                color: var(--text80)
+            }   
+
+            >p:nth-of-type(2){
+                @include text12-regular;
+                color: var(--text60);
+            }
+        }
+    }
+}
