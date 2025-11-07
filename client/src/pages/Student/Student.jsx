@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from "react";
-import st from "./Teacher.module.scss";
-import { useMain } from "../../context/mainContext";
-import TextButton from "../../components/UI/TextButton/TextButton";
-import Button from "../../components/UI/Button/Button";
-import ArrowIcon from '../../assets/icons/arrow.svg'
-import AddIcon from '../../assets/icons/add.svg'
-import AnimatedSwitch from "../../components/UI/AnimatedSwitch/AnimatedSwitch";
-import useFormCreate from "../../hooks/useFormCreate";
-import CreateSection from "../../components/CreateSection/CreateSection";
-import { info, NEED_FIELD, personal, work, addTextBox } from "./constants";
-import { useGetCombinationQuery } from "../../store/api/classApi";
-import { useGetTeachersQuery, useRegistrationMutation } from "../../store/api/userApi";
-import CardUser from "../../components/CardUser/CardUser";
+import st from "./Student.module.scss";
 import { useHeader } from "../../context/headerContext";
+import { useMain } from "../../context/mainContext";
+import useFormCreate from "../../hooks/useFormCreate";
 import useFormFilter from "../../hooks/useFormFilter";
 import usePaggination from "../../hooks/usePaggination";
+import CreateSection from "../../components/CreateSection/CreateSection";
+import AnimatedSwitch from "../../components/UI/AnimatedSwitch/AnimatedSwitch";
 import CardAdd from "../../components/CardAdd/CardAdd";
+import CardUser from "../../components/CardUser/CardUser";
+import Button from "../../components/UI/Button/Button";
+import { info, NEED_FIELD, personal, work, addTextBox } from "./constants";
+import { useAddStudentMutation, useGetAllStudentQuery, useGetCombinationQuery } from "../../store/api/classApi";
+import TextButton from "../../components/UI/TextButton/TextButton";
+import ArrowIcon from '../../assets/icons/arrow.svg'
+import AddIcon from '../../assets/icons/add.svg'
+import { useRegistrationMutation } from "../../store/api/userApi";
 
-const a = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
-
-
-const Teacher = () => {
+const Student = () => {
     const [sort, setSort] = useState({class: null, name: null});
     const [addSection, setAddSection] = useState(false);
 
@@ -28,16 +25,17 @@ const Teacher = () => {
     const {setHeader, setDescription} = useMain();
 
     const {data: classes} = useGetCombinationQuery();
-    const {data: teachers, refetch } = useGetTeachersQuery();
-    const {processedData: teacherData} = useFormFilter(teachers, debouncedSearchQuery, sort);
-    const [addTeacher] = useRegistrationMutation();
+    const {data: students, refetch} = useGetAllStudentQuery();
+    const [addStudent] = useRegistrationMutation();
+    const [addStudentInClass] = useAddStudentMutation();
 
+    const {processedData: studentData} = useFormFilter(students, debouncedSearchQuery, sort);
     const {input, errors, handleInput, handlerError, clearAllErrors, clearInput } = useFormCreate();
-    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: teacherData, countOfPage: 5});
+    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: studentData, countOfPage: 5});
 
     useEffect(() =>{
-        setHeader('Teachers');
-        setDescription('All teachers in one place');
+        setHeader('Students');
+        setDescription('All students in one place');
         showSearch();
     }, [])
 
@@ -47,16 +45,17 @@ const Teacher = () => {
             [name]: value == null ? false : value == false ? true : null
         }))
     }
-
+    console.log(students)
     const handleAdd = async () => {
         try{
             if(Object.keys(errors).length == 0 && Object.keys(input).length >= NEED_FIELD){
-                const teacherData = {
+                const studentData = {
                     ...input,
-                    role: 'teacher'
+                    role: 'student'
                 }
 
-                await addTeacher(teacherData).unwrap();
+                const student = await addStudent(studentData).unwrap();
+                if(input.class) await addStudentInClass({id_student: student.id, id_class: input.class.id_class}).unwrap();
                 await refetch();
                 handleClose();
             }else{
@@ -89,8 +88,8 @@ const Teacher = () => {
                 <Button data={ArrowIcon} callback={hasNext ? nextPage : undefined} disabledStyle={!hasNext}/>
             </div>
             <div className={st.container}>
-                {currentItem?.map(teacher => (
-                    <CardUser key={teacher.id} user={teacher}/>
+                {currentItem?.map(student => (
+                    <CardUser key={student.id} user={student}/>
                 ))}
                 <CardAdd text={addTextBox} click={() => setAddSection(true)}/>
             </div>
@@ -110,4 +109,4 @@ const Teacher = () => {
     )
 };
 
-export default Teacher;
+export default Student;

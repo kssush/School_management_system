@@ -18,7 +18,7 @@ class UserController extends Controller {
             {}
         )
         
-        return res.json();
+        return res.json(userData);
     }
 
     async login(req, res, next){

@@ -5,6 +5,6 @@ export const work = ['Class']
 export const NEED_FIELD = (info.length - 1) + personal.length + (work.length - 1)
 
 export const addTextBox = {
-    up: 'Add a teacher',
-    down: 'a new employee'
-}
+    up: 'Add a student',
+    down: 'a new student'
+}   

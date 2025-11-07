@@ -26,6 +26,14 @@ module.exports = {
             INNER JOIN students s ON u.id = s.id
             LEFT JOIN compositions c ON u.id = c.id_student 
             WHERE u.role = 'student' 
-            AND c.id_student IS NULL
     `
 };
+
+// getAllStudent: `
+//          SELECT u.*, s.id_family 
+//             FROM users u 
+//             INNER JOIN students s ON u.id = s.id
+//             LEFT JOIN compositions c ON u.id = c.id_student 
+//             WHERE u.role = 'student' 
+//             AND c.id_student IS NULL
+//     `
