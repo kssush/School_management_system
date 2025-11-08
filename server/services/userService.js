@@ -30,6 +30,16 @@ class UserService{
         
         if(!parent) throw ApiError.badRequest('adasdasdasd')
 
+        const student = await Student.update(
+            { 
+                id_family: Sequelize.fn(
+                    'CONCAT', 
+                    Sequelize.col('id_family'), 
+                    `${data.role == 'mam' ? 'm' : 'd'}${id}`
+                )
+            }, 
+            { where: { id: data.id_student } }
+        );
         return parent;
     }
 
@@ -138,13 +148,16 @@ class UserService{
         if(role == 'student') student = await Student.findByPk(id, {include: [{model: User, as: 'user'}, {model: Composition, as: 'student_composition'}]});
         else {
             const letter = role == 'mam' ? 'm' : 'd';
-            student = await Student.findOne({where: {id_family: {[Sequelize.Op.like]: `%${letter}${id}%`}}}, {include: [{model: User, as: 'user'}, {model: Composition, as: 'student_composition'}]})
+            student = await Student.findOne({
+                where: {id_family: { [Sequelize.Op.like]: `%${letter}${id}%` }},
+                include: [{ model: User, as: 'user' }, { model: Composition, as: 'student_composition' }]
+            });
         }
 
         const familyId = this.parseParentIds(student.id_family);
 
         if(familyId.id_mam) mam = await Parent.findByPk(familyId.id_mam, {include: [{model: User, as: 'user'}]})
-        if(familyId.id_dad) dad = await Parent.findByPk(familyId.id_mam, {include: [{model: User, as: 'user'}]})
+        if(familyId.id_dad) dad = await Parent.findByPk(familyId.id_dad, {include: [{model: User, as: 'user'}]})
         
         student = student.get({ plain: true });
         mam = mam?.get({ plain: true });
@@ -156,14 +169,11 @@ class UserService{
 
     
     parseParentIds(parentString) {
-        if (!parentString || parentString === 'null') {
-            return {};
-        }
+        if (!parentString || parentString === 'null')  return {};
 
         let motherId = null;
         let fatherId = null;
 
-        // Ищем m11 d12 форматы
         const motherMatch = parentString.match(/m(\d+)/);
         const fatherMatch = parentString.match(/d(\d+)/);
 
@@ -173,7 +183,7 @@ class UserService{
         if (fatherMatch) {
             fatherId = parseInt(fatherMatch[1]);
         }
-        console.log(motherId, fatherId)
+
         return { id_mam: motherId, id_dad: fatherId };
     }
 }

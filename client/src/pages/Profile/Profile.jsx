@@ -92,7 +92,7 @@ const Profile = () => {
     )
 
     const secondComponent = (
-        <CreateSection data={{info, work}} form={{callback: handleInput, errors}} actions={{handleClose, handleAdd}} dataSelect={classes}/>
+        <CreateSection data={{info, work}} form={{callback: handleInput, errors}} actions={{handleClose, handleAdd}} dataSelect={classes} update={'Update'}/>
     );
 
     return (

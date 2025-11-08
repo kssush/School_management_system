@@ -4,7 +4,7 @@ import ButtonCustom from '../UI/ButtonCustom/ButtonCustom';
 import Input from '../UI/Input/Input';
 import Select from '../UI/Select/Select';
 
-const CreateSection = ({data, form, actions, dataSelect}) => {
+const CreateSection = ({data, form, actions, dataSelect, update = 'Add'}) => {
     const { info, personal, work } = data;
     const { callback, errors } = form;
     const { handleAdd, handleClose } = actions;
@@ -24,7 +24,7 @@ const CreateSection = ({data, form, actions, dataSelect}) => {
                 </div>
             </div>
             <div className={st.buttons}>
-                <ButtonCustom text={'Add'} click={handleAdd} status={'confirm'}/>
+                <ButtonCustom text={update} click={handleAdd} status={'confirm'}/>
                 <ButtonCustom text={'Close'} click={handleClose} status={'close'}/>
             </div>
         </>

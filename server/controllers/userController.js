@@ -10,15 +10,15 @@ class UserController extends Controller {
         Controller.validateRequired(req.body, ['email', 'password', 'login']);
 
         const {role} = req.body;
-    
+        console.log('qwe', req.body)
         const userData = await service.registration(req.body);
-        const familyData = (role == 'dad' || role == 'mam' ?
+        const familyData = ((role == 'dad' || role == 'mam') ?
             await service.registrationParent(userData.id, req.body) : role == 'student' ?
             await service.registrationStudent(userData.id) : 
             {}
         )
         
-        return res.json(userData);
+        return res.json({userData, ...familyData});
     }
 
     async login(req, res, next){

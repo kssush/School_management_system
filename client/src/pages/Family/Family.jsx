@@ -9,9 +9,9 @@ import Button from "../../components/UI/Button/Button";
 import ChangeIcon from '../../assets/icons/change.svg';
 import BoxProfile from "../../components/BoxProfile/BoxProfile";
 import CardAdd from "../../components/CardAdd/CardAdd";
-import { useGetFamilyQuery, useLazyGetFamilyLazyQuery, useUpdateParentMutation, useUpdateUserMutation } from "../../store/api/userApi";
+import { useGetFamilyQuery, useLazyGetFamilyLazyQuery, useRegistrationMutation, useUpdateParentMutation, useUpdateUserMutation } from "../../store/api/userApi";
 import { useParams } from "react-router-dom";
-import {addTextBox_mam, addTextBox_dad, info, work, work_student, NEED_FIELD, personal, NEED_FIELD_UPDATE} from './constants'
+import {addTextBox_mam, addTextBox_dad, info, work, work_student, NEED_FIELD, personal, NEED_FIELD_UPDATE, NEED_FIELD_ADD} from './constants'
 import useFormCreate from "../../hooks/useFormCreate";
 import { useAddStudentMutation, useGetCombinationQuery } from "../../store/api/classApi";
 const Family = () => {
@@ -29,9 +29,10 @@ const Family = () => {
     const [updateParent] = useUpdateParentMutation();
     const [updateUser] = useUpdateUserMutation();
     const [addStudent] = useAddStudentMutation();
+    const [addParent] = useRegistrationMutation();
 
     const {input, errors, handleInput, handlerError, clearAllErrors, clearInput } = useFormCreate();
-    console.log(classes)
+    console.log(family)
     useEffect(() =>{
         setHeader('Family');
         setDescription('All family in one place');
@@ -55,7 +56,7 @@ const Family = () => {
         const professionalData = [
             role !== 'student' && { name: 'place of work', value: current.work || '-' },
             role !== 'student' && { name: 'post', value: current.post || '-' },
-            role === 'student' && { name: 'class', value: classes.find(el => el.id_class == current.student_composition[0]?.id_class)?.name || '-' },
+            role === 'student' && { name: 'class', value: classes?.find(el => el.id_class == current.student_composition?.[0]?.id_class)?.name || '-' },
             { name: 'email', value: current.email || '-' }
         ].filter(Boolean);
 
@@ -68,8 +69,25 @@ const Family = () => {
     const handleOpenChange = () => setActiveSection('change');
     const handleOpenAdd = () => setActiveSection('add');
 
-    const handleAdd = () => {
-        
+    const handleAdd = async () => {
+        try{
+            if(Object.keys(errors).length == 0 && Object.keys(input).length >= NEED_FIELD_ADD){
+                const familyData = {
+                    ...input,   
+                    role: role,
+                    id_student: family?.['student']?.id
+                }
+           
+                await addParent(familyData);
+
+                handleClose();
+            }else{
+                handlerError(new Error('All fields must be filled in!'));
+                return;
+            }
+        }catch(error){
+            handlerError(error);
+        }
     }
 
     const handleUpdate = async () => {
@@ -86,7 +104,6 @@ const Family = () => {
                 if(role != 'student'){
                     await updateParent({id: family[role].id, ...familyData}).unwrap();
                 } else {
-                    
                     if(familyData.id_class) await addStudent({id_student: family[role].id, id_class: familyData.id_class}).unwrap();
                 }
 
@@ -123,7 +140,7 @@ const Family = () => {
     );
 
     const secondComponentChange = (
-        <CreateSection data={{info, work: role == 'student' ? work_student : work}} form={{callback: handleInput, errors}} actions={{handleClose, handleAdd: handleUpdate}} dataSelect={role == 'student' ? classes : undefined}/>
+        <CreateSection data={{info, work: role == 'student' ? work_student : work}} form={{callback: handleInput, errors}} actions={{handleClose, handleAdd: handleUpdate}} dataSelect={role == 'student' ? classes : undefined} update={'Update'}/>
     );
 
     const secondComponentAdd= (
