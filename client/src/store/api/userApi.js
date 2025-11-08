@@ -31,7 +31,7 @@ export const userApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: userData,
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: "User", id }], //???
+            invalidatesTags: ["User"]
         }),
         updateParent: builder.mutation({
             query: ({ id, ...parentData }) => ({
@@ -58,7 +58,11 @@ export const userApi = baseApi.injectEndpoints({
             providesTags: ["Teacher"],
         }),
         getFamily: builder.query({
-            query: (id) => `/user/family/${id}`,
+            query: ({ id, role }) => `/user/family/${id}?role=${role}`,
+            providesTags: (result, error, id) => [{ type: "User", id }],
+        }),
+        getFamilyLazy: builder.query({
+            query: ({ id, role }) => `/user/family/${id}?role=${role}`,
             providesTags: (result, error, id) => [{ type: "User", id }],
         }),
     }),
@@ -74,4 +78,5 @@ export const {
     useGetTeachersQuery,
     useGetTeacherQuery,
     useGetFamilyQuery,
+    useLazyGetFamilyLazyQuery
 } = userApi;

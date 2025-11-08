@@ -1,4 +1,4 @@
-const { User, Parent, Student, Class, Combination } = require("../models/models");
+const { User, Parent, Student, Class, Combination, Composition } = require("../models/models");
 const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const token = require("./tokenService");
@@ -62,7 +62,7 @@ class UserService{
 
     async update(id, data){
         const { id: _, ...safeData } = data;
-
+    
         const [affectedCount] = await User.update(safeData, {where: {id}});
         if(affectedCount == 0) throw ApiError.notFound('No user with this ID was found!');
 
@@ -73,9 +73,9 @@ class UserService{
 
     async updateParent(id, data){
         const { id: _, ...safeData } = data;
-        
+       
         const [affectedCount] = await Parent.update(safeData, {where: {id}});
-        if(affectedCount == 0) throw ApiError.notFound('No user with this ID was found!');
+        // if(affectedCount == 0) throw ApiError.notFound('No user with this ID was found!');
 
         const updatedData = await Parent.findByPk(id);
 
@@ -130,106 +130,31 @@ class UserService{
         };
     }
 
+    async getFamily(id, role){
+        let student = null;
+        let mam = null;
+        let dad = null;
 
-    async getFamily(id, role) {
-        if (role === 'student') {
-            const student = await Student.findByPk(id, {
-                include: [{
-                    model: User,
-                    as: 'user',
-                    attributes: { exclude: ['password'] } 
-                }],
-                raw: true, 
-                nest: true 
-            });
-
-            if (!student) return {};
-
-            const { motherId, fatherId } = this.parseParentIds(student.id_family);
-
-            const [mam, dad] = await Promise.all([
-                motherId ? Parent.findByPk(motherId, { 
-                    include: [{
-                        model: User, 
-                        as: 'user',
-                        attributes: { exclude: ['password'] }
-                    }],
-                    raw: true,
-                    nest: true
-                }) : null,
-                fatherId ? Parent.findByPk(fatherId, { 
-                    include: [{
-                        model: User, 
-                        as: 'user',
-                        attributes: { exclude: ['password'] }
-                    }],
-                    raw: true,
-                    nest: true
-                }) : null
-            ]);
-
-            return {
-                student: {id_family: student.id_family, ...student.user},
-                mam: mam ? { ...mam, ...mam.user, user: undefined } : null,
-                dad: dad ? { ...dad, ...dad.user, user: undefined } : null
-            };
-
-        } else {
-            const parent = await Parent.findByPk(id, {
-                include: [{
-                    model: User,
-                    as: 'user',
-                    attributes: { exclude: ['password'] }
-                }],
-                raw: true,
-                nest: true
-            });
-
-            const parentType = parent.role === 'mam' ? 'm' : 'd';
-            const parentMask = `${parentType}${id}`;
-
-            const student = await Student.findOne({
-                where: {
-                    id_family: {
-                        [Sequelize.Op.like]: `%${parentMask}%`
-                    }
-                },
-                include: [{
-                    model: User,
-                    as: 'user',
-                    attributes: { exclude: ['password'] }
-                }],
-                raw: true,
-                nest: true
-            });
-
-            if (!student) {
-                return { ...parent, ...parent.user };
-            }
-
-            const { motherId, fatherId } = this.parseParentIds(student.id_family);
-
-            const secondParentId = parent.role === 'mam' ? fatherId : motherId;
-            const secondParent = secondParentId ? await Parent.findByPk(secondParentId, {
-                include: [{
-                    model: User,
-                    as: 'user',
-                    attributes: { exclude: ['password'] }
-                }],
-                raw: true,
-                nest: true
-            }) : null;
-
-            return {
-                student: {id_family: student.id_family, ...student.user},
-                mam: parent.role === 'mam' ? { ...parent, ...parent.user, user: undefined } : secondParent ? { ...secondParent, ...secondParent.user, user: undefined  } : null,
-                dad: parent.role === 'dad' ? { ...parent, ...parent.user, user: undefined  } : secondParent ? { ...secondParent, ...secondParent.user, user: undefined } : null
-            };
+        if(role == 'student') student = await Student.findByPk(id, {include: [{model: User, as: 'user'}, {model: Composition, as: 'student_composition'}]});
+        else {
+            const letter = role == 'mam' ? 'm' : 'd';
+            student = await Student.findOne({where: {id_family: {[Sequelize.Op.like]: `%${letter}${id}%`}}}, {include: [{model: User, as: 'user'}, {model: Composition, as: 'student_composition'}]})
         }
-    }
+
+        const familyId = this.parseParentIds(student.id_family);
+
+        if(familyId.id_mam) mam = await Parent.findByPk(familyId.id_mam, {include: [{model: User, as: 'user'}]})
+        if(familyId.id_dad) dad = await Parent.findByPk(familyId.id_mam, {include: [{model: User, as: 'user'}]})
+        
+        student = student.get({ plain: true });
+        mam = mam?.get({ plain: true });
+        dad = dad?.get({ plain: true });
+
+        return {mam: {...mam, ...mam?.user, user: undefined}, dad: {...dad, ...dad?.user, user: undefined}, student: {...student, ...student.user, user: undefined}}
+    }   
 
 
-    //help
+    
     parseParentIds(parentString) {
         if (!parentString || parentString === 'null') {
             return {};
@@ -248,8 +173,8 @@ class UserService{
         if (fatherMatch) {
             fatherId = parseInt(fatherMatch[1]);
         }
-
-        return { motherId, fatherId };
+        console.log(motherId, fatherId)
+        return { id_mam: motherId, id_dad: fatherId };
     }
 }
 

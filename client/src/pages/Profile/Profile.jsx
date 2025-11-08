@@ -11,7 +11,7 @@ import CreateSection from "../../components/CreateSection/CreateSection";
 import useFormCreate from "../../hooks/useFormCreate";
 import { useGetCombinationQuery } from "../../store/api/classApi";
 import { info, NEED_FIELD, work } from "./constants";
-
+import BoxProfile from "../../components/BoxProfile/BoxProfile";
 
 const Profile = () => {
     const { id_teacher } = useParams();
@@ -87,13 +87,7 @@ const Profile = () => {
             <div className={st.setting}>
                 <Button data={ChangeIcon} callback={() => setOpenChange(true)}/>
             </div>
-            <div className={st.profile}>
-                <div className={st.icon}>
-                    {teacher?.image && <img src={teacher?.image} alt="ph"/>} {/* иконку и клик добвавление */}
-                </div>
-                <BoxInformation header={'Personal data'} info={infoData.personal}/>
-                <BoxInformation header={'Professional data'} info={infoData.professional}/>
-            </div>
+            <BoxProfile info={infoData} image={teacher?.image}/>
         </>
     )
 
@@ -113,18 +107,3 @@ const Profile = () => {
 export default Profile;
 
 
-const BoxInformation = ({header, info}) => {
-    return(
-        <div className={st.box}>
-            <p>{header}</p>
-            <div className={st.content}>
-                {info.map((inf, index) => (
-                    <div className={st.contentItem} key={index}>
-                        <p>{inf.value}</p>
-                        <p>{inf.name}</p>
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
-}

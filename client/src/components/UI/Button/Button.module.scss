@@ -33,6 +33,12 @@
         }
     }
 
+    &.fitSize{
+        max-width: none;
+        width: fit-content;
+        padding: 0 0.625rem;
+    }
+
     >img{
         height: 1.0625rem;
         width: 1.0625rem;

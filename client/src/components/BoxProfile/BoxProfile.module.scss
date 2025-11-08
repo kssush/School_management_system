@@ -1,0 +1,22 @@
+@import '../../styles/mixins.scss';
+
+.profile{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3.125rem;
+
+    .icon{
+        @include shadow;
+        height: 8.125rem;
+        width: 8.125rem;
+        border-radius: 8.125rem;
+        background-color: var(--first);
+        margin-right: 1.25rem;
+
+        >img{
+            height: 3.125rem;
+            width: 3.125rem;
+        }
+    }
+}
+

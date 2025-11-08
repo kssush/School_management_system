@@ -21,10 +21,21 @@ module.exports = {
     `,
 
     getAllStudent: `
-         SELECT u.*, s.id_family 
+        SELECT u.*, s.id_family 
             FROM users u 
             INNER JOIN students s ON u.id = s.id
             LEFT JOIN compositions c ON u.id = c.id_student 
+            WHERE u.role = 'student' 
+            AND c.id_student IS NULL
+    `,
+
+    getAnyStudent: `
+        SELECT u.*, s.id_family, cb.letter, cb.number
+            FROM users u 
+            INNER JOIN students s ON u.id = s.id
+            LEFT JOIN compositions c ON u.id = c.id_student 
+            LEFT JOIN classes cl ON cl.id = c.id_class 
+            LEFT JOIN combinations cb ON cb.id = cl.id_combination 
             WHERE u.role = 'student' 
     `
 };

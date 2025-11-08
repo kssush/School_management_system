@@ -6,7 +6,6 @@ const queries = require("../queries");
 
 class ClassService {
     async addStudent(data) {
-        console.log(data)
         const { id_student } = data;
 
         const candidate = await Composition.findOne({ where: { id_student } });
@@ -122,14 +121,23 @@ class ClassService {
     }
 
     async getAllStudent(isClass){
-        if (isClass) {
-            return await User.findAll({
-                where: { role: 'student' },
-                include: [{ 
-                    model: Student, 
-                    as: 'student' 
-                }]
-            });
+        if (!isClass) {
+            const students = await sequelize.query(
+                queries.class.getAnyStudent,
+                {
+                    type: Sequelize.QueryTypes.SELECT,
+                    nest: true 
+                }
+            );
+ 
+            return students;
+            // return await User.findAll({
+            //     where: { role: 'student' },
+            //     include: [{ 
+            //         model: Student, 
+            //         as: 'student'
+            //     }]
+            // });
         } else {
             const students = await sequelize.query(
                 queries.class.getAllStudent,
