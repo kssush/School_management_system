@@ -6,7 +6,7 @@ import TelephoneIcon from '../../assets/icons/telephone.svg'
 import PlaceIcon from '../../assets/icons/place.svg'
 import { Link } from 'react-router-dom';
 
-const CardUser = ({user}) => {
+const CardUser = ({user, isClass = false}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return(
@@ -35,10 +35,19 @@ const CardUser = ({user}) => {
                         </div>
                     </div>
                     <div>
-                        <img src={ClassIcon} alt="ic" />
+                        <img src={!isClass ? ClassIcon : PlaceIcon} alt="ic" />
                         <div className={st.contact}>
-                            <p>{`${user.number ? `${user.number} "${user.letter}"` : '-'}`}</p>
-                            <p>class</p>
+                            {!isClass ? (
+                                <>
+                                    <p>{`${user.number ? `${user.number} "${user.letter}"` : '-'}`}</p>
+                                    <p>class</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p>{user.address}</p>
+                                    <p>adress</p>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -47,7 +47,7 @@ export const userApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: teacherData,
             }),
-            invalidatesTags: ["Teacher"],
+            invalidatesTags: ["Teachers", "Teacher"],
         }),
         getTeachers: builder.query({
             query: () => "/user/teacher",

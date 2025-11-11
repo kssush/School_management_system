@@ -9,7 +9,7 @@ export const classApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: studentData,
             }),
-            invalidatesTags: ["Student"], // инвалидируем список студентов
+            invalidatesTags: ["Class", "Student", "User"], // инвалидируем список студентов
         }),
         addClass: builder.mutation({
             query: (classData) => ({
@@ -24,7 +24,7 @@ export const classApi = baseApi.injectEndpoints({
                 url: "/class/classUp",
                 method: "POST",
             }),
-            invalidatesTags: ["Class", "Student"], // инвалидируем всё после повышения классов
+            invalidatesTags: ["Class", "Student", "Teachers"]
         }),
         getCombination: builder.query({
             query: () => "/class/getCombination",
@@ -38,6 +38,18 @@ export const classApi = baseApi.injectEndpoints({
             },
             providesTags: ["Class"], // помечаем как данные классов
         }),
+        getAllCombinations: builder.query({
+            query: () => "/class/getAllCombinations",
+            transformResponse: (response) => {
+                const data = response.map(item => ({
+                    ...item,
+                    name: `${item.number} "${item.letter}"`
+                }))
+
+                return data;
+            },
+            providesTags: ["Combinations"]
+        }),
         getClass: builder.query({
             query: (id) => `/class/getClass/${id}`,
             providesTags: ['Class']
@@ -45,6 +57,7 @@ export const classApi = baseApi.injectEndpoints({
         getAllStudent: builder.query({
             query: (isClass) => {
                 const params = {};
+                console.log(isClass)
                 if (isClass !== undefined) {
                     params.isClass = isClass;
                 }
@@ -63,6 +76,7 @@ export const {
     useAddClassMutation,
     useClassUpMutation,
     useGetCombinationQuery,
+    useGetAllCombinationsQuery,
     useGetClassQuery,
     useGetAllStudentQuery,
 } = classApi;

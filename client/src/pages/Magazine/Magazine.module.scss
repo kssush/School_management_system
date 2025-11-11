@@ -1,0 +1,10 @@
+@import '../../styles/mixins.scss';
+
+.setting{
+    @include settingOn;
+    margin-bottom: 2.8125rem;
+
+    >:last-child{
+        margin-left: auto;
+    }
+}

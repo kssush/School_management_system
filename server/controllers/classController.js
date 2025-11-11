@@ -11,19 +11,25 @@ class ClassController extends Controller{
     async addClass(req, res, next){
         const data = await classes.addClass(req.body);
 
-        return res.json();
+        return res.json(data);
     }
 
     async classUp(req, res, next){
         await classes.classUp();
 
-        return res.json();
+        return res.json({ success: true, message: "Classes updated successfully" });
     }
 
     async getCombination(req, res, next){
         const activeClassName = await classes.getCombination();
 
         return res.json(activeClassName);
+    }
+
+    async getAllCombinations(req, res, next){
+        const combinations = await classes.getAllCombinations();
+
+        return res.json(combinations);
     }
 
     async getClass(req, res, next){

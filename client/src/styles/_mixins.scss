@@ -113,6 +113,14 @@
 }
 
 
+@mixin noneElement{
+    display: flex;
+    width: 100%;
+    @include center;
+    @include text20-medium;
+}
+
+
 @mixin shadow{
     box-shadow: 0 0 20px -5px var(--black20, #00000045);
 }

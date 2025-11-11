@@ -12,7 +12,8 @@ const useErrorHandler = () => {
                 [field]: error.message || 'Invelid value'
             }))
         }else{
-            const message = error.data?.message || error.message || 'Something went wrong'
+            const message = error.response?.data?.message || error.data?.message || error.message || 'Something went wrong'
+            console.log('123', error)
             alert(message)
         }
     }

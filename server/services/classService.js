@@ -63,10 +63,11 @@ class ClassService {
                 );
                 
                 if(!nextComb) nextComb = combMap.get(`${comb.letter}_${100 + comb.letter.charCodeAt(0) - 64}`)  // ASCII символ убрать
-                
+                console.log(nextComb.id > 99, '12333424')
                 return {
                     id: cls.id,
-                    id_combination: nextComb.id
+                    id_combination: nextComb.id,
+                    id_teacher: nextComb.id > 99 ? null : cls.id_teacher
                 };
             })
             .filter(Boolean);
@@ -76,7 +77,7 @@ class ClassService {
         try {
             for (const update of updates) {
                 await Class.update(
-                    { id_combination: update.id_combination },
+                    { id_combination: update.id_combination, id_teacher: update.id_teacher },
                     {
                         where: { id: update.id },
                         transaction,
@@ -104,7 +105,13 @@ class ClassService {
             return { id, letter, number, id_class: cls.id };
         }).filter(Boolean);
 
-        return combActive;
+       return combActive.sort((a, b) => a.number - b.number || a.letter.localeCompare(b.letter));
+    }
+
+    async getAllCombinations(){
+        const combinations = await Combination.findAll({where: {id: { [Sequelize.Op.lt]: 100 }, order: [['id', 'ASC']]}});
+        
+        return combinations;
     }
 
     async getClass(id){
