@@ -20,12 +20,16 @@ class MagazineService {
 
         console.log(shedules.length , existingDay.length)
 
+        if(shedules.length == 0) throw ApiError.conflict(
+            'There is no subject for this class today'
+        )
+
         if(shedules.length == existingDay.length) throw ApiError.conflict(
             'All lessons for this subject on this day are already in the journal'
         )
         
         if(!lesson) throw ApiError.unprocessableEntity('The lesson content is required. You can change this later!')
-        if(!homework) throw ApiError.unprocessableEntity('The homework content is required. You can change this later!')
+        // if(!homework) throw ApiError.unprocessableEntity('The homework content is required. You can change this later!')
 
         const day = await Magazine.create({...data, date: date.date});
 
@@ -62,8 +66,8 @@ class MagazineService {
         const {pass, mark, remark} = data;
 
         const tempData = {}
-        console.log(pass, mark, remark)
-        if(!pass && !mark && !remark) throw ApiError.unprocessableEntity(
+     
+        if(pass === undefined && !mark && remark === undefined) throw ApiError.unprocessableEntity(
             'The pass or mark or remark content is required. You can change this later!'
         )
 
@@ -76,6 +80,8 @@ class MagazineService {
             if(mark) tempData.mark = mark;
             if(remark) tempData.remark = remark;
         }
+        if(remark == null) tempData.remark = null;
+        if(mark == 0) tempData.mark = null;
 
         await Grade.update(tempData, {where: {id}})
 
@@ -98,12 +104,32 @@ class MagazineService {
             order: [['date', 'ASC']]
         })
 
-        return magazine; 
+        // return magazine; 
+        
+        const daysWithLessons = {};
+    
+        magazine.forEach(lesson => {
+            const day = lesson.date.toString();
+            
+            if (!daysWithLessons[day]) {
+                const [year, month, dayNum] = lesson.date.split('-');
+
+                daysWithLessons[day] = {
+                    date: lesson.date,
+                    formatDate: `${dayNum}.${month}`,
+                    lessons: []
+                };
+            }
+            
+            daysWithLessons[day].lessons.push(lesson);
+        });
+
+        return Object.values(daysWithLessons);
     }
 
     async getPerformance(data){
         const {id_class, id_project, date, id_student} = data;
-
+        
         const interval = this.getIntervalWeek(date);
 
         const magazineRecords = await Magazine.findAll({
@@ -125,16 +151,31 @@ class MagazineService {
             return [];
         }
 
-        const performance = await Grade.findAll({
+        const grade = await Grade.findAll({
             where: {
                 id_magazine: {
                     [Sequelize.Op.in]: magazineIds
                 },
-                ...(id_student && { id_student })
+                // ...(id_student && { id_student })
             }
         });
 
-        return performance;
+        const daysWithLessons = {};
+    
+        grade.forEach(lesson => {
+            const id_magazine = lesson.id_magazine;
+            
+            if (!daysWithLessons[id_magazine]) {
+                daysWithLessons[id_magazine] = []
+            }
+            
+            daysWithLessons[id_magazine].push(lesson);
+        });
+
+        return daysWithLessons
+
+
+        // return performance;
     }
 
     async addReview(id_student){
@@ -178,19 +219,30 @@ class MagazineService {
     }
 
     getIntervalWeek(dateStr){
-        const date = new Date(dateStr);
+    //     const date = new Date(dateStr);
 
-        const start = new Date(date);
-        start.setDate(date.getDate() - 7);
+    //     const start = new Date(date);
+    //     start.setDate(date.getDate() - 7 * 2);
 
-        const end = new Date(date);
-        end.setDate(date.getDate() + 7);
+    //     const end = new Date(date);
+    //     end.setDate(date.getDate() + 7 * 2);
+    //     console.log(start, end)
+    //     return {
+    //         start: start.toISOString().split('T')[0],
+    //         end: end.toISOString().split('T')[0]
+    //     };
+
+        const date = new Date(dateStr); 
+    
+        const start = new Date(date.getFullYear(), date.getMonth(), 1); 
+        const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         
         return {
-            start: start.toISOString().split('T')[0],
-            end: end.toISOString().split('T')[0]
+            start: start.toLocaleDateString('en-CA'),
+            end: end.toLocaleDateString('en-CA')
         };
     }
+    
 }
 
 module.exports = new MagazineService();

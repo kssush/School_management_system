@@ -18,6 +18,7 @@ module.exports = {
         INNER JOIN students s ON comp.id_student = s.id
         INNER JOIN users u ON s.id = u.id
         WHERE comp.id_class = $1
+        ORDER BY u.surname ASC, u.name ASC
     `,
 
     getAllStudent: `

@@ -4,11 +4,9 @@ import { useHeader } from "../../context/headerContext";
 import { useMain } from "../../context/mainContext";
 import { useAddClassMutation, useAddStudentMutation, useClassUpMutation, useGetAllCombinationsQuery, useGetAllStudentQuery, useGetClassQuery, useGetCombinationQuery } from "../../store/api/classApi";
 import AnimatedSwitch from "../../components/UI/AnimatedSwitch/AnimatedSwitch";
-import CreateSection from "../../components/CreateSection/CreateSection";
 import CardAdd from "../../components/CardAdd/CardAdd";
 import CardUser from "../../components/CardUser/CardUser";
 import Button from "../../components/UI/Button/Button";
-import useFormCreate from "../../hooks/useFormCreate";
 import usePaggination from "../../hooks/usePaggination";
 import useFormFilter from "../../hooks/useFormFilter";
 import SelectName from "../../components/UI/SelectName/SelectName";
@@ -18,7 +16,6 @@ import DoneIcon from '../../assets/icons/done.svg'
 import TextButton from "../../components/UI/TextButton/TextButton";
 import { addTextBox } from "./constants";
 import Modal from "../../components/UI/Modal/Modal";
-import useErrorHandler from "../../hooks/useErrorHandler";
 
 const Class = () => {
     const [combination, setCombination] = useState(null);
@@ -31,7 +28,6 @@ const Class = () => {
     const {setHeader, setDescription} = useMain();
 
     const {data: combinations} = useGetCombinationQuery();
-    const {data: classes} = useGetCombinationQuery(true);
     const {data: students} = useGetClassQuery(combination?.id_class, {
         skip: !combination
     })

@@ -23,7 +23,7 @@ const SelectName = ({ name, data, callback, defaultValue = null}) => {
     return (
         <div className={`${st.select} ${isOpen ? st.active : ""}`} ref={selectRef} onClick={() => setIsOpen(!isOpen)}>
             <p>{name}</p>
-            <div className={st.value} style={name == "subject" ? { minWidth: "10rem" } : {}}>{value}</div>
+            <div className={st.value} style={name == "Subject" ? { minWidth: "10rem" } : {}}>{value}</div>
             <img src={SelectIcon} alt="∨" />
             <AnimatePresence>
                 {isOpen && (

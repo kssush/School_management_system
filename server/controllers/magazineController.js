@@ -3,7 +3,7 @@ const magazine = require("../services/magazineService");
 
 class MagazineController extends Controller{
     async addDay(req, res, next){
-        Controller.validateRequired(req.body, ['id_class', 'id_project', 'lesson', 'homework']);
+        Controller.validateRequired(req.body, ['id_class', 'id_project', 'lesson']);
 
         const day = await magazine.addDay(req.body);
 
@@ -43,7 +43,7 @@ class MagazineController extends Controller{
     }
 
     async getPerformance(req, res, next){
-        Controller.validateRequired(req.query, ['id_class', 'id_project', 'date', 'id_student']);
+        Controller.validateRequired(req.query, ['id_class', 'id_project', 'date']); //'id_student'
         
         const performance = await magazine.getPerformance(req.query);
 

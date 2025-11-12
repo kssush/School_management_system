@@ -1,4 +1,3 @@
-// store/api/classApi.js
 import { baseApi } from "./baseApi";
 
 export const classApi = baseApi.injectEndpoints({
