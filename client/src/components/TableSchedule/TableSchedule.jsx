@@ -73,10 +73,14 @@ const TableSchedule = ({shift, lessonData, time = false}) => {
     const scheduleMinutes = useMemo(() => {
         if(Object.keys(scheduleData).length == 0) return [];
 
-        return scheduleData['Monday'].map(el => el.time_start).map(timeStr => {
+        const temp = scheduleData['Monday'].map(el => el.time_start).map(timeStr => {
             const [hours, minutes] = timeStr.split(':').map(Number);
             return hours * 60 + minutes;
         });
+
+        temp.push(temp[temp.length - 1] + 45);
+        
+        return temp;
     }, [scheduleData])
 
     return (
