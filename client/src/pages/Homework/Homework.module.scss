@@ -25,6 +25,13 @@
     padding-top: 0.3125rem;
     gap: 0.625rem;
 
+    .noContant{
+        display: flex;
+        width: 1005;
+        @include text18-medium;
+        margin-top: 1.25rem;
+    }
+
     .homework{
         display: flex;
         min-height: 4.375rem;

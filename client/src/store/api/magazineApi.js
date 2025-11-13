@@ -75,7 +75,7 @@ export const magazineApi = baseApi.injectEndpoints({
             providesTags: ["LessonSchedule"],
         }),
 
-        // Рецензии
+        // ревью
         addReview: builder.mutation({
             query: (id_student) => ({
                 url: `/magazine/addReview/${id_student}`,

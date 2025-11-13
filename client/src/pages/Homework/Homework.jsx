@@ -6,7 +6,7 @@ import Button from "../../components/UI/Button/Button";
 import { days } from './constants';
 import ArrowIcon from '../../assets/icons/arrow.svg'
 import DoneIcon from '../../assets/icons/done.svg'
-import { useGetLessonHomeworkQuery, useGetScheduleHomeworkQuery } from '../../store/api/magazineApi';
+import { useAddReviewMutation, useGetLessonHomeworkQuery, useGetScheduleHomeworkQuery } from '../../store/api/magazineApi';
 import {colorLessonContrast} from '../../components/TableSchedule/constants'
 
 const tempData = new Date();
@@ -26,6 +26,8 @@ const sundayString = sunday.toLocaleDateString('en-CA');
 const defData = (month > 5 && month < 9) ? `${year}-05-01` : mondayString;
 // а как летом?
 const Homework = () => {
+    const id_student = 11; ////// исправиль когда будет авторизации и тп
+
     const [day, setDay] = useState(days[0].value || 'Monday')
     const [date, setDate] = useState({currentMonday: defData, currentSunday: sundayString, currentDate: defData});
     const [lesson, setLesson] = useState([])
@@ -38,6 +40,7 @@ const Homework = () => {
 
     const {data: schedules} = useGetScheduleHomeworkQuery(11);
     const {data: lessons} = useGetLessonHomeworkQuery({id: 11, date: date.currentMonday})
+    const [addReviewed] = useAddReviewMutation();
 
     useEffect(() =>{
         setHeader('Magazine');
@@ -113,8 +116,22 @@ const Homework = () => {
         setDate(prev => ({...prev, currentDate: tcd}));
     }
     
-    const handleReviewed = () => {
+    const isMin = () => {
+        const dt = new Date(date.currentMonday);
+        
+        if(dt.getDate() == 1 && dt.getMonth() + 1 == 9 || dt.getMonth() + 1 == 8) return true
+        else return false;
+    }
 
+    const isMax = () => {
+        const dt = new Date(date.currentSunday);
+        
+        if(dt.getDate() == 31 && dt.getMonth() + 1 == 5 || dt.getMonth() + 1 == 6) return true
+        else return false;
+    }
+
+    const handleReviewed = async () => {
+        await addReviewed(id_student);
     }
 
     return(
@@ -123,8 +140,8 @@ const Homework = () => {
                 {days?.map((d, index) => (
                     <Button key={index} data={d.name} active={d.value == day} callback={() => handleSetDay(index)} smallText={true}/>
                 ))}
-                <Button data={ArrowIcon} callback={() => swipeWeek('left')}/>
-                <Button data={ArrowIcon} callback={() => swipeWeek('right')}/>
+                <Button data={ArrowIcon} disabledStyle={isMin()} callback={!isMin() ? () => swipeWeek('left') : undefined}/>
+                <Button data={ArrowIcon} disabledStyle={isMax()} callback={!isMax() ? () => swipeWeek('right') : undefined}/>
             </div>
             <div className={st.contant}>
                 {dataHomework?.map((el, index) => (
@@ -144,6 +161,7 @@ const Homework = () => {
                        
                     </div>
                 ))}
+                {(!dataHomework || dataHomework?.length == 0) && <div className={st.noContant}>No lesson</div>}
             </div>
             <div className={st.helper}>
                 <p>Select days:</p>
