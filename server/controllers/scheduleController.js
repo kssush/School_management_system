@@ -72,6 +72,14 @@ class ScheduleController extends Controller{
         
         return res.json(subjects);
     }
+
+    async getSubjectForClass(req, res, next){
+        const {id_combination} = req.params;
+
+        const subjects = await schedule.getSubjectForClass(id_combination);
+        
+        return res.json(subjects);
+    }
 }
 
 module.exports = new ScheduleController();

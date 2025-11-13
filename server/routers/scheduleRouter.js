@@ -12,5 +12,6 @@ router.get('/getLessonTeacher/:id', scheduleController.getLessonTeacher)
 router.get('/getSchedule', scheduleController.getSchedule)
 router.get('/getShift/:id', scheduleController.getShift)
 router.get('/getSubject', scheduleController.getSubject)
+router.get('/getSubject/:id_combination', scheduleController.getSubjectForClass)
 
 module.exports = router;

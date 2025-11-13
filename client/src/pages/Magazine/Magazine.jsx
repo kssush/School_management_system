@@ -9,7 +9,7 @@ import AbsenceIcon from '../../assets/icons/absence.svg'
 import RemarkIcon from '../../assets/icons/remark.svg'
 import SelectName from "../../components/UI/SelectName/SelectName";
 import Button from "../../components/UI/Button/Button";
-import { useGetSubjectQuery } from "../../store/api/scheduleApi";
+import { useGetSubjectForClassQuery } from "../../store/api/scheduleApi";
 import { useGetClassQuery, useGetCombinationQuery } from "../../store/api/classApi";
 import { useAddDayMutation, useAddPerformanceMutation, useGetMagazineQuery, useGetPerformanceQuery, useUpdateDayMutation, useUpdatePerformanceMutation } from "../../store/api/magazineApi";
 import Modal from '../../components/UI/Modal/Modal'
@@ -30,7 +30,9 @@ const Magazine = () => {
     const {setHeader, setDescription} = useMain();
     
     const {data: combinations} = useGetCombinationQuery();
-    const {data: subjects} = useGetSubjectQuery();
+    const {data: subjects} = useGetSubjectForClassQuery(combination?.id, {
+        skip: !combination
+    });
     const {data: students} = useGetClassQuery(combination?.id_class, {
         skip: !combination
     });

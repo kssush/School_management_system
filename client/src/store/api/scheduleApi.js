@@ -8,14 +8,14 @@ export const scheduleApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: lessonData,
             }),
-            invalidatesTags: ["Lesson"]
+            invalidatesTags: ["Lesson", "SubjectClass"]
         }),
         deleteLesson: builder.mutation({
             query: (id) => ({
                 url: `schedule/deleteLesson/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Lesson"] 
+            invalidatesTags: ["Lesson", "SubjectClass"] 
         }),
         updateLesson: builder.mutation({
             query: ({id, ...lessonData}) => ({
@@ -23,7 +23,7 @@ export const scheduleApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: lessonData,
             }),
-            invalidatesTags: ["Lesson"] // тут если учитель меняется
+            invalidatesTags: ["Lesson", "SubjectClass"] // тут если учитель меняется
         }),
         updateTime: builder.mutation({
             query: ({id, ...lessonData}) => ({
@@ -75,6 +75,10 @@ export const scheduleApi = baseApi.injectEndpoints({
         getSubject: builder.query({
             query: () => '/schedule/getSubject',
             providesTags: ["Subject"]
+        }),
+        getSubjectForClass: builder.query({
+            query: (id) => `/schedule/getSubject/${id}`,
+            providesTags: ["SubjectClass"]
         })
     })
 })
@@ -90,5 +94,6 @@ export const {
     useGetScheduleQuery,
     useLazyGetScheduleLazyQuery,
     useGetShiftQuery,
-    useGetSubjectQuery
+    useGetSubjectQuery,
+    useGetSubjectForClassQuery
 } = scheduleApi;

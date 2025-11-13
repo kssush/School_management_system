@@ -155,6 +155,22 @@ class ScheduleService {
         return subjects;
     }
 
+    async getSubjectForClass(id_combination){
+        console.log(id_combination,'123')
+        const subjects = await Project.findAll({
+            include: [{
+                model: Schedule, as: 'schedule_project',
+                where: {
+                    id_combination: id_combination
+                },
+                attributes: [] 
+            }],
+            distinct: true 
+        });
+
+        return subjects;
+    }
+
     // help
     async checkLesson(id){
         const existing = await Schedule.findOne({where: {id}})
