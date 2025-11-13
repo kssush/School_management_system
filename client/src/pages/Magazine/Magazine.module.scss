@@ -176,6 +176,7 @@
 
                 .remarkBox{
                     @extend .lessonBoxTemp;
+                    min-width: 6.25rem;
                 }
 
                 &:hover{

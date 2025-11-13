@@ -299,7 +299,7 @@ const MagazineTable = ({ students, magazines, performances, viewSetting, childre
                                                             data-perform-remark = {perform.remark}
                                                             className={`${viewSetting.remark && perform.remark ? st.remark : ''} ${viewSetting.pass && perform.pass == true ? st.pass : ''}`}
                                                         > 
-                                                            {perform.remark && <div className={st.remarkBox}>
+                                                            {viewSetting.remark && perform.remark && <div className={st.remarkBox}>
                                                                 <p>{perform.remark}</p>
                                                                 <p>remark</p>
                                                             </div>  }

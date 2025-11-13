@@ -67,7 +67,7 @@ class MagazineService {
 
         const tempData = {}
      
-        if(pass === undefined && !mark && remark === undefined) throw ApiError.unprocessableEntity(
+        if(pass === undefined && mark === undefined && remark === undefined) throw ApiError.unprocessableEntity(
             'The pass or mark or remark content is required. You can change this later!'
         )
 
@@ -80,7 +80,8 @@ class MagazineService {
             if(mark) tempData.mark = mark;
             if(remark) tempData.remark = remark;
         }
-        if(remark == null) tempData.remark = null;
+  
+        if(remark === null) tempData.remark = null;
         if(mark == 0) tempData.mark = null;
 
         await Grade.update(tempData, {where: {id}})
