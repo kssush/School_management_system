@@ -134,6 +134,25 @@ module.exports = {
             },
         ])
 
+        await queryInterface.bulkInsert('projects', [
+            { name: 'Physics' },
+            { name: 'Russian' },
+            { name: 'Mathematics' },
+            { name: 'Algebra' },
+            { name: 'Art' },
+            { name: 'Astronomy' },
+            { name: 'Biology' },
+            { name: 'English' },
+            { name: 'Geography' },
+            { name: 'Geometry' },
+            { name: 'Informatics' },
+            { name: 'Labor' },
+            { name: 'Literature' },
+            { name: 'Physical' },
+            { name: 'Social' }
+        ]) 
+
+ 
         const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         const timeIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         const scheduleData = [];

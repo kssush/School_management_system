@@ -29,9 +29,9 @@ export const iconLesson = {
     'Informatics': InformaticsIcon,
     'Labor': LaborIcon,
     'Literature': LiteratureIcon,
-    'Physics': PhysicsIcon,
+    'Physics': PhysicsIcon, 
     'Physical': PhysicalIcon,
     'Russian': RussianIcon,
     'Social': SocialIcon,
-    'default': LiteratureIcon /////////////
+    'default': LiteratureIcon 
 }

@@ -112,6 +112,11 @@ const Magazine = () => {
                 <Button data={ArrowIcon} callback={!isMax() ? () => swipeMonth('right') : undefined} disabledStyle={isMax()}/>
             </div>
             <MagazineTable students={students} magazines={magazines} performances={performances} classBag={{id_class: combination?.id_class}} viewSetting={viewSetting}/>
+            <div className={st.helper}>   
+                <p>Select month:</p>
+                <p>{new Date(date).toLocaleString('en-EN', { month: 'long' })}</p>
+                <p>Use the touchpad or scroll / shift + scroll </p>
+            </div>
             <AddLessonModal active={openModal} callback={setOpenModal} id_class={combination?.id_class} id_project={subject?.id} defaultCallback={defaulDate}/>
         </>  
     );
