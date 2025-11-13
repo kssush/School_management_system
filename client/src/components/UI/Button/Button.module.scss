@@ -39,6 +39,10 @@
         padding: 0 0.625rem;
     }
 
+    &.smallText{
+        @include text14-regular;
+    }
+
     >img{
         height: 1.0625rem;
         width: 1.0625rem;

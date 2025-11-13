@@ -50,6 +50,23 @@ class MagazineController extends Controller{
         return res.json(performance);
     }
 
+    async getScheduleHomework(req, res, next){
+        const {id_student} = req.params;
+       
+        const schedule = await magazine.getScheduleHomework(id_student);
+        
+        return res.json(schedule);
+    }
+
+    async getLessonHomework(req, res, next){
+        const {id_student} = req.params;
+        const {date} = req.query;
+        
+        const schedule = await magazine.getLessonHomework(id_student, date);
+        
+        return res.json(schedule);
+    }
+
     async addReview(req, res, next){
         const {id_student} = req.params;
 

@@ -121,9 +121,9 @@
             position: relative;
             
 
-            @for $i from 1 through 40 { // предполагаем максимум 20 колонок
+            @for $i from 1 through 40 { 
                 &:nth-child(#{$i}) {
-                z-index: 80 - ($i * 5);
+                    z-index: 80 - ($i * 5);
                 }
             }
 

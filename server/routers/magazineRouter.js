@@ -9,6 +9,8 @@ router.post('/addPerformance', magazineController.addPerformance)
 router.patch('/updatePerformance/:id', magazineController.updatePerformance)
 router.get('/getMagazine', magazineController.getMagazine)
 router.get('/getPerformance', magazineController.getPerformance)
+router.get('/getScheduleHomework/:id_student', magazineController.getScheduleHomework)
+router.get('/getLessonHomework/:id_student', magazineController.getLessonHomework)
 router.patch('/addReview/:id_student', magazineController.addReview)
 router.patch('/removeReview/:id_class', magazineController.removeReview)
 

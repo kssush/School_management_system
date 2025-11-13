@@ -1,8 +1,10 @@
-const { Composition, Class, Combination, Student, User, Schedule, ScheduleData, Magazine, Grade} = require("../models/models");
+const { Composition, Class, Combination, Student, User, Schedule, ScheduleData, Magazine, Grade, Project} = require("../models/models");
 const ApiError = require("../error/ApiError");
 const sequelize = require("../db");
 const {Sequelize} = require("../db");
 const queries = require("../queries");
+
+const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 class MagazineService {
     async addDay(data){
@@ -94,7 +96,7 @@ class MagazineService {
     async getMagazine(data){ 
         const {id_class, id_project, date} = data;
 
-        const interval = this.getIntervalWeek(date);
+        const interval = this.getIntervalMonth(date);
 
         const magazine = await Magazine.findAll({where: {
             id_class, id_project,
@@ -131,7 +133,7 @@ class MagazineService {
     async getPerformance(data){
         const {id_class, id_project, date, id_student} = data;
         
-        const interval = this.getIntervalWeek(date);
+        const interval = this.getIntervalMonth(date);
 
         const magazineRecords = await Magazine.findAll({
             where: {
@@ -157,7 +159,7 @@ class MagazineService {
                 id_magazine: {
                     [Sequelize.Op.in]: magazineIds
                 },
-                // ...(id_student && { id_student })
+                ...(id_student && { id_student }) /// 
             }
         });
 
@@ -174,10 +176,80 @@ class MagazineService {
         });
 
         return daysWithLessons
-
-
-        // return performance;
     }
+
+    async getScheduleHomework(id_student){
+        const classes = await Composition.findOne({where: {id_student}, include: [{model: Class, as: 'class'}]})
+
+        const id_combination = classes.class.id_combination;
+        const id_class = classes.class.id;
+        
+        const schedule = await Schedule.findAll({where: {id_combination}, include: [
+            {model: ScheduleData, as: 'schedule_data'},
+            {model: Project, as: 'project'}
+        ]})
+        
+        const groupedByDay = schedule.reduce((acc, item) => {
+            const day = item.schedule_data.weekday;
+            if (!acc[day]) {
+                acc[day] = [];
+            }
+            
+            const temp = {...item.get({plain: true}), name: item.project?.name, schedule_data: undefined, project: undefined}
+
+            acc[day].push(temp);
+            return acc;
+        }, {});
+
+       
+        const sortedResult = {};
+        daysOrder.forEach(day => {
+            sortedResult[day] = groupedByDay[day] ?? [];
+        });
+
+        return sortedResult;
+    }
+
+    async getLessonHomework(id_student, date){
+        const classes = await Composition.findOne({where: {id_student}, include: [{model: Class, as: 'class'}]})
+
+        const id_class = classes.class.id;
+    
+        const interval = this.getIntervalWeek(date);
+     
+        const magazine = await Magazine.findAll({
+            where: {
+                id_class,
+                date: {[Sequelize.Op.between]: [interval.start, interval.end]}
+            },
+            order: [['date', 'ASC']] // сортируем по дате
+        });
+        
+        const magazineIds = magazine.map(mg => mg.id);
+     
+        const grade = await Grade.findAll({
+            where: {
+                id_magazine: {
+                    [Sequelize.Op.in]: magazineIds
+                },
+                id_student
+            }
+        });
+     
+        const groupedByDate = magazine.reduce((acc, item) => {
+            const date = item.date;
+           
+            if (!acc[date]) {
+                acc[date] = [];
+            }
+            
+            acc[date].push(item);
+            return acc;
+        }, {});
+       
+        return {magazine: groupedByDate, grade}
+    }
+
 
     async addReview(id_student){
         await Composition.update({reviewed: true}, {where: {id_student}})
@@ -198,8 +270,8 @@ class MagazineService {
         const today = new Date();
 
         const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0'); // +1 т.к. месяцы 0-11
-        const day = String(today.getDate()).padStart(2, '0'); // getDate() для числа месяца
+        const month = String(today.getMonth() + 1).padStart(2, '0'); 
+        const day = String(today.getDate()).padStart(2, '0');
 
         const date = `${year}-${month}-${day}`;
 
@@ -219,20 +291,7 @@ class MagazineService {
         return {minId, maxId}
     }
 
-    getIntervalWeek(dateStr){
-    //     const date = new Date(dateStr);
-
-    //     const start = new Date(date);
-    //     start.setDate(date.getDate() - 7 * 2);
-
-    //     const end = new Date(date);
-    //     end.setDate(date.getDate() + 7 * 2);
-    //     console.log(start, end)
-    //     return {
-    //         start: start.toISOString().split('T')[0],
-    //         end: end.toISOString().split('T')[0]
-    //     };
-
+    getIntervalMonth(dateStr){
         const date = new Date(dateStr); 
     
         const start = new Date(date.getFullYear(), date.getMonth(), 1); 
@@ -243,6 +302,21 @@ class MagazineService {
             end: end.toLocaleDateString('en-CA')
         };
     }
+    
+    getIntervalWeek(date){
+        const start = new Date(date);
+
+        const end = new Date(date);
+        end.setDate(end.getDate() + 6);
+
+        const formatDate = (date) => {
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        };
+
+
+        return {start: formatDate(start), end: formatDate(end)}
+    }
+
     
 }
 

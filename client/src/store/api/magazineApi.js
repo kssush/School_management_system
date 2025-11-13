@@ -62,6 +62,18 @@ export const magazineApi = baseApi.injectEndpoints({
             }),
             providesTags: ["Magazine"],
         }),
+        getScheduleHomework: builder.query({
+            query: (id) => ({
+                url: `/magazine/getScheduleHomework/${id}`
+            }),
+            providesTags: ["ScheduleHomework"],
+        }),
+        getLessonHomework: builder.query({
+            query: ({id, date}) => ({
+                url: `/magazine/getLessonHomework/${id}?date=${date}`
+            }),
+            providesTags: ["LessonSchedule"],
+        }),
 
         // Рецензии
         addReview: builder.mutation({
@@ -88,6 +100,8 @@ export const {
     useUpdatePerformanceMutation,
     useGetMagazineQuery,
     useGetPerformanceQuery,
+    useGetScheduleHomeworkQuery,
+    useGetLessonHomeworkQuery,
     useAddReviewMutation,
     useRemoveReviewMutation,
 } = magazineApi;

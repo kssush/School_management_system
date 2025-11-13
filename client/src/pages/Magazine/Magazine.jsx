@@ -15,7 +15,11 @@ import {useGetMagazineQuery, useGetPerformanceQuery } from "../../store/api/maga
 import AddLessonModal from "../../components/MagazineUI/AddLessonModal/AddLessonModal";
 import MagazineTable from "../../components/MagazineUI/MagazineTable/MagazineTable";
 
-const defData = new Date().toISOString().split('T')[0];
+const tempData = new Date();
+const year = tempData.getFullYear();
+const month = tempData.getMonth() + 1;
+
+const defData = (month > 5 && month < 9) ? `${year}-05-01` : tempData.toISOString().split('T')[0];
 
 const Magazine = () => {
     const [date, setDate] = useState(defData);

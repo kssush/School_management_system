@@ -9,6 +9,7 @@ import Profile from "../../pages/Profile/Profile";
 import Student from "../../pages/Student/Student";
 import Class from "../../pages/Class/Class";
 import Magazine from "../../pages/Magazine/Magazine";
+import Homework from "../../pages/Homework/Homework";
 
 const AppRouter = () => {
     return(
@@ -22,6 +23,7 @@ const AppRouter = () => {
             <Route path="/profile/:id_teacher" element={<Profile />}></Route>
             <Route path="/class" element={<Class />}></Route>
             <Route path="/magazine" element={<Magazine />}></Route>
+            <Route path="/homework" element={<Homework />}></Route>
             <Route path="*" element={<Schedule />}></Route>
         </Routes>
     )

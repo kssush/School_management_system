@@ -16,6 +16,7 @@ import SocialIcon from '../../assets/icons/social.svg'
 export const week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 export const colorLesson = ['#FEE3C5', '#D7ECDD', '#FFF3D1', '#CBE0FF', '#E7D3DE', '#F6D3DA'];
+export const colorLessonContrast = ['#C9B39A', '#A6BFAD', '#DFD7C1', '#AFC1DC', '#E7D3DE', '#F6D3DA'];
 
 export const iconLesson = {
     'Mathematics': AlgebraIcon,
