@@ -8,7 +8,7 @@ import st from "./PerformanceModal.module.scss";
 
 const PerformanceModal = ({active, callback, id_magazine, id_student, id_performance, remark = false}) => {
     const [input, setInput] = useState({});
-    console.log('324', remark)
+  
     const { errors, handlerError, clearError, clearAllErrors } = useErrorHandler();
 
     const [addPerformance] = useAddPerformanceMutation();

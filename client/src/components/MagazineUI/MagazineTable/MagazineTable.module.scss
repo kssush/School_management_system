@@ -20,14 +20,17 @@
         @include text20-medium;
         width: 100%;
         height: 100%;
+        display: flex;
     }
 
     .noSubject{
-        overflow-x: auto;
-        padding-left: 240px;
+        // overflow-x: auto;
+        // margin-top: auto;
         @include center;
         @include text20-medium;
         width: 100%;
+        display: flex;
+        flex-grow: 1;
         height: 100%;
     }
 
@@ -101,16 +104,32 @@
         margin-left: 240px;
         background-color: var(--first);
 
+        &.noStudent{
+            width: 0;
+            margin: 0;
+        }
+
+        &.noMagazine, &.noSub{
+            height: 100%;
+        }   
+
+        
+
         .column1{
             min-width: 6.25rem;
             border-right: 1px solid var(--black10);
             position: relative;
+            
+
+            @for $i from 1 through 40 { // предполагаем максимум 20 колонок
+                &:nth-child(#{$i}) {
+                z-index: 80 - ($i * 5);
+                }
+            }
 
             &:last-child{
                 border-right: 0;
             }
-
-            
 
             .header{
                 @include center;
@@ -162,6 +181,14 @@
                     background-color: var(--red40);
                 }
 
+                &.reviewedYes{
+                    background-color: var(--green40);
+                }
+
+                &.reviewedNo{
+                    background-color: var(--red40);
+                }
+
                 &:hover{
                     background-color: var(--second);
                 }
@@ -184,7 +211,7 @@
     background-color: var(--first);
     border: 0.0625rem solid var(--black20);
     border-radius: 1.25rem;
-    z-index: 95;
+    z-index: 195;
     top: 0;
     left: 0.625rem;
     opacity: 0;

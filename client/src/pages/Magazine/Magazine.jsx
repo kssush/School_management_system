@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import st from "./Magazine.module.scss";
 import { useHeader } from "../../context/headerContext";
 import { useMain } from "../../context/mainContext";
@@ -11,13 +11,8 @@ import SelectName from "../../components/UI/SelectName/SelectName";
 import Button from "../../components/UI/Button/Button";
 import { useGetSubjectForClassQuery } from "../../store/api/scheduleApi";
 import { useGetClassQuery, useGetCombinationQuery } from "../../store/api/classApi";
-import { useAddDayMutation, useAddPerformanceMutation, useGetMagazineQuery, useGetPerformanceQuery, useUpdateDayMutation, useUpdatePerformanceMutation } from "../../store/api/magazineApi";
-import Modal from '../../components/UI/Modal/Modal'
-import Input from '../../components/UI/Input/Input'
-import useErrorHandler from "../../hooks/useErrorHandler";
-import Select from "../../components/UI/Select/Select";
+import {useGetMagazineQuery, useGetPerformanceQuery } from "../../store/api/magazineApi";
 import AddLessonModal from "../../components/MagazineUI/AddLessonModal/AddLessonModal";
-import PerformanceModal from "../../components/MagazineUI/PerformanceModal/PerformanceModal";
 import MagazineTable from "../../components/MagazineUI/MagazineTable/MagazineTable";
 
 const defData = new Date().toISOString().split('T')[0];
@@ -53,10 +48,6 @@ const Magazine = () => {
     }, {
         skip: !combination || !subject
     });
-
-    console.log('sibject:', subject, '\nmagazine:', magazines, '\nperformance', performances)
-
-    console.log(students)
 
     useEffect(() =>{
         setHeader('Magazine');
@@ -126,7 +117,6 @@ const Magazine = () => {
 };
 
 export default Magazine;
-
 
 
 
