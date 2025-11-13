@@ -1,0 +1,14 @@
+@import '../../../styles/mixins.scss';
+
+.removeRemark{
+    @include text16-medium;
+    display: flex;
+    width: 100%;
+    padding-left: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover{
+        color: var(--text60);
+    }
+}

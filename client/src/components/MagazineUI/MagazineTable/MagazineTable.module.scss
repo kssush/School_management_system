@@ -1,0 +1,210 @@
+@import '../../../styles/mixins.scss';
+
+.magazine{
+    display: flex;
+    width: 100%;
+    user-select: none;  
+    min-height: 20rem;
+    max-height: 33.375rem;
+    height: fit-content;
+    border-radius: 1.25rem;
+    border: 7px solid var(--black10);
+    background-color: var(--first);
+    position: relative; 
+    overflow-y: auto;
+    overflow-x: auto;
+    z-index: 50;
+    
+    .noClass{
+        @include center;
+        @include text20-medium;
+        width: 100%;
+        height: 100%;
+    }
+
+    .noSubject{
+        overflow-x: auto;
+        padding-left: 240px;
+        @include center;
+        @include text20-medium;
+        width: 100%;
+        height: 100%;
+    }
+
+    .noElement{
+        display: none;
+    }
+
+    &::-webkit-scrollbar{
+        height: 0;
+        width: 0;
+    }
+
+    .column{
+        @include shadow;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--first);
+        min-width: 15rem;
+        position: sticky;
+        left: 0;
+        z-index: 100;
+        height: fit-content;
+        margin-left: -240px;
+
+        .header{
+            @include center;
+            @include shadow;
+            position: sticky;
+            left: 0;
+            top: 0;
+            z-index: 110;
+            background-color: var(--second);
+
+            >p{
+                @include text16-regular;
+            }
+        }
+
+        >div{
+            @include center;
+            min-height: 2.5rem;
+            border-bottom: 1px solid var(--black10);
+
+            &:nth-child(odd) {
+                background-color: var(--second);
+            }
+
+            >p{
+                @include text14-regular;
+                
+            }
+
+            >p:nth-of-type(1){
+                min-width: 3.125rem;
+                text-align: center;
+                padding-left: 1.625rem;
+            }
+
+            >p:nth-of-type(2){
+                width: 100%;
+                padding-left: 1.25rem; 
+            }
+        }
+    }
+
+    .box{
+        display: flex;
+        position: relative;
+        height: fit-content;
+        width: 100%;
+        margin-left: 240px;
+        background-color: var(--first);
+
+        .column1{
+            min-width: 6.25rem;
+            border-right: 1px solid var(--black10);
+            position: relative;
+
+            &:last-child{
+                border-right: 0;
+            }
+
+            
+
+            .header{
+                @include center;
+                @include text14-regular;
+                position: sticky;
+                top: 0;
+                z-index: 90;
+                background-color: var(--second);
+                
+                &:hover{
+                    .lessonBox{
+                        opacity: 1;
+                        top: 0.625rem;
+                    }
+                }
+                
+                .lessonBox{
+                    @extend .lessonBoxTemp;
+                }
+            }
+
+            >div{
+                @include center;
+                @include text16-regular;
+                gap: 1.25rem; //text какой геп использовать
+                min-height: 2.5rem;
+                border-bottom: 1px solid var(--black10);
+                transition: all 0.3s;
+                cursor: pointer;
+                position: relative;
+
+                .remarkBox{
+                    @extend .lessonBoxTemp;
+                    min-width: 6.25rem;
+                }
+
+                &:hover{
+                    .remarkBox{
+                        opacity: 1;
+                        top: 0.625rem;
+                    }
+                }
+
+                &.remark{
+                    background-color: var(--yellow40);
+                }
+
+                &.pass{
+                    background-color: var(--red40);
+                }
+
+                &:hover{
+                    background-color: var(--second);
+                }
+            }
+        }
+    }
+    
+}
+
+.lessonBoxTemp{
+    @include center;
+    @include shadow;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    max-width: 15rem;
+    width: max-content;
+    min-width: min-content;
+    overflow: hidden;
+    background-color: var(--first);
+    border: 0.0625rem solid var(--black20);
+    border-radius: 1.25rem;
+    z-index: 95;
+    top: 0;
+    left: 0.625rem;
+    opacity: 0;
+    max-height: 10rem;
+    padding: 1.25rem 0.625rem;
+    transition: all 0.3s;
+    pointer-events: none;
+
+    >p:nth-of-type(odd){
+        @include text14-medium;
+        color: var(--text);
+    }
+
+    >p:nth-of-type(3){
+        margin-top: 0.625rem;
+    }
+
+    >p:nth-of-type(even){
+        @include text12-regular;
+        color: var(-text60);
+        margin-top: 0.3125rem;
+    }
+}
