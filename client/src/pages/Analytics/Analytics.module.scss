@@ -8,3 +8,22 @@
         margin-left: 1.875rem;
     }
 }
+
+.statistics{
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem;
+
+    >p:nth-of-type(odd){
+        @include text18-24-regular;
+        color: var(--text60);
+    }
+
+    >p:nth-of-type(even){
+        @include text20-medium;
+    }
+
+    >p:nth-of-type(3){
+        margin-top: 1.25rem;
+    }
+}
