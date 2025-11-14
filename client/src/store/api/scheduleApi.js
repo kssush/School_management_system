@@ -23,7 +23,7 @@ export const scheduleApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: lessonData,
             }),
-            invalidatesTags: ["Lesson", "SubjectClass", "ScheduleHomework"] // тут если учитель меняется
+            invalidatesTags: ["Lesson", "SubjectClass", "ScheduleHomework"] 
         }),
         updateTime: builder.mutation({
             query: ({id, ...lessonData}) => ({
