@@ -40,6 +40,14 @@ class ClassController extends Controller{
         return res.json(students);
     }   
 
+    async getClassAnalytics(req, res, next){
+        const { id } = req.params;
+
+        const students = await classes.getClassAnalytics(id);
+
+        return res.json(students);
+    }   
+
     async getAllStudent(req, res, next){
         const {isClass} = req.query;
         const isClassBool = isClass == 'true';

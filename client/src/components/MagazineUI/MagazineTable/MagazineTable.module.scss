@@ -160,7 +160,7 @@
                 transition: all 0.3s;
                 cursor: pointer;
                 position: relative;
-
+                
                 .remarkBox{
                     @extend .lessonBoxTemp;
                     min-width: 6.25rem;
@@ -191,6 +191,25 @@
 
                 &:hover{
                     background-color: var(--second);
+                }
+
+
+
+                &.bad{
+                    background-color: var(--red40);
+                }   
+
+                &.bad.pass{
+                    background-color: var(--red);
+                } 
+
+                &.middle{
+                    background-color: var(--yellow40);
+                    
+                }
+
+                &.middle.pass{
+                    background-color: var(--yellow);
                 }
             }
         }

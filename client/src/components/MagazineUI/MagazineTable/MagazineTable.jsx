@@ -3,7 +3,7 @@ import PerformanceModal from "../PerformanceModal/PerformanceModal";
 import AddLessonModal from "../AddLessonModal/AddLessonModal";
 import st from "./MagazineTable.module.scss";
 
-const MagazineTable = ({ students, magazines, performances, viewSetting, children }) => {
+const MagazineTable = ({ students, magazines, performances, viewSetting, setting, children }) => {
     const [openModal, setOpenModal] = useState({updateLesson: false, performance: false});
     const [lessonId, setLessonId] = useState(null);
     const [studentId, setStudentId] = useState(null);
@@ -85,7 +85,7 @@ const MagazineTable = ({ students, magazines, performances, viewSetting, childre
                                                         data-student-id={student.id}
                                                         data-perform-id={perform.id}
                                                         data-perform-remark = {perform.remark}
-                                                        className={`${viewSetting.remark && perform.remark ? st.remark : ''} ${viewSetting.pass && perform.pass == true ? st.pass : ''}`}
+                                                        className={`${viewSetting.remark && perform.remark ? st.remark : ''} ${viewSetting.pass && perform.pass == true ? st.pass : ''} ${setting.analytics && student.prob == 'bad' ? st.bad : student.prob == 'middle' ? st.middle : ''}`}
                                                     > 
                                                         {viewSetting.remark && perform.remark && <div className={st.remarkBox}>
                                                             <p>{perform.remark}</p>
@@ -96,8 +96,7 @@ const MagazineTable = ({ students, magazines, performances, viewSetting, childre
                                                     </div> 
                                                 )
                                             }
-
-                                            return <div key={student.id} data-student-id={student.id} />
+                                            return <div key={student.id} data-student-id={student.id} className={`${student.prob == 'bad' ? st.bad : student.prob == 'middle' ? st.middle : ''}`}/>
                                         })}
                                     </div>
                                 )
@@ -122,8 +121,8 @@ const MagazineTable = ({ students, magazines, performances, viewSetting, childre
                     )}
                 </div>
             </div>
-            <AddLessonModal active={openModal.updateLesson} callback={handleCloseModal} id_lesson={lessonId}/>
-            <PerformanceModal active={openModal.performance} callback={handleCloseModal} id_magazine={lessonId} id_student={studentId} id_performance={performanceData.id} remark={performanceData.remark}/>
+            {setting.modal && <AddLessonModal active={openModal.updateLesson} callback={handleCloseModal} id_lesson={lessonId}/>}
+            {setting.modal && <PerformanceModal active={openModal.performance} callback={handleCloseModal} id_magazine={lessonId} id_student={studentId} id_performance={performanceData.id} remark={performanceData.remark}/>}
         </>
     )
 }

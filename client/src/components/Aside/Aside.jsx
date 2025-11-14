@@ -12,6 +12,7 @@ const Aside = () => {
             <Link to="/class">Class</Link>
             <Link to="/magazine">Magazine</Link>
             <Link to="/homework">Homework</Link>
+            <Link to="/analytics">Analytics</Link>
         </aside>
     )
 };

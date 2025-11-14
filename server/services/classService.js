@@ -127,6 +127,36 @@ class ClassService {
         return classes;
     }
 
+    async getClassAnalytics(id){
+        const classes = await sequelize.query(
+            queries.class.getClassAnalytics,
+            {
+                bind: [id],
+                type: Sequelize.QueryTypes.SELECT,
+                nest: true
+            }
+        )   
+
+        const result = {}
+
+        classes.forEach(lesson => {
+            if (!result[lesson.project_id]) {
+                result[lesson.project_id] = []; 
+            }
+         
+            result[lesson.project_id] = result[lesson.project_id].concat(lesson.students);
+        });
+
+        // const result = classes.map(lesson => {
+        //     if(student.total_passes > 0) return {...student, prob: 'middle'}
+        //     if(student.graded_count < 2) return {...student, prob: 'bad'}
+        //     if(student.average_mark < 3) return {...student, prob: 'bad'}
+        // })
+        
+        return result;
+    }
+
+
     async getAllStudent(isClass){
         if (!isClass) {
             const students = await sequelize.query(

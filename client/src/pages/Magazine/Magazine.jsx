@@ -27,6 +27,7 @@ const Magazine = () => {
     const [subject, setSubject] = useState(null)
     const [openModal, setOpenModal] = useState(false);
     const [viewSetting, setViewSetting] = useState({mark: true, remark: false, pass: false, reviewed: false});
+    const [setting, ] = useState({modal: true, analytics: true});
 
     const {hideSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
@@ -109,7 +110,7 @@ const Magazine = () => {
                 <Button data={ArrowIcon} callback={!isMin() ? () => swipeMonth('left') : undefined} disabledStyle={isMin()}/>
                 <Button data={ArrowIcon} callback={!isMax() ? () => swipeMonth('right') : undefined} disabledStyle={isMax()}/>
             </div>
-            <MagazineTable students={students} magazines={magazines} performances={performances} classBag={{id_class: combination?.id_class}} viewSetting={viewSetting}/>
+            <MagazineTable students={students} magazines={magazines} performances={performances} setting={setting} viewSetting={viewSetting}/> 
             <div className={st.helper}>   
                 <p>Select month:</p>
                 <p>{new Date(date).toLocaleString('en-EN', { month: 'long' })}</p>
@@ -122,6 +123,7 @@ const Magazine = () => {
 
 export default Magazine;
 
+// classBag={{id_class: combination?.id_class}}}
 
 
 

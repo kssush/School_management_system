@@ -10,6 +10,7 @@ import Student from "../../pages/Student/Student";
 import Class from "../../pages/Class/Class";
 import Magazine from "../../pages/Magazine/Magazine";
 import Homework from "../../pages/Homework/Homework";
+import Analytics from "../../pages/Analytics/Analytics";
 
 const AppRouter = () => {
     return(
@@ -24,6 +25,7 @@ const AppRouter = () => {
             <Route path="/class" element={<Class />}></Route>
             <Route path="/magazine" element={<Magazine />}></Route>
             <Route path="/homework" element={<Homework />}></Route>
+            <Route path="/analytics" element={<Analytics />}></Route>
             <Route path="*" element={<Schedule />}></Route>
         </Routes>
     )

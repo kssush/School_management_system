@@ -1,0 +1,10 @@
+@import '../../styles/mixins.scss';
+
+.setting{
+    @include settingOn;
+    
+    >:nth-child(2){
+        margin-right: auto;
+        margin-left: 1.875rem;
+    }
+}

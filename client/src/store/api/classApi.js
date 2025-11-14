@@ -53,6 +53,10 @@ export const classApi = baseApi.injectEndpoints({
             query: (id) => `/class/getClass/${id}`,
             providesTags: ['Class']
         }),
+        getClassAnalytics: builder.query({
+            query: (id) => `/class/getClassAnalytics/${id}`,
+            providesTags: ['Class']
+        }),
         getAllStudent: builder.query({
             query: (isClass) => {
                 const params = {};
@@ -77,5 +81,6 @@ export const {
     useGetCombinationQuery,
     useGetAllCombinationsQuery,
     useGetClassQuery,
+    useGetClassAnalyticsQuery,
     useGetAllStudentQuery,
 } = classApi;
