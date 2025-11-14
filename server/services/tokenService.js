@@ -28,7 +28,8 @@ class TokenService{
         }
     }
 
-    saveToken(refreshToken){
+    saveToken(res, refreshToken){
+        console.log(refreshToken)
         res.cookie("refreshToken", refreshToken, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,

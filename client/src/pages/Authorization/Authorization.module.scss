@@ -1,0 +1,38 @@
+@import '../../styles/mixins.scss';
+
+.authorization{
+    display: flex;
+    justify-content: center;
+    padding: 5.625rem 0;
+
+    .box{
+        @include shadow;
+        width: 20rem;
+        padding: 1.875rem 2.5rem;
+        height:  fit-content;
+        background-color: var(--second);
+        border-radius: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5625rem;
+
+        >p{
+            @include text30-medium;
+            margin-bottom: 1.25rem;
+        }
+
+        >button{
+            @include text16-regular;
+            padding: 0.625rem 1.875rem;
+            background-color: var(--purple);
+            border-radius: 0.625rem;
+            transition: all 0.5s;
+            margin-top: 1.25rem;;
+            
+            &:hover{
+                opacity: 0.7;
+            }
+        }
+    }
+}

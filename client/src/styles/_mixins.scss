@@ -12,6 +12,10 @@
     @include text(30, 700);    
 }
 
+@mixin text30-medium{
+    @include text(30, 500);    
+}
+
 @mixin text24-medium{
     @include text(24, 500);    
 }

@@ -25,9 +25,9 @@ class UserController extends Controller {
         Controller.validateRequired(req.body, ['login', 'password']);
 
         const data = await service.login(req.body);
-
-        token.saveToken(tokens.refreshToken);
-
+        console.log('data', data)
+        token.saveToken(res, data.tokens.refreshToken);
+        console.log('12312312')
         return res.json(data);
     }
 
