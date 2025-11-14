@@ -6,7 +6,7 @@ import Button from "../../components/UI/Button/Button";
 import { days } from './constants';
 import ArrowIcon from '../../assets/icons/arrow.svg'
 import DoneIcon from '../../assets/icons/done.svg'
-import { useAddReviewMutation, useGetLessonHomeworkQuery, useGetScheduleHomeworkQuery } from '../../store/api/magazineApi';
+import { useAddReviewMutation, useGetLessonHomeworkQuery, useGetReviewMutation, useGetReviewQuery, useGetScheduleHomeworkQuery } from '../../store/api/magazineApi';
 import {colorLessonContrast} from '../../components/TableSchedule/constants'
 
 const tempData = new Date();
@@ -40,8 +40,9 @@ const Homework = () => {
 
     const {data: schedules} = useGetScheduleHomeworkQuery(11);
     const {data: lessons} = useGetLessonHomeworkQuery({id: 11, date: date.currentMonday})
+    const {data: review, refetch} = useGetReviewQuery(id_student, { refetchOnMountOrArgChange: true });
     const [addReviewed] = useAddReviewMutation();
-
+    
     useEffect(() =>{
         setHeader('Magazine');
         setDescription('All lessons in one place');
@@ -57,7 +58,6 @@ const Homework = () => {
     }, [lessons, date.currentMonday])
 
     useEffect(() => {
-        console.log('12312312' , date.currentDate,lessons?.magazine?.[date.currentDate] );
         setLesson(lessons?.magazine?.[date.currentDate] ?? [])
         
     }, [lessons, date.currentDate])
@@ -132,6 +132,7 @@ const Homework = () => {
 
     const handleReviewed = async () => {
         await addReviewed(id_student);
+        refetch();
     }
 
     return(
@@ -166,9 +167,9 @@ const Homework = () => {
             <div className={st.helper}>
                 <p>Select days:</p>
                 <p>{date.currentMonday} - {date.currentSunday}</p>
-                <div className={st.reviewed}>
+                <div className={`${st.reviewed} ${review?.reviewed ? st.active : ''}`} onClick={handleReviewed}>
                     <p>Reviewed by</p>
-                    <Button data={DoneIcon} callback={handleReviewed}/>
+                    <Button data={DoneIcon} callback={undefined} disabledStyle={review?.reviewed}/>
                 </div>
             </div>
         </>

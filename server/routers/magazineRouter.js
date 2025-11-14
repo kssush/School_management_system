@@ -13,5 +13,7 @@ router.get('/getScheduleHomework/:id_student', magazineController.getScheduleHom
 router.get('/getLessonHomework/:id_student', magazineController.getLessonHomework)
 router.patch('/addReview/:id_student', magazineController.addReview)
 router.patch('/removeReview/:id_class', magazineController.removeReview)
+router.patch('/resetReview/:id_class', magazineController.resetReview)
+router.get('/getReview/:id_student', magazineController.getReview)
 
 module.exports = router 

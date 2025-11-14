@@ -11,9 +11,10 @@ import SelectName from "../../components/UI/SelectName/SelectName";
 import Button from "../../components/UI/Button/Button";
 import { useGetSubjectForClassQuery } from "../../store/api/scheduleApi";
 import { useGetClassQuery, useGetCombinationQuery } from "../../store/api/classApi";
-import {useGetMagazineQuery, useGetPerformanceQuery } from "../../store/api/magazineApi";
+import {useGetMagazineQuery, useGetPerformanceQuery, useResetReviewMutation } from "../../store/api/magazineApi";
 import AddLessonModal from "../../components/MagazineUI/AddLessonModal/AddLessonModal";
 import MagazineTable from "../../components/MagazineUI/MagazineTable/MagazineTable";
+import Modal from "../../components/UI/Modal/Modal";
 
 const tempData = new Date();
 const year = tempData.getFullYear();
@@ -26,6 +27,7 @@ const Magazine = () => {
     const [combination, setCombination] = useState(null);
     const [subject, setSubject] = useState(null)
     const [openModal, setOpenModal] = useState(false);
+    const [resetReview, setResetReview] = useState(false);
     const [viewSetting, setViewSetting] = useState({mark: true, remark: false, pass: false, reviewed: false});
     const [setting, ] = useState({modal: true, analytics: true});
 
@@ -53,6 +55,8 @@ const Magazine = () => {
     }, {
         skip: !combination || !subject
     });
+
+    const [resetReviewed] = useResetReviewMutation();
 
     useEffect(() =>{
         setHeader('Magazine');
@@ -97,6 +101,11 @@ const Magazine = () => {
     const isMin = () => new Date(date).getMonth() == 8
     const isMax = () => new Date(date).getMonth() == 4
 
+    const handleResetReviewed = async () => {
+        await resetReviewed(combination.id_class);
+        setResetReview(false);
+    }
+
     return (
         <>
             <div className={st.setting}>
@@ -115,8 +124,10 @@ const Magazine = () => {
                 <p>Select month:</p>
                 <p>{new Date(date).toLocaleString('en-EN', { month: 'long' })}</p>
                 <p>Use the touchpad or scroll / shift + scroll </p>
+                <button onClick={() => setResetReview(true)}>reset reviewed</button>
             </div>
             <AddLessonModal active={openModal} callback={setOpenModal} id_class={combination?.id_class} id_project={subject?.id} defaultCallback={defaulDate}/>
+            <Modal active={resetReview} callback={setResetReview} textHeader={'Reset reviewed'} textConfirm={'Reset'} textClose={'Close'} onConfirm={handleResetReviewed} onClose={() => setResetReview(false)} />
         </>  
     );
 };

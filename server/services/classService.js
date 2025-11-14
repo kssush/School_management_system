@@ -146,13 +146,7 @@ class ClassService {
          
             result[lesson.project_id] = result[lesson.project_id].concat(lesson.students);
         });
-
-        // const result = classes.map(lesson => {
-        //     if(student.total_passes > 0) return {...student, prob: 'middle'}
-        //     if(student.graded_count < 2) return {...student, prob: 'bad'}
-        //     if(student.average_mark < 3) return {...student, prob: 'bad'}
-        // })
-        
+  
         return result;
     }
 
@@ -168,13 +162,6 @@ class ClassService {
             );
  
             return students;
-            // return await User.findAll({
-            //     where: { role: 'student' },
-            //     include: [{ 
-            //         model: Student, 
-            //         as: 'student'
-            //     }]
-            // });
         } else {
             const students = await sequelize.query(
                 queries.class.getAllStudent,

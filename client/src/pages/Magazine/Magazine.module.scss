@@ -35,8 +35,7 @@
     align-items: end;
     display: flex;
     gap: 0.3125rem;
-    margin-top: 1.875rem;;
-    margin-left: 0.625rem;
+    margin: 1.875rem 0.625rem 0 0.625rem;
 
     >p:nth-of-type(1){
         @include text16-regular
@@ -49,6 +48,18 @@
     >p:nth-of-type(3){
         @include text16-regular;
         margin-left: 1.875rem;
+    }
+
+    >button{
+        @include text16-medium;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        margin-left: auto;
+
+        &:hover{
+            color: var(--text60);
+        }
     }
 }
 

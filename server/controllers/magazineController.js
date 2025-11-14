@@ -82,6 +82,22 @@ class MagazineController extends Controller{
 
         return res.json(review);
     }
+
+    async resetReview(req, res, next){
+        const {id_class} = req.params;
+
+        const review = await magazine.resetReview(id_class);
+
+        return res.json(review);
+    }
+
+    async getReview(req, res, next){
+        const {id_student} = req.params;
+
+        const review = await magazine.getReview(id_student);
+
+        return res.json(review);
+    }
 }
 
 module.exports = new MagazineController();

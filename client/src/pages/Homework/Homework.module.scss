@@ -145,9 +145,19 @@
         padding: 0.625rem 0;
         @include center;
         gap: 0.9375rem;
+        cursor: pointer;
+        transition: all 0.5s;
+
+        &:hover{
+            opacity: 0.6;
+        }
 
         >p{
             @include text18-regular;
         }
+    }
+
+    .reviewed.active{
+        opacity: 0.6;
     }
 }

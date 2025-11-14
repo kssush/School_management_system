@@ -81,14 +81,28 @@ export const magazineApi = baseApi.injectEndpoints({
                 url: `/magazine/addReview/${id_student}`,
                 method: "PATCH",
             }),
-            invalidatesTags: ["Magazine"],
+            invalidatesTags: ["Class"],
         }),
         removeReview: builder.mutation({
             query: (id_class) => ({
                 url: `/magazine/removeReview/${id_class}`,
                 method: "PATCH",
             }),
-            invalidatesTags: ["Magazine"],
+            invalidatesTags: ["Class"],
+        }),
+        resetReview: builder.mutation({
+            query: (id_class) => ({
+                url: `/magazine/resetReview/${id_class}`,
+                method: "PATCH",
+            }),
+            invalidatesTags: ["Class"],
+        }),
+        getReview: builder.query({
+            query: (id_student) => ({
+                url: `/magazine/getReview/${id_student}`,
+                method: "GET",
+            }),
+            invalidatesTags: ["Class"],
         }),
     }),
 });
@@ -104,4 +118,6 @@ export const {
     useGetLessonHomeworkQuery,
     useAddReviewMutation,
     useRemoveReviewMutation,
+    useResetReviewMutation,
+    useGetReviewQuery
 } = magazineApi;

@@ -257,10 +257,22 @@ class MagazineService {
         return true;
     }
 
+    async resetReview(id_class){
+        await Composition.update({reviewed: false}, {where: {id_class}})
+        
+        return true;
+    }
+
     async removeReview(id_class){
         await Composition.update({reviewed: false}, {where: {id_class}})
 
         return true;
+    }
+
+    async getReview(id_student){
+        const review = await Composition.findOne({where: {id_student}})
+
+        return review;
     }
 
 
