@@ -8,14 +8,14 @@ export const scheduleApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: lessonData,
             }),
-            invalidatesTags: ["Lesson", "SubjectClass"]
+            invalidatesTags: ["Lesson", "SubjectClass", "ScheduleHomework"]
         }),
         deleteLesson: builder.mutation({
             query: (id) => ({
                 url: `schedule/deleteLesson/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["Lesson", "SubjectClass"] 
+            invalidatesTags: ["Lesson", "SubjectClass", "ScheduleHomework"] 
         }),
         updateLesson: builder.mutation({
             query: ({id, ...lessonData}) => ({
@@ -23,7 +23,7 @@ export const scheduleApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 body: lessonData,
             }),
-            invalidatesTags: ["Lesson", "SubjectClass"] // тут если учитель меняется
+            invalidatesTags: ["Lesson", "SubjectClass", "ScheduleHomework"] // тут если учитель меняется
         }),
         updateTime: builder.mutation({
             query: ({id, ...lessonData}) => ({
