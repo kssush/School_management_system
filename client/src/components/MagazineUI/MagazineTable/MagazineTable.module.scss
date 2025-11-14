@@ -119,12 +119,15 @@
             min-width: 6.25rem;
             border-right: 1px solid var(--black10);
             position: relative;
-            
 
             @for $i from 1 through 40 { 
                 &:nth-child(#{$i}) {
                     z-index: 80 - ($i * 5);
                 }
+            }
+
+            &.reviewedBorder{
+                border-right: 0;
             }
 
             &:last-child{

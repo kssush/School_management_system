@@ -57,6 +57,20 @@ const MagazineTable = ({ students, magazines, performances, viewSetting, setting
                     )
                 }          
                 <div className={`${st.box} ${!students || students?.length == 0 ? st.noStudent : (magazines ? (magazines?.length == 0 ? st.noMagazine : '') : st.noSub)}`}>              
+                    {students && viewSetting.reviewed && (
+                        <div className={`${st.column1} ${st.reviewedBorder}`} key={'reviewed'} >   
+                            <div className={st.header}>
+                                reviewed
+                            </div>               
+                            {students?.map((student, index) => (
+                                <div key={index}
+                                    className={`${student.reviewed ? st.reviewedYes : st.reviewedNo}`}
+                                >
+                                    {student.reviewed ? '+' : '-'}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                     {(magazines && magazines.length > 0 ) ? (
                         magazines?.map((lessons, index) => (
                             lessons?.lessons?.map((lesson, lessonIndex) => {
@@ -104,21 +118,7 @@ const MagazineTable = ({ students, magazines, performances, viewSetting, setting
                         ))
                     )  : (
                         <div className={students ? st.noSubject : st.noElement}>{magazines ? 'No lesson' : 'Select subject'}</div> 
-                    )}     
-                    {students && viewSetting.reviewed && (
-                        <div className={st.column1} key={'reviewed'} >   
-                            <div className={st.header}>
-                                reviewed
-                            </div>               
-                            {students?.map((student, index) => (
-                                <div
-                                    className={st.reviewed ? st.reviewedYes : st.reviewedNo}
-                                >
-                                    {student.reviewed ? '+' : '-'}
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                    )}         
                 </div>
             </div>
             {setting.modal && <AddLessonModal active={openModal.updateLesson} callback={handleCloseModal} id_lesson={lessonId}/>}
