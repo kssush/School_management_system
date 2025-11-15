@@ -18,6 +18,17 @@ export const userApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["User"],
         }),
+        checkAuth: builder.query({
+            query: () => "/user/checkAuth",
+            providesTags: ["User"],
+        }),
+        refresh: builder.mutation({
+            query: () => ({
+                url: "user/refresh",
+                method: "POST",
+            }),
+            providesTags: ["User"],
+        }),
         logout: builder.mutation({
             query: () => ({
                 url: "user/logout",
@@ -71,6 +82,8 @@ export const userApi = baseApi.injectEndpoints({
 export const {
     useRegistrationMutation,
     useLoginMutation,
+    useCheckAuthQuery,
+    useRefreshMutation,
     useLogoutMutation,
     useUpdateUserMutation,
     useUpdateParentMutation,

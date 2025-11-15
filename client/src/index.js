@@ -10,19 +10,22 @@ import { MainProvider } from "./context/mainContext";
 import store from "./store";
 import { Provider } from "react-redux";
 import { ScheduleProvider } from "./context/scheduleContext";
+import { UserProvider } from "./context/userContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 
         <BrowserRouter>
-            <HeaderProvider>
-                <MainProvider>
-                    <ScheduleProvider>
-                        <Provider store={store}>
-                            <App />
-                        </Provider>
-                    </ScheduleProvider>        
-                </MainProvider>
-            </HeaderProvider>
+            <UserProvider>
+                <HeaderProvider>
+                    <MainProvider>
+                        <ScheduleProvider>
+                            <Provider store={store}>
+                                <App />
+                            </Provider>
+                        </ScheduleProvider>        
+                    </MainProvider>
+                </HeaderProvider>
+            </UserProvider>
         </BrowserRouter>
 );

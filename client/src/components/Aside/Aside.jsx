@@ -13,7 +13,6 @@ const Aside = () => {
             <Link to="/magazine">Magazine</Link>
             <Link to="/homework">Homework</Link>
             <Link to="/analytics">Analytics</Link>
-            <Link to="/authorization">Login</Link>
         </aside>
     )
 };

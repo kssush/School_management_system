@@ -26,7 +26,7 @@ export const useMain = () => {
     const context = useContext(MainContext);
 
     if(!context){
-        throw new Error('No with MainProvider!')
+        throw new Error('useMain must be used within MainContext')   
     }
     return context;
 }

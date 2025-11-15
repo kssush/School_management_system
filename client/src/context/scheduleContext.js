@@ -26,7 +26,7 @@ export const useSchedule = () => {
     const context = useContext(ScheduleContext);
 
     if(!context){
-        throw new Error('ошибка'); ///////////
+        throw new Error('useSchedule must be used within ScheduleContext')     
     }
     return context;
 }

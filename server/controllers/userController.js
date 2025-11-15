@@ -25,10 +25,10 @@ class UserController extends Controller {
         Controller.validateRequired(req.body, ['login', 'password']);
 
         const data = await service.login(req.body);
-        console.log('data', data)
+ 
         token.saveToken(res, data.tokens.refreshToken);
-        console.log('12312312')
-        return res.json(data);
+   
+        return res.json({user: data.user, token: data.tokens.accessToken});
     }
 
     async update(req, res, next){
@@ -65,8 +65,36 @@ class UserController extends Controller {
         return res.json();
     }
 
-    async refresh(req, res, next){ 
-        // обновить токены
+    async checkAuth(req, res, next){
+        const accessToken = req.headers.authorization?.split(' ')[1]; 
+        console.log(accessToken, 'accessssss')
+        if(!accessToken) next(ApiError.unauthorized('Неавторизован!'));
+
+        const user = token.validateAccessToken(accessToken)
+
+        if(!user) next(ApiError.unauthorized('Невалидный access token!'));
+
+        const tokens = token.generateTokens(user);
+
+        token.saveToken(res, tokens.refreshToken);
+   
+        return res.json({user: user, token: tokens.accessToken})
+    }
+
+    async refresh(req, res, next){
+        const refreshToken = token.findToken(req);
+        console.log(refreshToken, 'dfsdfsd')
+        if(!refreshToken) next(ApiError.unauthorized('Неавторизован!'));
+
+        const user = token.validateRefreshToken(refreshToken)
+
+        if(!user) next(ApiError.unauthorized('Невалидный refresh token!'));
+
+        const tokens = token.generateTokens(user);
+
+        token.saveToken(res, tokens.refreshToken);
+   
+        return res.json({user: user, token: tokens.accessToken});
     }
 
     async getAllTeacher(req, res, next){

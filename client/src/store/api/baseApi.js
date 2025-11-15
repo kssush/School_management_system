@@ -1,83 +1,46 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// export const baseApi = createApi({
-//     reducerPath: 'api',
-//     baseQuery: fetchBaseQuery({
-//         baseUrl: 'http://localhost:5000/api',
-//         prepareHeader: (headers) => {
-//             const token = localStorage.getItem('token');
-//             if (token) headers.set('authorization', `Bearer ${token}`);
-//             return headers;
-//         },
-//     }),
-//     tagTypes: ['User', 'Class', 'Schedule', 'Magazine', 'Lesson', 'Time', 'Teachers', 'Teacher', 'Shift', 'Subject', 'Combinations'],
-//     endpoints: () => ({})
-// })
-
-// const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
-//     const result = await fetchBaseQuery({
-//         baseUrl: 'http://localhost:5000/api',
-//         prepareHeaders: (headers) => {
-//             const token = localStorage.getItem('token');
-//             if (token) headers.set('authorization', `Bearer ${token}`);
-//             return headers;
-//         },
-//     })(args, api, extraOptions);
-
-//     
-//     if (result.error) {
-//         const { status, data } = result.error;
-//         console.log(result)
-//         let message = 'Something went wrong';
-        
-//         // Обрабатываем разные форматы данных
-//         if (typeof data === 'string') {
-//             message = data;
-//         } else if (data?.message) {
-//             message = data.message;
-//         } else if (data?.error) {
-//             message = data.error;
-//         }
-        
-//         switch (status) {
-//             case 409:
-//                 console.error('Conflict error:', message);
-//                 break;
-//             case 401:
-//                 console.error('Unauthorized');
-//                 break;
-//             case 500:
-//                 console.error('Server error');
-//                 break;
-//             default:
-//                 console.error('Unknown error:', message);
-//         }
-
-//         setTimeout(() => {
-
-//         }, 100000)
-
-//         alert(message);
-//     }
-
-//     return result;
-// };
 
 const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
-    const result = await fetchBaseQuery({
+    const baseQuery = await fetchBaseQuery({
         baseUrl: 'http://localhost:5000/api',
         credentials: 'include',
         prepareHeaders: (headers) => {
-            const token = localStorage.getItem('token');
-            if (token) headers.set('authorization', `Bearer ${token}`);
+            const token = localStorage.getItem('accessToken');
+            console.log(token)
+            if (token){
+                headers.set('authorization', `Bearer ${token}`);
+            }
+
             return headers;
         },
-    })(args, api, extraOptions);
+    });
 
-    // Ошибка = есть result.error И статус >= 400
-    const isRealError = result.error && result.meta?.response?.status >= 400;
+    let result = await baseQuery(args, api, extraOptions);
+
+    if (result.error && result.error.status === 401) {        
+        const refreshResult = await fetchBaseQuery({
+            baseUrl: 'http://localhost:5000/api',
+            credentials: 'include',
+        })({ url: '/user/refresh', method: 'POST' }, api, extraOptions);
+
+        if (refreshResult.data && refreshResult.data.token) {
+             console.log('44444444444443333333333111122222222')
+            localStorage.setItem('accessToken', refreshResult.data.token);
+             console.log(localStorage.getItem('accessToken'))
+            result = await baseQuery(args, api, extraOptions);
+
+            return result;
+        } else {
+            console.log('Refresh failed!')
+           
+            localStorage.removeItem('accessToken'); // можно логаут
+
+            return result;
+        }
+    }
     
-    if (isRealError) {
+    if (result.error && result.meta?.response?.status >= 400) {
         const message = result.error.data?.message || 'Something went wrong';
         console.error('API Error:', message);
         alert(message);

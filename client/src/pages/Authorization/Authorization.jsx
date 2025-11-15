@@ -5,10 +5,12 @@ import { useMain } from "../../context/mainContext";
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import { useLoginMutation } from "../../store/api/userApi";
+import { useUser } from "../../context/userContext";
 
 const Authorization = () => {
     const [input, setInput] = useState({});
 
+    const {user, setUser} = useUser();
     const {hideSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
 
@@ -20,17 +22,28 @@ const Authorization = () => {
             [name]: value
         }))
     }
-
+    
     const handleLogin = async () => {
-        await login(input);
-    }
+        try {
+            const result = await login(input).unwrap();
 
+            if (result.user && result.token) {
+                setUser(result.user);
+                localStorage.setItem('accessToken', result.token);
+            } 
+        } catch (error) {
+            console.error('Login failed:', error);
+            alert(error.data?.message || 'Login failed');
+        }
+    }
+    
+    console.log(user)
     return (
         <div className={st.authorization}>
             <div className={st.box}>
                 <p>Login</p>
-                <Input placeholder={'Login'} callback={callbackInput}/>
-                <Input placeholder={'Password'} callback={callbackInput} type={'password'}/>
+                <Input name="login" placeholder={'Login'} callback={callbackInput}/>
+                <Input name="password" placeholder={'Password'} callback={callbackInput} type={'password'}/>
                 <button onClick={handleLogin}>Login</button>
             </div>
         </div>
