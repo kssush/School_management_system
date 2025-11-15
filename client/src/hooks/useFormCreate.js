@@ -14,8 +14,11 @@ const useFormCreate = () => {
 
     const validateField = (field, value) => {
         const validations = {
-            name: () => value.length < 2 && handlerError(new Error('Name too short'), 'name'),
-            email: () => !/\S+@\S+\.\S+/.test(value) && handlerError(new Error('Invalid email'), 'email')
+            name: () => value.length < 2 && handlerError(new Error('Name too short'), 'name') || value.length > 14 && handlerError(new Error('Name too long'), 'name'),
+            surname: () => value.length < 2 && handlerError(new Error('Surname too short'), 'surname') || value.length > 14 && handlerError(new Error('Surname too long'), 'name'),
+            patronymic: () => value.length > 14 && handlerError(new Error('Patronymic too long'), 'patronymic'),
+            email: () => !/\S+@\S+\.\S+/.test(value) && handlerError(new Error('Invalid email. Mask ...@pochta.com'), 'email'),
+            telephone: () => !/^\+375\s\(\d{2}\)\s\d{3}-\d{2}-\d{2}$/.test(value) && handlerError(new Error('Invalid phone. \nMask: +375 (xx) xxx-xx-xx'), 'telephone'),
         };
         
         validations[field]?.();

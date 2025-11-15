@@ -19,7 +19,7 @@ const HeaderProfile = () => {
     if(!active) return null
 
     return(
-        <Link to={role != 'admin ' && `/${role == 'teacher' ? 'profile' : 'family'}/${!['mam', 'dad'].includes(role) ? id : user.id_student}`} className={st.profile}>
+        <Link to={role != 'admin' && `/${role == 'teacher' ? 'profile' : 'family'}/${!['mam', 'dad'].includes(role) ? id : user.id_student}`} className={st.profile}>
             <div className={st.icon}></div>
             <div className={st.profileText}>
                 <p>{user?.surname ?? 'name'} {user?.name ?? 'surname'}data</p>
