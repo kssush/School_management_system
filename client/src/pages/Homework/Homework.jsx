@@ -8,6 +8,7 @@ import ArrowIcon from '../../assets/icons/arrow.svg'
 import DoneIcon from '../../assets/icons/done.svg'
 import { useAddReviewMutation, useGetLessonHomeworkQuery, useGetReviewMutation, useGetReviewQuery, useGetScheduleHomeworkQuery } from '../../store/api/magazineApi';
 import {colorLessonContrast} from '../../components/TableSchedule/constants'
+import { useUser } from "../../context/userContext";
 
 const tempData = new Date();
 const year = tempData.getFullYear();
@@ -26,7 +27,7 @@ const sundayString = sunday.toLocaleDateString('en-CA');
 const defData = (month > 5 && month < 9) ? `${year}-05-01` : mondayString;
 // а как летом?
 const Homework = () => {
-    const id_student = 11; ////// исправиль когда будет авторизации и тп
+    // const id_student = 11; ////// 
 
     const [day, setDay] = useState(days[0].value || 'Monday')
     const [date, setDate] = useState({currentMonday: defData, currentSunday: sundayString, currentDate: defData});
@@ -35,12 +36,13 @@ const Homework = () => {
     const [schedule, setSchedule] = useState([])
     const [dataHomework, setDataHomework] = useState([]);
     
+    const {id, role, user} = useUser();
     const {hideSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
 
-    const {data: schedules} = useGetScheduleHomeworkQuery(11);
-    const {data: lessons} = useGetLessonHomeworkQuery({id: 11, date: date.currentMonday})
-    const {data: review, refetch} = useGetReviewQuery(id_student, { refetchOnMountOrArgChange: true });
+    const {data: schedules} = useGetScheduleHomeworkQuery(role == 'student' ? id : user.id_student);
+    const {data: lessons} = useGetLessonHomeworkQuery({id: role == 'student' ? id : user.id_student, date: date.currentMonday})
+    const {data: review, refetch} = useGetReviewQuery(role == 'student' ? id : user.id_student, { refetchOnMountOrArgChange: true });
     const [addReviewed] = useAddReviewMutation();
     
     useEffect(() =>{
@@ -131,7 +133,7 @@ const Homework = () => {
     }
 
     const handleReviewed = async () => {
-        await addReviewed(id_student);
+        await addReviewed(user.id_student);
         refetch();
     }
 
@@ -167,10 +169,10 @@ const Homework = () => {
             <div className={st.helper}>
                 <p>Select days:</p>
                 <p>{date.currentMonday} - {date.currentSunday}</p>
-                <div className={`${st.reviewed} ${review?.reviewed ? st.active : ''}`} onClick={handleReviewed}>
+                {['mam', 'dad'].includes(role) && <div className={`${st.reviewed} ${review?.reviewed ? st.active : ''}`} onClick={handleReviewed}>
                     <p>Reviewed by</p>
                     <Button data={DoneIcon} callback={undefined} disabledStyle={review?.reviewed}/>
-                </div>
+                </div>}
             </div>
         </>
     )

@@ -2,6 +2,7 @@ import { useState } from "react";
 import PerformanceModal from "../PerformanceModal/PerformanceModal";
 import AddLessonModal from "../AddLessonModal/AddLessonModal";
 import st from "./MagazineTable.module.scss";
+import { useUser } from "../../../context/userContext";
 
 const MagazineTable = ({ students, magazines, performances, viewSetting, setting, children }) => {
     const [openModal, setOpenModal] = useState({updateLesson: false, performance: false});
@@ -9,6 +10,8 @@ const MagazineTable = ({ students, magazines, performances, viewSetting, setting
     const [studentId, setStudentId] = useState(null);
     const [performanceData, setPerformanceData] = useState({id: null, remark: null});
     
+    const {role} = useUser();
+
     const handleOpenModal = (name) =>{
         setOpenModal(prev => ({
             ...prev,
@@ -121,8 +124,8 @@ const MagazineTable = ({ students, magazines, performances, viewSetting, setting
                     )}         
                 </div>
             </div>
-            {setting.modal && <AddLessonModal active={openModal.updateLesson} callback={handleCloseModal} id_lesson={lessonId}/>}
-            {setting.modal && <PerformanceModal active={openModal.performance} callback={handleCloseModal} id_magazine={lessonId} id_student={studentId} id_performance={performanceData.id} remark={performanceData.remark}/>}
+            {['teacher', 'admin'].includes(role) && setting.modal && <AddLessonModal active={openModal.updateLesson} callback={handleCloseModal} id_lesson={lessonId}/>}
+            {['teacher', 'admin'].includes(role) && setting.modal && <PerformanceModal active={openModal.performance} callback={handleCloseModal} id_magazine={lessonId} id_student={studentId} id_performance={performanceData.id} remark={performanceData.remark}/>}
         </>
     )
 }

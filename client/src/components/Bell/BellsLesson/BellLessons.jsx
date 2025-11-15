@@ -5,6 +5,7 @@ import { colorLesson } from "../../TableSchedule/constants";
 import Modal from "../../UI/Modal/Modal";
 import Input from "../../UI/Input/Input";
 import useErrorHandler from "../../../hooks/useErrorHandler";
+import { useUser } from "../../../context/userContext";
 
 const errorText = 'The time must be in xx:yy format.'
 
@@ -39,7 +40,8 @@ export default BellLessons;
 const BellLessonItem = ({id, start, end, index}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [input, setInput] = useState({});
-    
+   
+    const {role} = useUser();
     const { errors, handlerError, clearError, clearAllErrors } = useErrorHandler();
 
     const [updateTime] = useUpdateTimeMutation();
@@ -104,18 +106,20 @@ const BellLessonItem = ({id, start, end, index}) => {
                     <p>{start} - {end}</p>
                 </div>
             </div>
-            <Modal
-                active={isOpen}
-                callback={setIsOpen}
-                onClose={handleClose}
-                onConfirm={handleUpdate}
-                textHeader={`Change the bell time for a ${index + 1} lesson`}
-                textConfirm={'Update'}
-                textClose={'Close'}
-            >
-                <Input placeholder={'Time_start'} callback={handleInput} error={errors.time_start}/>
-                <Input placeholder={'Time_end'} callback={handleInput} error={errors.time_end}/>
-            </Modal>
+            {['teacher', 'admin'].includes(role) && (
+                <Modal
+                    active={isOpen}
+                    callback={setIsOpen}
+                    onClose={handleClose}
+                    onConfirm={handleUpdate}
+                    textHeader={`Change the bell time for a ${index + 1} lesson`}
+                    textConfirm={'Update'}
+                    textClose={'Close'}
+                >
+                    <Input placeholder={'Time_start'} callback={handleInput} error={errors.time_start}/>
+                    <Input placeholder={'Time_end'} callback={handleInput} error={errors.time_end}/>
+                </Modal>
+            )}
         </>
     )
 }

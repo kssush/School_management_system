@@ -15,6 +15,7 @@ import {useGetMagazineQuery, useGetPerformanceQuery, useResetReviewMutation } fr
 import AddLessonModal from "../../components/MagazineUI/AddLessonModal/AddLessonModal";
 import MagazineTable from "../../components/MagazineUI/MagazineTable/MagazineTable";
 import Modal from "../../components/UI/Modal/Modal";
+import { useUser } from "../../context/userContext";
 
 const tempData = new Date();
 const year = tempData.getFullYear();
@@ -31,6 +32,7 @@ const Magazine = () => {
     const [viewSetting, setViewSetting] = useState({mark: true, remark: false, pass: false, reviewed: false});
     const [setting, ] = useState({modal: true, analytics: true});
 
+    const {role} = useUser();
     const {hideSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
     
@@ -111,7 +113,7 @@ const Magazine = () => {
             <div className={st.setting}>
                 <SelectName name={'Class'} data={combinations} callback={setCombination} />
                 <SelectName name={'Subject'} data={subjects} callback={setSubject} />
-                <Button data={AddIcon} callback={handleOpenModal}/>
+                {['teacher', 'admin'].includes(role) ? <Button data={AddIcon} callback={handleOpenModal}/> : <span></span>}
                 <Button data={AbsenceIcon} active={viewSetting.pass} callback={() => handleToggleViewSetting('pass')}/>
                 <Button data={RemarkIcon} active={viewSetting.remark} callback={() => handleToggleViewSetting('remark')}/>
                 <Button data={'5'} active={viewSetting.mark} callback={() => handleToggleViewSetting('mark')}/>
@@ -126,8 +128,8 @@ const Magazine = () => {
                 <p>Use the touchpad or scroll / shift + scroll </p>
                 <button onClick={() => setResetReview(true)}>reset reviewed</button>
             </div>
-            <AddLessonModal active={openModal} callback={setOpenModal} id_class={combination?.id_class} id_project={subject?.id} defaultCallback={defaulDate}/>
-            <Modal active={resetReview} callback={setResetReview} textHeader={'Reset reviewed'} textConfirm={'Reset'} textClose={'Close'} onConfirm={handleResetReviewed} onClose={() => setResetReview(false)} />
+            {['teacher', 'admin'].includes(role) && <AddLessonModal active={openModal} callback={setOpenModal} id_class={combination?.id_class} id_project={subject?.id} defaultCallback={defaulDate}/>}
+            {['teacher', 'admin'].includes(role) && <Modal active={resetReview} callback={setResetReview} textHeader={'Reset reviewed'} textConfirm={'Reset'} textClose={'Close'} onConfirm={handleResetReviewed} onClose={() => setResetReview(false)} />}
         </>  
     );
 };

@@ -5,11 +5,13 @@ import { useSchedule } from '../../../context/scheduleContext';
 import { ModalSchedule, ModalScheduleTeacher } from '../Modal/Modal';
 import { colorLesson } from '../constants';
 import AddIcon from '../../../assets/icons/add.svg';
+import { useUser } from "../../../context/userContext";
 
 const LessonItem = ({time, lesson, index, isTeacherSchedule}) => {
     const [isOpenAdd, setIsOpenAdd] = useState(false);
     const [isOpenUpdate, setIsOpenUpdate] = useState(false);
 
+    const {role} = useUser();
     const {combination} = useSchedule()
 
     return (
@@ -27,11 +29,11 @@ const LessonItem = ({time, lesson, index, isTeacherSchedule}) => {
                     </div>
                 )}
             </div>
-            {isOpenAdd && (!isTeacherSchedule ?
+            {['admin'].includes(role) && isOpenAdd && (!isTeacherSchedule ?
                 <ModalSchedule active={isOpenAdd} callback={setIsOpenAdd} time={time} /> :
                 <ModalScheduleTeacher active={isOpenAdd} callback={setIsOpenAdd} time={time}/>)
             }
-            {isOpenUpdate && (!isTeacherSchedule ? 
+            {['admin'].includes(role) && isOpenUpdate && (!isTeacherSchedule ? 
                 <ModalSchedule active={isOpenUpdate} callback={setIsOpenUpdate} time={time} id_lesson={lesson?.id}/> :
                 <ModalScheduleTeacher active={isOpenUpdate} callback={setIsOpenUpdate} id_lesson={lesson?.id}/>)
             }

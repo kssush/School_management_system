@@ -16,14 +16,14 @@ import { useHeader } from "../../context/headerContext";
 import useFormFilter from "../../hooks/useFormFilter";
 import usePaggination from "../../hooks/usePaggination";
 import CardAdd from "../../components/CardAdd/CardAdd";
-
-const a = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+import { useUser } from "../../context/userContext";
 
 
 const Teacher = () => {
     const [sort, setSort] = useState({class: null, name: null});
     const [addSection, setAddSection] = useState(false);
 
+    const {role} = useUser();
     const {debouncedSearchQuery, showSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
 
@@ -33,7 +33,7 @@ const Teacher = () => {
     const [addTeacher] = useRegistrationMutation();
 
     const {input, errors, handleInput, handlerError, clearAllErrors, clearInput } = useFormCreate();
-    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: teacherData, countOfPage: 5});
+    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: teacherData, countOfPage: ['admin'].includes(role) ? 5 : 6});
 
     useEffect(() =>{
         setHeader('Teachers');
@@ -84,7 +84,7 @@ const Teacher = () => {
                 <TextButton name={'Sort name'}>
                     <Button data={ArrowIcon} active={sort.name != null} callback={() => callbackSort('name', sort.name)} rotate={sort?.name}/>
                 </TextButton>
-                <Button data={AddIcon} callback={() => setAddSection(true)}/>
+                {['admin'].includes(role) && <Button data={AddIcon} callback={() => setAddSection(true)}/>}
                 <Button data={ArrowIcon} callback={hasPrevios ? previosPage : undefined} disabledStyle={!hasPrevios}/>
                 <Button data={ArrowIcon} callback={hasNext ? nextPage : undefined} disabledStyle={!hasNext}/>
             </div>
@@ -92,7 +92,7 @@ const Teacher = () => {
                 {currentItem?.map(teacher => (
                     <CardUser key={teacher.id} user={teacher}/>
                 ))}
-                <CardAdd text={addTextBox} click={() => setAddSection(true)}/>
+                {['admin'].includes(role) && <CardAdd text={addTextBox} click={() => setAddSection(true)}/>}
             </div>
         </>
     );

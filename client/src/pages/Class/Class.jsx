@@ -16,6 +16,7 @@ import DoneIcon from '../../assets/icons/done.svg'
 import TextButton from "../../components/UI/TextButton/TextButton";
 import { addTextBox } from "./constants";
 import Modal from "../../components/UI/Modal/Modal";
+import { useUser } from "../../context/userContext";
 
 const Class = () => {
     const [combination, setCombination] = useState(null);
@@ -24,6 +25,7 @@ const Class = () => {
     const [newCombination, setNewCombination] = useState(null); ////или как
     const [newStudent, setNewStudent] = useState(null);
 
+    const {role} = useUser();
     const {debouncedSearchQuery, hideSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
 
@@ -36,7 +38,7 @@ const Class = () => {
     const [studentAdd] = useAddStudentMutation();
 
     const {processedData: studentData} = useFormFilter(students, debouncedSearchQuery, sort);
-    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: studentData, countOfPage: 5});
+    const {currentItem, hasNext, hasPrevios, nextPage, previosPage} = usePaggination({data: studentData, countOfPage: ['teacher', 'admin'].includes(role) ? 5 : 6});
 
     useEffect(() =>{
         setHeader('Class');
@@ -82,8 +84,8 @@ const Class = () => {
                 <TextButton name={'Sort name'}>
                     <Button data={ArrowIcon} active={sort.name != null} callback={() => callbackSort('name', sort.name)} rotate={sort?.name}/>
                 </TextButton>
-                <Button data={DoneIcon} callback={() => handleOpenModal('up')}/>
-                <Button data={AddIcon} callback={() => handleOpenModal('add')}/>
+                {['admin'].includes(role) ? <Button data={DoneIcon} callback={() => handleOpenModal('up')}/> : <span></span>}
+                {['admin'].includes(role) ? <Button data={AddIcon} callback={() => handleOpenModal('add')}/> : <span></span>}
                 <Button data={ArrowIcon} callback={hasPrevios ? previosPage : undefined} disabledStyle={!hasPrevios}/>
                 <Button data={ArrowIcon} callback={hasNext ? nextPage : undefined} disabledStyle={!hasNext}/>
             </div>
@@ -91,7 +93,7 @@ const Class = () => {
                 {currentItem?.map(student => (
                     <CardUser key={student.id} user={student} isClass={true}/>
                 ))}
-                {combination && <CardAdd text={addTextBox} click={() => handleOpenModal('student')}/>}
+                {['teacher', 'admin'].includes(role) && combination && <CardAdd text={addTextBox} click={() => handleOpenModal('student')}/>}
                 {!combination && <div className={st.noneElement}>Select class</div>}
             </div>
         </>

@@ -12,6 +12,7 @@ import useFormCreate from "../../hooks/useFormCreate";
 import { useGetCombinationQuery } from "../../store/api/classApi";
 import { info, NEED_FIELD, work } from "./constants";
 import BoxProfile from "../../components/BoxProfile/BoxProfile";
+import { useUser } from "../../context/userContext";
 
 const Profile = () => {
     const { id_teacher } = useParams();
@@ -19,6 +20,7 @@ const Profile = () => {
     const [infoData, setInfoData] = useState({personal: [], professional: []});
     const [openChange, setOpenChange] = useState(false);
 
+    const {role} = useUser();
     const {hideSearch} = useHeader();
     const {setHeader, setDescription} = useMain();
 
@@ -85,7 +87,7 @@ const Profile = () => {
     const firstComponent = (
         <>
             <div className={st.setting}>
-                <Button data={ChangeIcon} callback={() => setOpenChange(true)}/>
+                {['teacher', 'admin'].includes(role) ? <Button data={ChangeIcon} callback={() => setOpenChange(true)}/> : <span></span>}
             </div>
             <BoxProfile info={infoData} image={teacher?.image}/>
         </>

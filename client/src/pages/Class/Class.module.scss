@@ -14,12 +14,12 @@
         margin-right: 1.875rem;
     }
 
-    >:nth-child(5){
+    >:nth-last-child(2){
         margin-right: 0.9375rem;
         transform: rotate(90deg);
     }
     
-    >:nth-child(6){
+    >:last-child{
         transform: rotate(-90deg);
     }
 }

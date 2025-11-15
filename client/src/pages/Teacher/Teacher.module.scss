@@ -9,13 +9,13 @@
         margin-right: auto;
     }
 
-    >:nth-child(4){
+    >:nth-last-child(2){
         margin-left: 1.875rem;
         margin-right: 0.9375rem;
         transform: rotate(90deg);
     }
     
-    >:nth-child(5){
+    >:last-child{
         transform: rotate(-90deg);
     }
 }

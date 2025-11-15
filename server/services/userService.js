@@ -59,20 +59,26 @@ class UserService{
 
         const isCorrectPassword = await bcrypt.compare(password, candidate.password);
         if(!isCorrectPassword) throw ApiError.unauthorized('Invalid LOGIN or PASSWORD!')
+        
+        const student = await this.getPayloadStudent(candidate.id, candidate.role);
 
-        const tokens = token.generateTokens({id: candidate.id, login, role: candidate.role, name: candidate.name, surname: candidate.surname});
+        const tokens = token.generateTokens({id: candidate.id, login, role: candidate.role, name: candidate.name, surname: candidate.surname, ...student});
 
         return {tokens, user: {
             id: candidate.id,
             role: candidate.role,
             name: candidate.name,
-            surname: candidate.surname
+            surname: candidate.surname,
+            id_student: student?.id_student,
+            id_class: student?.id_class
         }};
     }
 
     async update(id, data){
         const { id: _, ...safeData } = data;
-    
+        
+        if(safeData?.password) safeData.password = await bcrypt.hash(safeData.password, 3);
+
         const [affectedCount] = await User.update(safeData, {where: {id}});
         if(affectedCount == 0) throw ApiError.notFound('No user with this ID was found!');
 
@@ -168,6 +174,20 @@ class UserService{
 
 
     
+    async getPayloadStudent(id, role){
+        let student = {};
+        if(['mam', 'dad'].includes(role)){
+            const family = await this.getFamily(id, role);
+            console.log(family.student.student_composition)
+            family && (student = {
+                id_student: family.student?.id,
+                id_class: family.student?.student_composition[0]?.id_class
+            })
+        }
+
+        return student;
+    }
+
     parseParentIds(parentString) {
         if (!parentString || parentString === 'null')  return {};
 
