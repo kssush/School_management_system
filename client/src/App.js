@@ -6,6 +6,7 @@ import AppRouter from "./components/AppRouter/AppRouter";
 import Authorization from "./pages/Authorization/Authorization";
 import { useUser } from "./context/userContext";
 import { useCheckAuthQuery, useRefreshQuery } from "./store/api/userApi";
+import AppNoRouter from "./components/AppNoRouter/AppNoRouter";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +45,7 @@ function App() {
                     </Main>
                 </div>
             ) : (
-                <Authorization />
+                <AppNoRouter />
             )}
         </>
     )

@@ -17,8 +17,13 @@ const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
     });
 
     let result = await baseQuery(args, api, extraOptions);
-
-    if (result.error && result.error.status === 401) {        
+    console.log(args)
+    if (result.error && result.error.status === 401) {      
+        console.log('11111', window.location.href.includes('/authorization') || args.url === '/user/login')
+        if (window.location.href.includes('/authorization') || args.url === '/user/login') {
+            return result;
+        }
+        console.log('22222222222')
         const refreshResult = await fetchBaseQuery({
             baseUrl: 'http://localhost:5000/api',
             credentials: 'include',
@@ -32,8 +37,8 @@ const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
 
             return result;
         } else {
-            console.log('Refresh failed!')
-           
+            alert('Refresh failed... Login again!')
+           console.log('333333333322222222222')
             localStorage.removeItem('accessToken'); // можно логаут
 
             return result;

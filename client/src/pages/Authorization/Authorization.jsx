@@ -6,9 +6,12 @@ import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import { useLoginMutation } from "../../store/api/userApi";
 import { useUser } from "../../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 const Authorization = () => {
     const [input, setInput] = useState({});
+
+    const navigate = useNavigate();
 
     const {user, setUser} = useUser();
     const {hideSearch} = useHeader();
@@ -30,13 +33,14 @@ const Authorization = () => {
             if (result.user && result.token) {
                 setUser(result.user);
                 localStorage.setItem('accessToken', result.token);
+                navigate('/', { replace: true });
             } 
         } catch (error) {
             console.error('Login failed:', error);
             alert(error.data?.message || 'Login failed');
         }
     }
-    
+
     console.log(user)
     return (
         <div className={st.authorization}>

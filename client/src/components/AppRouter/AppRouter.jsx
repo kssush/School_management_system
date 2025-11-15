@@ -11,7 +11,6 @@ import Class from "../../pages/Class/Class";
 import Magazine from "../../pages/Magazine/Magazine";
 import Homework from "../../pages/Homework/Homework";
 import Analytics from "../../pages/Analytics/Analytics";
-import Authorization from "../../pages/Authorization/Authorization";
 
 const AppRouter = () => {
     return(
