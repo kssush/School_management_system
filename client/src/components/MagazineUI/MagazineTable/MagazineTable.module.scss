@@ -8,7 +8,7 @@
     max-height: 33.375rem;
     height: fit-content;
     border-radius: 1.25rem;
-    border: 7px solid var(--black10);
+    border: 0.4375rem solid var(--black10);
     background-color: var(--first);
     position: relative; 
     overflow-y: auto;
@@ -101,7 +101,7 @@
         position: relative;
         height: fit-content;
         width: 100%;
-        margin-left: 240px;
+        margin-left: 15rem;
         background-color: var(--first);
 
         &.noStudent{
@@ -117,7 +117,7 @@
 
         .column1{
             min-width: 6.25rem;
-            border-right: 1px solid var(--black10);
+            border-right: 0.0625rem solid var(--black10);
             position: relative;
 
             @for $i from 1 through 40 { 
