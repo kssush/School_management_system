@@ -35,6 +35,15 @@ export const userApi = baseApi.injectEndpoints({
                 method: "POST",
             }),
             invalidatesTags: ["User"],
+            onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+                try {
+                    await queryFulfilled; 
+
+                    localStorage.removeItem('accessToken');
+                } catch (error) {
+                    console.log('Logout failed:', error);
+                }
+            }
         }),
         updateUser: builder.mutation({
             query: ({ id, ...userData }) => ({

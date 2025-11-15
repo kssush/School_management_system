@@ -60,7 +60,7 @@ class UserService{
         const isCorrectPassword = await bcrypt.compare(password, candidate.password);
         if(!isCorrectPassword) throw ApiError.unauthorized('Invalid LOGIN or PASSWORD!')
 
-        const tokens = token.generateTokens({id: candidate.id, login, role: candidate.role});
+        const tokens = token.generateTokens({id: candidate.id, login, role: candidate.role, name: candidate.name, surname: candidate.surname});
 
         return {tokens, user: {
             id: candidate.id,

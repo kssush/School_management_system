@@ -67,7 +67,7 @@ class UserController extends Controller {
 
     async checkAuth(req, res, next){
         const accessToken = req.headers.authorization?.split(' ')[1]; 
-        console.log(accessToken, 'accessssss')
+    
         if(!accessToken) next(ApiError.unauthorized('Неавторизован!'));
 
         const user = token.validateAccessToken(accessToken)
@@ -83,7 +83,7 @@ class UserController extends Controller {
 
     async refresh(req, res, next){
         const refreshToken = token.findToken(req);
-        console.log(refreshToken, 'dfsdfsd')
+       
         if(!refreshToken) next(ApiError.unauthorized('Неавторизован!'));
 
         const user = token.validateRefreshToken(refreshToken)

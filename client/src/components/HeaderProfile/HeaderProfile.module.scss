@@ -1,0 +1,45 @@
+@import '../../styles/mixins.scss';
+
+.profile{
+    display: flex;
+    align-items: center;
+    gap: 0.9375rem;
+    cursor: pointer;
+    padding-left: 1.5625rem;
+    padding-right: 1.25rem;
+    margin-left: auto;
+    max-width: 17.5rem;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+
+    .icon{
+        min-height: 2.5rem;
+        min-width: 2.5rem;
+        border-radius: 2.5rem;
+        background-color: var(--purple);
+    }
+
+    .profileText{
+        display: flex;
+        flex-direction: column;
+        gap: 0.3125rem;
+        overflow: hidden;
+        flex-grow: 1;
+
+        >p{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: clip;
+        }
+
+        >p:nth-of-type(1){
+            @include text16-medium;
+        }
+
+        >p:nth-of-type(2){
+            @include text12-medium;
+            color: var(--text60);
+        }
+    }
+}

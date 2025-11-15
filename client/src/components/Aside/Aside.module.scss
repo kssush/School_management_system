@@ -2,13 +2,86 @@
 
 aside{
     min-width: 17.5rem;
-    height: fit-content;
+    height: calc(100vh - 5rem);
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding: 70px;
+    gap: 1.255rem;
+    position: sticky;
+    top: 0;
+    padding: 3.75rem 0 4.375rem 4.375rem;
+    padding-right: 0;
+
+    .selectPage{
+        height: 3.125rem;
+        width: 12.5rem;
+        border-radius: 1.25rem;
+        background-color: var(--purple40);
+        position: absolute;
+        left: 2.5rem;
+        top: -0.9375rem;
+        transition: all 0.5s;
+
+        &.noActive{
+            opacity: 0;
+        }
+    }
+
+    .links{
+        all: unset;
+        margin-top: auto;
+        @include text20-medium;
+        cursor: pointer;
+
+        &:hover{
+            color: var(--text60);
+        }
+    }
+
+    >div:nth-of-type(1){
+        margin-top: 4.375rem;
+    }
+}
+
+.asideItem{
+    display: flex;
+    height: 2.5rem;
+    width: 100%;    
+    gap: 0.9375rem;
+    align-items: center;
+    transition: all 0.5s;
+    opacity: 0.7;
+
+    &.active{
+        opacity: 1;
+
+        >a{
+            @include text18-regular;
+            color: var(--text);
+        }
+
+        >img{
+            height: 1.375rem;
+            width: 1.375rem;
+        }
+    }
+
+    >img{
+        height: 1.25rem;
+        width: 1.25rem;
+        z-index: 120;
+        transition: all 0.5s;
+    }
 
     >a{
-        @include text20-medium;
+        @extend .item;
     }
+}
+
+
+.item{
+
+    cursor: pointer;
+    @include text18-regular;
+    z-index: 60;
+    transition: all 0.5s;
 }

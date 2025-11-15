@@ -11,12 +11,13 @@ import AppNoRouter from "./components/AppNoRouter/AppNoRouter";
 function App() {
     const [isLoading, setIsLoading] = useState(true);
 
-    const { user, setUser } = useUser();
+    const { user, setUser, skip } = useUser();
 
-    const { data: checkAuth, error } = useCheckAuthQuery();
+    const { data: checkAuth, error } = useCheckAuthQuery(undefined, {
+        skip: skip
+    });
 
     useEffect(() => {
-        console.log(checkAuth, error)
         if (checkAuth) {
             setUser(checkAuth.user);
             localStorage.setItem('accessToken', checkAuth.token); 

@@ -1,14 +1,19 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
 
 export const UserProvider = ({children}) => {
     const [user, setUser] = useState(null);
+    const [skip, setSkip] = useState(false);
 
     const value = {
         user,
-
-        setUser
+        id: user?.id,
+        role: user?.role,
+        skip,
+        
+        setUser,
+        setSkip
     }
 
     return (
