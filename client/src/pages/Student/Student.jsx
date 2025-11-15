@@ -47,7 +47,7 @@ const Student = () => {
             [name]: value == null ? false : value == false ? true : null
         }))
     }
-    console.log(students)
+  
     const handleAdd = async () => {
         try{
             if(Object.keys(errors).length == 0 && Object.keys(input).length >= NEED_FIELD){

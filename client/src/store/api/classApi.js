@@ -60,7 +60,7 @@ export const classApi = baseApi.injectEndpoints({
         getAllStudent: builder.query({
             query: (isClass) => {
                 const params = {};
-                console.log(isClass)
+           
                 if (isClass !== undefined) {
                     params.isClass = isClass;
                 }

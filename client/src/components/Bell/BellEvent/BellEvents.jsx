@@ -2,9 +2,6 @@ import React from "react";
 import st from "./BellEvents.module.scss";
 
 const BellEvents = ({weekday, place, action, time, color}) => {
-
-    console.log('123213')
-
     return (
         <div className={st.bellEvents}>
             <p>{weekday}</p>

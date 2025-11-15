@@ -13,7 +13,7 @@ const HeaderProfile = () => {
     useEffect(() => {
         if (location.pathname !== '/authorization') {
             setActive(true);
-        }
+        }else setActive(false);
     }, [location.pathname]);
 
     if(!active) return null

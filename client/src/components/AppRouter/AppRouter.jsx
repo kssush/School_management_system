@@ -7,7 +7,7 @@ import { useUser } from "../../context/userContext";
 
 const AppRouter = () => {
     const {role} = useUser();
-    console.log(role)
+
     return(
         <Routes>
             {pages['basic'].map(item => (

@@ -45,7 +45,6 @@ const Schedule = () => {
     }, [shiftData]) 
  
     useEffect(() => {
-        console.log(lessonData)
         if(lessonData?.length > 0) setIsShift(true);
         else setIsShift(false)
     }, [lessonData])

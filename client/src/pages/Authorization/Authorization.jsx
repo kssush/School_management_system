@@ -14,8 +14,6 @@ const Authorization = () => {
     const navigate = useNavigate();
 
     const {user, setUser} = useUser();
-    const {hideSearch} = useHeader();
-    const {setHeader, setDescription} = useMain();
 
     const [login] = useLoginMutation();
 
@@ -41,7 +39,6 @@ const Authorization = () => {
         }
     }
 
-    console.log(user)
     return (
         <div className={st.authorization}>
             <div className={st.box}>

@@ -5,6 +5,7 @@
     flex-direction: column;
     gap: 1.875rem;
     max-width: 14.375rem;
+    overflow: hidden;
     width: 100%;
 
     >p:nth-of-type(1){
@@ -23,7 +24,10 @@
 
             >p:nth-of-type(1){
                 @include text14-regular;
-                color: var(--text80)
+                color: var(--text80);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }   
 
             >p:nth-of-type(2){

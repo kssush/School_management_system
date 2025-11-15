@@ -5,7 +5,7 @@ const UserContext = createContext();
 export const UserProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [skip, setSkip] = useState(false);
-    console.log(user)
+
     const value = {
         user,
         id: user?.id,
