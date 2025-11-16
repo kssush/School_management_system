@@ -1,9 +1,9 @@
 <div style="display: flex; gap: 20px; margin-bottom: 25px">
-    <span style="background-color: #EFD4FF; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">React</span>
-    <span style="background-color: #FFF3D1; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">Node.js</span>
-    <span style="background-color: #D7ECDD; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">PostgresSQL</span>
-    <span style="background-color: #FEE3C5; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">RTK Query</span>
-    <span style="background-color: #E7D3DE; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">Figma</span>
+    <span style="background-color: #EFD4FF; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">⚛️ React</span>
+    <span style="background-color: #FFF3D1; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">🟢 Node.js</span>
+    <span style="background-color: #D7ECDD; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">🐘 PostgresSQL</span>
+    <span style="background-color: #FEE3C5; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">🛠️ RTK Query</span>
+    <span style="background-color: #E7D3DE; color: #1F1F1F; padding: 6px 15px; border-radius: 10px; font-weight: bold">🎨 Figma</span>
 </div>
 
 <br>
