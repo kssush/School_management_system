@@ -71,6 +71,14 @@ cd client
 npm start
 ```
 
+### Migration
+- Create a file ./config/config.js based on the file example ./config/config.example.js and RUN command
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+
 <br>
 
 # 🐛 Known Issues
