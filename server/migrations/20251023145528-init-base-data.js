@@ -24,6 +24,7 @@ module.exports = {
                 telephone: '+375 (33) 613-76-41',
                 address: 'st. Gagarina, r. Gomel, RB',
                 role: 'admin',
+                email: 'admin@gmail.com',
                 birthday: '2005-06-21', 
                 login: 'admin',
                 password: await bcrypt.hash('admin', 3)
@@ -32,42 +33,52 @@ module.exports = {
 
         await queryInterface.bulkInsert('combinations', [
             {
+                id: 1,
                 letter: 'A',
                 number: 1
             },
             {
+                id: 2,
                 letter: 'B',
                 number: 1
             },
             {
+                id: 3,
                 letter: 'A',
                 number: 2
             },
             {
+                id: 4,
                 letter: 'B',
                 number: 2
             },
             {
+                id: 5,
                 letter: 'A',
                 number: 3
             },
             {
+                id: 6,
                 letter: 'B',
                 number: 3
             },
             {
+                id: 7,
                 letter: 'A',
                 number: 4
             },
             {
+                id: 8,
                 letter: 'B',
                 number: 4
             },
             {
+                id: 9,
                 letter: 'A',
                 number: 5
             },
             {
+                id: 10,
                 letter: 'B',
                 number: 5
             },
